@@ -5,11 +5,11 @@ Save your strawberries!
 ## React JS  
 - install Node.js LTS 8.10
 - install git
-- start Node.js command prompt and enter nmp install create-react-app
+- start Node.js command prompt and enter npm install create-react-app
 - install jetbrains webstorm
 - Further information: https://www.jetbrains.com/help/webstorm/react.html
 - chose check out from VCS and checkout this project
-- open the terminal window within webstorm
+- open the terminal window within webstorm (ALT + F12)
     - cd frontend
     - npm install
 - starting the dev server
