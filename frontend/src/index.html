@@ -1,0 +1,106 @@
+<!--HTML File mit dem Menu (auf der linken Seite)-->
+<!--Autor: Rahel Illi-->
+<!--Date: 22.03.2018-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+
+    <link rel="manifest" href="../public/manifest.json">
+    <link rel="shortcut icon" href="../public/favicon.ico">
+    <link rel="stylesheet" href="../public/css/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../public/css/style.css">
+
+    <script src="./menuinteraktion.js" type="text/javascript"></script>
+
+    <title>Strawberry Saver</title>
+</head>
+<body>
+<noscript>
+    You need to enable JavaScript to run this app.
+</noscript>
+
+<div id="root"></div>
+
+
+
+<!--Verticales Menue auf der linken Seite-->
+    <div class="leftnav" id="myLeftnav">
+        <ul>
+            <li>
+                <a class="icon" onclick="responsiveMenu()">&#9776;</a>
+                <a id="menuheader" class="menuheader" href="#" onclick="keinMenu(this)">Strawberry Saver</a>
+            </li>
+            <li>
+                <a id="pflanze" class="menupunkt" href="#" onclick="pflanzeMenu(this)">Pflanze</a>
+                    <li class="menuunterpunkt_pflanze_hide"><a href="#">Aktuelle Werte</a></li>
+                    <li class="menuunterpunkt_pflanze_hide"><a href="#">Statistiken</a></li>
+                    <li class="menuunterpunkt_pflanze_hide"><a href="#">Informationen zur Pflanze</a></li>
+                    <li class="menuunterpunkt_pflanze_hide"><a href="#">Einstellungen</a></li>
+            </li>
+            <li>
+                <a id="sensor" class="menupunkt" href="#" onclick="sensorMenu(this)">Sensoren</a>
+                    <li class="menuunterpunkt_sensor_hide"><a href="#">Aktuelle Werte</a></li>
+                    <li class="menuunterpunkt_sensor_hide"><a href="#">Statistiken</a>
+                    <li class="menuunterpunkt_sensor_hide"><a href="#">Informationen zum Sensor</a>
+                    <li class="menuunterpunkt_sensor_hide"><a href="#">Einstellungen</a>
+            </li>
+            <li>
+                <a id="nutzer" class="menunutzer" onclick="nutzerMenu(this)" href="#">Nutzer Name</a>
+                    <li class="menuunterpunkt_nutzer_hide"><a href="#">Einstellungen</a>
+            </li>
+            <li>
+                <a id="abmelden" class="menunutzer" href="#" onclick="keinMenu(this)">Abmelden</a>
+            </li>
+        </ul>
+    </div>
+
+<!--"eigentliche" Seite (Rest ohne Menu, rechte Seite)-->
+   <div>
+    <div  id="seite">
+        <h2>Bald ist Ostern :)</h2>
+        <h3>Weißt du was an Ostern passiert ist?</h3>
+        <p>Jesu Geißelung und Verspottung
+            1 Da nahm Pilatus Jesus und ließ ihn geißeln. 2 Und die Soldaten flochten eine Krone aus Dornen und setzten sie auf sein Haupt und legten ihm ein Purpurgewand an 3 und traten zu ihm und sprachen: Sei gegrüßt, König der Juden!, und schlugen ihm ins Gesicht. 4 Und Pilatus ging wieder hinaus und sprach zu ihnen: Seht, ich führe ihn heraus zu euch, damit ihr erkennt, dass ich keine Schuld an ihm finde. 5 Da kam Jesus heraus und trug die Dornenkrone und das Purpurgewand. Und Pilatus spricht zu ihnen: Sehet, welch ein Mensch!
+            Jesu Verurteilung
+            6 Als ihn die Hohenpriester und die Diener sahen, schrien sie: Kreuzige! Kreuzige! Pilatus spricht zu ihnen: Nehmt ihr ihn hin und kreuzigt ihn, denn ich finde keine Schuld an ihm. 7 Die Juden antworteten ihm: Wir haben ein Gesetz, und nach dem Gesetz muss er sterben, denn er hat sich selbst zu Gottes Sohn gemacht. 8 Als Pilatus das hörte, fürchtete er sich noch mehr 9 und ging wieder hinein in das Prätorium und spricht zu Jesus: Woher bist du? Aber Jesus gab ihm keine Antwort. 10 Da sprach Pilatus zu ihm: Redest du nicht mit mir? Weißt du nicht, dass ich Macht habe, dich loszugeben, und Macht habe, dich zu kreuzigen? 11 Jesus antwortete: Du hättest keine Macht über mich, wenn es dir nicht von oben gegeben wäre. Darum hat, der mich dir überantwortet hat, größere Sünde. 12 Von da an trachtete Pilatus danach, ihn freizulassen. Die Juden aber schrien: Lässt du diesen frei, so bist du des Kaisers Freund nicht; wer sich zum König macht, der ist gegen den Kaiser. 13 Da Pilatus diese Worte hörte, führte er Jesus heraus und setzte sich auf den Richterstuhl an der Stätte, die da heißt Steinpflaster, auf Hebräisch Gabbata. 14 Es war aber der Rüsttag für das Passafest, um die sechste Stunde. Und er spricht zu den Juden: Sehet, euer König! 15 Sie schrien aber: Weg, weg mit dem! Kreuzige ihn! Spricht Pilatus zu ihnen: Soll ich euren König kreuzigen? Die Hohenpriester antworteten: Wir haben keinen König außer dem Kaiser. 16 Da überantwortete er ihnen Jesus, dass er gekreuzigt würde. Sie nahmen ihn aber,
+            Jesu Kreuzigung und Tod
+            17 und er trug selber das Kreuz und ging hinaus zur Stätte, die da heißt Schädelstätte, auf Hebräisch Golgatha. 18 Dort kreuzigten sie ihn und mit ihm zwei andere zu beiden Seiten, Jesus aber in der Mitte. 19 Pilatus aber schrieb eine Aufschrift und setzte sie auf das Kreuz; und es war geschrieben: Jesus von Nazareth, der Juden König. 20 Diese Aufschrift lasen viele Juden, denn die Stätte, wo Jesus gekreuzigt wurde, war nahe bei der Stadt. Und es war geschrieben in hebräischer, lateinischer und griechischer Sprache. 21 Da sprachen die Hohenpriester der Juden zu Pilatus: Schreibe nicht: Der Juden König, sondern dass er gesagt hat: Ich bin der Juden König. 22 Pilatus antwortete: Was ich geschrieben habe, das habe ich geschrieben. 23 Die Soldaten aber, da sie Jesus gekreuzigt hatten, nahmen seine Kleider und machten vier Teile, für jeden Soldaten einen Teil, dazu auch den Rock. Der aber war ungenäht, von oben an gewebt in einem Stück. 24 Da sprachen sie untereinander: Lasst uns den nicht zerteilen, sondern darum losen, wem er gehören soll. So sollte die Schrift erfüllt werden, die sagt (Psalm 22,19): »Sie haben meine Kleider unter sich geteilt und haben über mein Gewand das Los geworfen.« Das taten die Soldaten. 25 Es standen aber bei dem Kreuz Jesu seine Mutter und seiner Mutter Schwester, Maria, die Frau des Klopas, und Maria Magdalena. 26 Als nun Jesus seine Mutter sah und bei ihr den Jünger, den er lieb hatte, spricht er zu seiner Mutter: Frau, siehe, das ist dein Sohn! 27 Danach spricht er zu dem Jünger: Siehe, das ist deine Mutter! Und von der Stunde an nahm sie der Jünger zu sich. 28 Danach, als Jesus wusste, dass schon alles vollbracht war, spricht er, damit die Schrift erfüllt würde: Mich dürstet. 29 Da stand ein Gefäß voll Essig. Sie aber füllten einen Schwamm mit Essig und legten ihn um einen Ysop und hielten ihm den an den Mund. 30 Da nun Jesus den Essig genommen hatte, sprach er: Es ist vollbracht. Und neigte das Haupt und verschied. 31 Weil es aber Rüsttag war und die Leichname nicht am Kreuz bleiben sollten den Sabbat über – denn dieser Sabbat war ein hoher Festtag –, baten die Juden Pilatus, dass ihnen die Beine gebrochen und sie abgenommen würden. 32 Da kamen die Soldaten und brachen dem ersten die Beine und auch dem andern, der mit ihm gekreuzigt war. 33 Als sie aber zu Jesus kamen und sahen, dass er schon gestorben war, brachen sie ihm die Beine nicht; 34 sondern einer der Soldaten stieß mit einer Lanze in seine Seite, und sogleich kam Blut und Wasser heraus. 35 Und der das gesehen hat, der hat es bezeugt, und sein Zeugnis ist wahr, und er weiß, dass er die Wahrheit sagt, damit auch ihr glaubt. 36 Denn das ist geschehen, damit die Schrift erfüllt würde (2. Mose 12,46): »Ihr sollt ihm kein Bein zerbrechen.« 37 Und ein anderes Schriftwort sagt (Sacharja 12,10): »Sie werden auf den sehen, den sie durchbohrt haben.«
+            Jesu Grablegung
+            38 Danach bat Josef von Arimathäa, der ein Jünger Jesu war, doch heimlich, aus Furcht vor den Juden, den Pilatus, dass er den Leichnam Jesu abnehmen dürfe. Und Pilatus erlaubte es. Da kam er und nahm den Leichnam Jesu ab. 39 Es kam aber auch Nikodemus, der vormals in der Nacht zu Jesus gekommen war, und brachte Myrrhe gemischt mit Aloe, etwa hundert Pfund. 40 Da nahmen sie den Leichnam Jesu und banden ihn in Leinentücher mit Spezereien, wie die Juden zu begraben pflegen. 41 Es war aber an der Stätte, wo er gekreuzigt wurde, ein Garten und im Garten ein neues Grab, in das noch nie jemand gelegt worden war. 42 Dahin legten sie Jesus wegen des Rüsttags der Juden, weil das Grab nahe war.
+            Die Bibel nach Martin Luthers Übersetzung, revidiert 2017, © 2016 Deutsche Bibelgesellschaft, Stuttgart.
+            Die Verwendung des Textes erfolgt mit Genehmigung der Deutschen Bibelgesellschaft.
+            www.die-bibel.de
+            © 2018 ERF Medien – Deutsche Bibelgesellschaft, Stiftung Christliche Medien, Genfer Bibelgesellschaft, Katholisches Bibelwerk, Crossway, Biblica, ERF Medien Schweiz, TWR
+        </p>
+        <p>Der Ostermorgen
+            1 Am ersten Tag der Woche kommt Maria Magdalena früh, als es noch finster war, zum Grab und sieht, dass der Stein vom Grab weggenommen war. 2 Da läuft sie und kommt zu Simon Petrus und zu dem andern Jünger, den Jesus lieb hatte, und spricht zu ihnen: Sie haben den Herrn weggenommen aus dem Grab, und wir wissen nicht, wo sie ihn hingelegt haben. 3 Da gingen Petrus und der andere Jünger hinaus, und sie kamen zum Grab. 4 Es liefen aber die beiden miteinander, und der andere Jünger lief voraus, schneller als Petrus, und kam als Erster zum Grab, 5 schaut hinein und sieht die Leinentücher liegen; er ging aber nicht hinein. 6 Da kam Simon Petrus ihm nach und ging hinein in das Grab und sieht die Leinentücher liegen, 7 und das Schweißtuch, das auf Jesu Haupt gelegen hatte, nicht bei den Leinentüchern, sondern daneben, zusammengewickelt an einem besonderen Ort. 8 Da ging auch der andere Jünger hinein, der als Erster zum Grab gekommen war, und sah und glaubte. 9 Denn sie verstanden die Schrift noch nicht, dass er von den Toten auferstehen müsste. 10 Da gingen die Jünger wieder zu den anderen zurück.
+            Maria Magdalena
+            11 Maria aber stand draußen vor dem Grab und weinte. Als sie nun weinte, beugte sie sich in das Grab hinein 12 und sieht zwei Engel in weißen Gewändern sitzen, einen zu Häupten und den andern zu den Füßen, wo der Leichnam Jesu gelegen hatte. 13 Und die sprachen zu ihr: Frau, was weinst du? Sie spricht zu ihnen: Sie haben meinen Herrn weggenommen, und ich weiß nicht, wo sie ihn hingelegt haben. 14 Und als sie das sagte, wandte sie sich um und sieht Jesus stehen und weiß nicht, dass es Jesus ist. 15 Spricht Jesus zu ihr: Frau, was weinst du? Wen suchst du? Sie meint, es sei der Gärtner, und spricht zu ihm: Herr, hast du ihn weggetragen, so sage mir: Wo hast du ihn hingelegt? Dann will ich ihn holen. 16 Spricht Jesus zu ihr: Maria! Da wandte sie sich um und spricht zu ihm auf Hebräisch: Rabbuni!, das heißt: Meister! 17 Spricht Jesus zu ihr: Rühre mich nicht an! Denn ich bin noch nicht aufgefahren zum Vater. Geh aber hin zu meinen Brüdern und sage ihnen: Ich fahre auf zu meinem Vater und eurem Vater, zu meinem Gott und eurem Gott. 18 Maria Magdalena geht und verkündigt den Jüngern: »Ich habe den Herrn gesehen«, und was er zu ihr gesagt habe.
+            Die Vollmacht der Jünger
+            19 Am Abend aber dieses ersten Tages der Woche, da die Jünger versammelt und die Türen verschlossen waren aus Furcht vor den Juden, kam Jesus und trat mitten unter sie und spricht zu ihnen: Friede sei mit euch! 20 Und als er das gesagt hatte, zeigte er ihnen die Hände und seine Seite. Da wurden die Jünger froh, dass sie den Herrn sahen. 21 Da sprach Jesus abermals zu ihnen: Friede sei mit euch! Wie mich der Vater gesandt hat, so sende ich euch. 22 Und als er das gesagt hatte, blies er sie an und spricht zu ihnen: Nehmt hin den Heiligen Geist! 23 Welchen ihr die Sünden erlasst, denen sind sie erlassen; welchen ihr sie behaltet, denen sind sie behalten.
+            Thomas
+            24 Thomas aber, einer der Zwölf, der Zwilling genannt wird, war nicht bei ihnen, als Jesus kam. 25 Da sagten die andern Jünger zu ihm: Wir haben den Herrn gesehen. Er aber sprach zu ihnen: Wenn ich nicht in seinen Händen die Nägelmale sehe und lege meinen Finger in die Nägelmale und lege meine Hand in seine Seite, kann ich's nicht glauben. 26 Und nach acht Tagen waren seine Jünger abermals drinnen, und Thomas war bei ihnen. Kommt Jesus, als die Türen verschlossen waren, und tritt mitten unter sie und spricht: Friede sei mit euch! 27 Danach spricht er zu Thomas: Reiche deinen Finger her und sieh meine Hände, und reiche deine Hand her und lege sie in meine Seite, und sei nicht ungläubig, sondern gläubig! 28 Thomas antwortete und sprach zu ihm: Mein Herr und mein Gott! 29 Spricht Jesus zu ihm: Weil du mich gesehen hast, darum glaubst du? Selig sind, die nicht sehen und doch glauben! 30 Noch viele andere Zeichen tat Jesus vor seinen Jüngern, die nicht geschrieben sind in diesem Buch. 31 Diese aber sind geschrieben, damit ihr glaubt, dass Jesus der Christus ist, der Sohn Gottes, und damit ihr, weil ihr glaubt, das Leben habt in seinem Namen.
+            Die Bibel nach Martin Luthers Übersetzung, revidiert 2017, © 2016 Deutsche Bibelgesellschaft, Stuttgart.
+            Die Verwendung des Textes erfolgt mit Genehmigung der Deutschen Bibelgesellschaft.
+            www.die-bibel.de
+            © 2018 ERF Medien – Deutsche Bibelgesellschaft, Stiftung Christliche Medien, Genfer Bibelgesellschaft, Katholisches Bibelwerk, Crossway, Biblica, ERF Medien Schweiz, TWR
+        </p>
+
+        <p>Der Auferstandene am See von Tiberias
+            1 Danach offenbarte sich Jesus abermals den Jüngern am See von Tiberias. Er offenbarte sich aber so: 2 Es waren beieinander Simon Petrus und Thomas, der Zwilling genannt wird, und Nathanael aus Kana in Galiläa und die Söhne des Zebedäus und zwei andere seiner Jünger. 3 Spricht Simon Petrus zu ihnen: Ich gehe fischen. Sie sprechen zu ihm: Wir kommen mit dir. Sie gingen hinaus und stiegen in das Boot, und in dieser Nacht fingen sie nichts. 4 Als es aber schon Morgen war, stand Jesus am Ufer, aber die Jünger wussten nicht, dass es Jesus war. 5 Spricht Jesus zu ihnen: Kinder, habt ihr nichts zu essen? Sie antworteten ihm: Nein. 6 Er aber sprach zu ihnen: Werft das Netz aus zur Rechten des Bootes, so werdet ihr finden. Da warfen sie es aus und konnten's nicht mehr ziehen wegen der Menge der Fische. 7 Da spricht der Jünger, den Jesus lieb hatte, zu Petrus: Es ist der Herr! Als Simon Petrus hörte: »Es ist der Herr«, da gürtete er sich das Obergewand um, denn er war nackt, und warf sich in den See. 8 Die andern Jünger aber kamen mit dem Boot, denn sie waren nicht fern vom Land, nur etwa zweihundert Ellen, und zogen das Netz mit den Fischen. 9 Als sie nun an Land stiegen, sahen sie ein Kohlenfeuer am Boden und Fisch darauf und Brot. 10 Spricht Jesus zu ihnen: Bringt von den Fischen, die ihr jetzt gefangen habt! 11 Simon Petrus stieg herauf und zog das Netz an Land, voll großer Fische, hundertdreiundfünfzig. Und obwohl es so viele waren, zerriss doch das Netz nicht. 12 Spricht Jesus zu ihnen: Kommt und haltet das Mahl! Niemand aber unter den Jüngern wagte, ihn zu fragen: Wer bist du? Denn sie wussten: Es ist der Herr. 13 Da kommt Jesus und nimmt das Brot und gibt's ihnen, desgleichen auch den Fisch. 14 Das ist nun das dritte Mal, dass sich Jesus den Jüngern offenbarte, nachdem er von den Toten auferstanden war.
+            Petrus und Johannes
+            15 Da sie nun das Mahl gehalten hatten, spricht Jesus zu Simon Petrus: Simon, Sohn des Johannes, liebst du mich mehr, als mich diese lieb haben? Er spricht zu ihm: Ja, Herr, du weißt, dass ich dich lieb habe. Spricht Jesus zu ihm: Weide meine Lämmer! 16 Spricht er zum zweiten Mal zu ihm: Simon, Sohn des Johannes, hast du mich lieb? Er spricht zu ihm: Ja, Herr, du weißt, dass ich dich lieb habe. Spricht Jesus zu ihm: Weide meine Schafe! 17 Spricht er zum dritten Mal zu ihm: Simon, Sohn des Johannes, hast du mich lieb? Petrus wurde traurig, weil er zum dritten Mal zu ihm sagte: Hast du mich lieb?, und sprach zu ihm: Herr, du weißt alle Dinge, du weißt, dass ich dich lieb habe. Spricht Jesus zu ihm: Weide meine Schafe! 18 Wahrlich, wahrlich, ich sage dir: Als du jünger warst, gürtetest du dich selbst und gingst, wo du hinwolltest; wenn du aber alt bist, wirst du deine Hände ausstrecken und ein anderer wird dich gürten und führen, wo du nicht hinwillst. 19 Das sagte er aber, um anzuzeigen, mit welchem Tod er Gott preisen würde. Und als er das gesagt hatte, spricht er zu ihm: Folge mir nach! 20 Petrus aber wandte sich um und sah den Jünger folgen, den Jesus lieb hatte, der auch beim Abendessen an seiner Brust gelegen und gesagt hatte: Herr, wer ist's, der dich verrät? 21 Als Petrus diesen sah, spricht er zu Jesus: Herr, was wird aber mit diesem? 22 Jesus spricht zu ihm: Wenn ich will, dass er bleibt, bis ich komme, was geht es dich an? Folge du mir nach! 23 Da kam unter den Brüdern die Rede auf: Dieser Jünger stirbt nicht. Aber Jesus hatte nicht zu ihm gesagt: Er stirbt nicht, sondern: Wenn ich will, dass er bleibt, bis ich komme, was geht es dich an? 24 Dies ist der Jünger, der das bezeugt und aufgeschrieben hat, und wir wissen, dass sein Zeugnis wahr ist. 25 Es sind noch viele andere Dinge, die Jesus getan hat. Wenn aber eins nach dem andern aufgeschrieben werden sollte, so würde, meine ich, die Welt die Bücher nicht fassen, die zu schreiben wären.
+            Die Bibel nach Martin Luthers Übersetzung, revidiert 2017, © 2016 Deutsche Bibelgesellschaft, Stuttgart.
+            Die Verwendung des Textes erfolgt mit Genehmigung der Deutschen Bibelgesellschaft.
+            www.die-bibel.de</p>
+        <h4>Lutherbibel 2017</h4>
+    </div>
+   </div>
+
+</body>
+</html>
+
