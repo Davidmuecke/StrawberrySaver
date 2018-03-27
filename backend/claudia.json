@@ -1,0 +1,11 @@
+{
+  "lambda": {
+    "role": "accessDatabase-executor",
+    "name": "accessDatabase",
+    "region": "us-east-1"
+  },
+  "api": {
+    "id": "5zdey468pk",
+    "module": "accessDatabase"
+  }
+}

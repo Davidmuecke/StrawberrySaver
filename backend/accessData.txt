@@ -1,0 +1,13 @@
+saving configuration
+{
+  "lambda": {
+    "role": "accessDatabase-executor",
+    "name": "accessDatabase",
+    "region": "us-east-1"
+  },
+  "api": {
+    "id": "5zdey468pk",
+    "module": "accessDatabase",
+    "url": "https://5zdey468pk.execute-api.us-east-1.amazonaws.com/latest"
+  }
+}
