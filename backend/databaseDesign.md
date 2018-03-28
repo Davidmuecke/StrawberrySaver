@@ -1,7 +1,9 @@
 #Sensoren und Messungen
 ##Allgemein
 - pro Sensor eine Tabelle
-- Name der Tabelle: Sensor-ID
+- Name der Tabelle: **Sensor-ID_Pflanzen-ID**
+  (so wird gewährleistet, dass alle Messungen mit diesem Sensor an der selben Pflanze
+   gemacht wurden...)
 ##Aufbau der Tabellen
 - Der Eintrag mit dem Indizé 0 enthält die Produkt-Informationen des Sensors:
 	- Marke, 
