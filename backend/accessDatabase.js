@@ -71,4 +71,77 @@ api.post('/data', function (request) {
         .then(response => response.Items)
 });
 
+api.post('/arduinoTest', function (request) {
+    return "arduinoTest: succesfull";
+});
+
+api.post('/createTable', function (request) {
+    var params = {
+        AttributeDefinitions: [
+            {
+                AttributeName: "Artist",
+                AttributeType: "S"
+            },
+            {
+                AttributeName: "SongTitle",
+                AttributeType: "S"
+            }
+        ],
+        KeySchema: [
+            {
+                AttributeName: "Artist",
+                KeyType: "HASH"
+            },
+            {
+                AttributeName: "SongTitle",
+                KeyType: "RANGE"
+            }
+        ],
+        ProvisionedThroughput: {
+            ReadCapacityUnits: 5,
+            WriteCapacityUnits: 5
+        },
+        TableName: "Music"
+    };
+    dynamoDb.createTable(params, function(err, data) {
+        if (err) console.log(err, err.stack); // an error occurred
+        else     console.log(data);           // successful response
+        /*
+        data = {
+         TableDescription: {
+          AttributeDefinitions: [
+             {
+            AttributeName: "Artist",
+            AttributeType: "S"
+           },
+             {
+            AttributeName: "SongTitle",
+            AttributeType: "S"
+           }
+          ],
+          CreationDateTime: <Date Representation>,
+          ItemCount: 0,
+          KeySchema: [
+             {
+            AttributeName: "Artist",
+            KeyType: "HASH"
+           },
+             {
+            AttributeName: "SongTitle",
+            KeyType: "RANGE"
+           }
+          ],
+          ProvisionedThroughput: {
+           ReadCapacityUnits: 5,
+           WriteCapacityUnits: 5
+          },
+          TableName: "Music",
+          TableSizeBytes: 0,
+          TableStatus: "CREATING"
+         }
+        }
+        */
+    });
+});
+
 module.exports = api;
