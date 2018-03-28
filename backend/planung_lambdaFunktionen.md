@@ -6,4 +6,6 @@ Folgende Datenbankabfragen müssen über die REST-API gestellt werden:
     - Aktuellste Messung einer Pflanze
     - Liste aller Sensoren -> Datenbank die Sensoren den Senorentabellen zuordnet
     
+    ~David: stimme dir voll zu
+    
     

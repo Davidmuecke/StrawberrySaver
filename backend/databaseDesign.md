@@ -9,6 +9,8 @@
 - auf die User-Access Tabellen kann nur mit einem speziellen Administrator Konto zugegriffen werden.
 - Für jeden sendenden Arduino muss ein eigener User angelget werden (User-ID = Sensor-ID)
 - Die Sensor-ID des muss also bei jeder Anfrage mitgeliefert werden.
+
+~**David:** ja, wir müssen noch schauen wie man verhindern kann, dass der Absender einfach die UserID fälscht in dem er eine andere angibt, eventuell lässt sich das über Cogito verifizieren
 #Datenbanktabellen
 ##Sensoren und Messungen
 ###Allgemein
@@ -19,7 +21,7 @@
   werden. Wechselt ein Sensor die Pflanze, so muss die Datenbanktabelle gelöscht
   (bzw. umbenannt und als Backup gespeichert) werden.
 ###Aufbau der Tabellen
-- Der Eintrag mit dem Indizé 0 enthält die Produkt-Informationen des Sensors:
+- Der Eintrag mit dem Index 0 enthält die Produkt-Informationen des Sensors:
 	- Marke
 	- Modellbezeichnung 
 	- Gerätenummer/Seriennummer (oder MAC-Adresse?) (dient zur eindeutigen Identifikation)
@@ -34,6 +36,10 @@
 	- temperature: Messwert des Temperatursensors
 	- time: Zeitpunkt zu dem die Messung gemacht worden ist.
 	
+	**David** MAC Adresse als ID ist perfekt, hatte ich gar nicht dran gedacht!
+	- Index 0: zusätzlich Datum erste Inbetriebnahme und Firmwareversion
+	- Könnte man den Eintrag 1+2 auch zusammenlegen oder warum würdest du das trennen? Beide Daten kann es ja eigentlich nur einmal geben
+	- Ggf. könnte man in die Einträge ab Index 2 auch einen Akkustand einbauen, wenn der Sensor später mit Baterien etc. betrieben wird (Würde ich gerne umsetzten, kann aber noch nicht sagen wann)
 ##Pflanzen
 ###Allgemein
 - pro Pflanze eigene Tabelle
@@ -45,6 +51,8 @@
     - Sensor-ID_Temperatur (mit der Pflanze verknüpfter Sensor) (bei Löschen beachten)
     - Sensor-ID_Feuchtigkeit (mit der Pflanze verknüpfter Sensor) (bei Löschen beachten)
     - Erstellzeitpunkt
+    
+    **David** brauchen wir pro Pflanze eine eigene Tabelle oder sollte mann die Pflanze einfach in eine Tabelle pro Benutzer schreiben? So wie ich das grade verstehe hätte die Tabelle ja jeweils nur einen Eintrag?
 ##Orte
 ###Allgemein
 - pro Ort eigene Tabelle
@@ -72,3 +80,4 @@
    - Kategorie (Pflanze, Sensor, Ort, ...)
    - ID (Pflanzen-ID, Sensor-ID, Orts-ID,...)
    
+**David** Wichtig wäre noch, dass wir eine Art Script haben, was die Datenbanktabellen irgendwann aufräumt damit sie nicht zu groß werden (Daten von vor einer Woche werten wir ja nicht mehr aus). Solange wir aber nur ein paar Sensoren haben ist das kein Problem, eine Messung generiert ja nur einen String mit <100 Zeichen in der DB
