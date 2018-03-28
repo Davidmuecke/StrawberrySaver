@@ -2,7 +2,7 @@
 ##POST REQUEST
 Ziel: xxx.aws.com/Arduino
 
-Payload: {“SensorID”=”ABX100”, “WifiSSID”=”Strawberry”, “water”=500, “temperature”=23.5, “messuereIntervall”=60 [Sec],”sendIntervall”=6000, “sendOnChange”=”true” }
+Payload: {“SensorID”:”ABX100”, “WifiSSID”:”Strawberry”, “water”:500, “temperature”:23.5, "time":<Uhrzeit>, “messuereIntervall”:60,”sendIntervall”:6000, “sendOnChange”:”true”, }
 
 Antwort Server:
 Change:true/false,messuereIntervall:60,sendIntervall:6000,sendOnChange:true/false
