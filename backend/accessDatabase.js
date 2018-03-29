@@ -1,10 +1,14 @@
 const ApiBuilder = require('claudia-api-builder'),
     AWS = require('aws-sdk');
-
+//Setzt die Region
+AWS.config.update({region: 'us-east-1'});
 //Ein Api-Builder wird instaziiert.
 var api = new ApiBuilder(),
     //Ein Document-Client (hier DB) wird instanziiert.
     dynamoDb = new AWS.DynamoDB.DocumentClient();
+    // Erstellt dsa Dynamo-DB service Objekt für das erstellen neuer Tabellen.
+    dataBase = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+
 
 
 //Beispiel zum Laden von Daten in die Datenbank
@@ -70,78 +74,42 @@ api.post('/data', function (request) {
     }).promise()
         .then(response => response.Items)
 });
-
+//Post-Request ohne Header um Arduino-Connection zu testen.
 api.post('/arduinoTest', function (request) {
     return "arduinoTest: succesfull";
 });
 
-api.post('/createTable', function (request) {
+//Get-Request mit Zugriff auf die Variablen in der URL
+api.get('/helloWorld', function (request) {
+   return 'Hello ' + request.queryString.name;
+});
+
+//Post-Request zum erstellen einer neuen Tabelle
+api.post('/createTableTest', function (request) {
     var params = {
-        AttributeDefinitions: [
-            {
-                AttributeName: "Artist",
-                AttributeType: "S"
-            },
-            {
-                AttributeName: "SongTitle",
-                AttributeType: "S"
-            }
-        ],
+        TableName : "sensor_2291928",
         KeySchema: [
-            {
-                AttributeName: "Artist",
-                KeyType: "HASH"
-            },
-            {
-                AttributeName: "SongTitle",
-                KeyType: "RANGE"
-            }
+            { AttributeName: "test1", KeyType: "HASH"},  //Partition key
+            { AttributeName: "test2", KeyType: "RANGE" }  //Sort key
+        ],
+        AttributeDefinitions: [
+            { AttributeName: "test1", AttributeType: "N" },
+            { AttributeName: "test2", AttributeType: "S" }
         ],
         ProvisionedThroughput: {
             ReadCapacityUnits: 5,
             WriteCapacityUnits: 5
-        },
-        TableName: "Music"
-    };
-    dynamoDb.createTable(params, function(err, data) {
-        if (err) console.log(err, err.stack); // an error occurred
-        else     console.log(data);           // successful response
-        /*
-        data = {
-         TableDescription: {
-          AttributeDefinitions: [
-             {
-            AttributeName: "Artist",
-            AttributeType: "S"
-           },
-             {
-            AttributeName: "SongTitle",
-            AttributeType: "S"
-           }
-          ],
-          CreationDateTime: <Date Representation>,
-          ItemCount: 0,
-          KeySchema: [
-             {
-            AttributeName: "Artist",
-            KeyType: "HASH"
-           },
-             {
-            AttributeName: "SongTitle",
-            KeyType: "RANGE"
-           }
-          ],
-          ProvisionedThroughput: {
-           ReadCapacityUnits: 5,
-           WriteCapacityUnits: 5
-          },
-          TableName: "Music",
-          TableSizeBytes: 0,
-          TableStatus: "CREATING"
-         }
         }
-        */
-    });
+    };
+
+    return dataBase.createTable(params, function(err, data) {
+        if (err) {
+            console.error("Unable to create table. Error JSON:", JSON.stringify(err, null, 2));
+        } else {
+            console.log("Created table. Table description JSON:", JSON.stringify(data, null, 2));
+        }
+    }).promise()
+    //Hier muss nun gewartet werden, bis der Tabellenstatus von "CREATING" auf "ACTIVE" wechselt.
 });
 
 module.exports = api;

@@ -54,9 +54,28 @@ Save your strawberries!
  - execute `claudia update` *(duration: ~ 45s.)*
  
  ###test your lambda-function
- 1. via linux-command
- - 
-        
-
-    
-    
+ ####post-requests
+ 1. via linux-command: `curl -H "Content-Type: application/json" -X POST -d '<json-object>' <API-URL>/<API-Endpoint>`
+ 2. HTTP-Requester at the Browser: use your favorite HTTP-requester-browser-plugin to set the Header and the body of your request
+ 
+ ###get-requests
+ 1. via linux.command: `curl <API-URL>/<API-Endpoint>`
+ 2. via browser: insert the request-URL in the search-field of your favorite browser
+ 
+ 
+ ###usefull links
+ - use claudia.js
+    - [claudia.js on github](https://github.com/claudiajs/claudia)
+    - [claudia.js and dynamoDB example 1](https://github.com/claudiajs/example-projects/blob/master/dynamodb-example/index.js)
+    - [claudia.js and dynamoDB example 2](https://github.com/claudiajs/example-projects/blob/master/web-api-custom-status-code/web.js)
+ - operate on dynamoDB
+    - [dynamoDB general introduction](https://docs.aws.amazon.com/de_de/amazondynamodb/latest/developerguide/Introduction.html)
+    - [dynamoDB permissions](https://docs.aws.amazon.com/de_de/amazondynamodb/latest/developerguide/api-permissions-reference.html)
+    - [dynamoDB query-example](https://docs.aws.amazon.com/de_de/amazondynamodb/latest/APIReference/API_Query.html)
+    - [dynamoDB API AttributeValue](https://docs.aws.amazon.com/de_de/amazondynamodb/latest/APIReference/API_AttributeValue.html)
+    - [working with dynamoDB](https://docs.aws.amazon.com/de_de/amazondynamodb/latest/developerguide/WorkingWithDynamo.html)
+    - [dynamoDB create table](https://docs.aws.amazon.com/de_de/sdk-for-javascript/v2/developer-guide/dynamodb-examples-using-tables.html)
+    - [dynamoDB create table properties](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB.html#createTable-property)
+- something else
+    - [how to use Markdown](https://support.zendesk.com/hc/de/articles/203691016-Formatieren-von-Text-mit-Markdown#topic_xqx_mvc_43__row_tf4_bmn_1n)
+    - 
