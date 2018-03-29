@@ -84,10 +84,10 @@ api.get('/helloWorld', function (request) {
    return 'Hello ' + request.queryString.name;
 });
 
-//Post-Request zum erstellen einer neuen Tabelle
+//Post-Request zum erstellen einer Tabelle
 api.post('/createTableTest', function (request) {
     var params = {
-        TableName : "sensor_2291928",
+        TableName : "sensor_12345",
         KeySchema: [
             { AttributeName: "test1", KeyType: "HASH"},  //Partition key
             { AttributeName: "test2", KeyType: "RANGE" }  //Sort key
@@ -101,15 +101,16 @@ api.post('/createTableTest', function (request) {
             WriteCapacityUnits: 5
         }
     };
-
     return dataBase.createTable(params, function(err, data) {
         if (err) {
             console.error("Unable to create table. Error JSON:", JSON.stringify(err, null, 2));
         } else {
             console.log("Created table. Table description JSON:", JSON.stringify(data, null, 2));
         }
-    }).promise()
-    //Hier muss nun gewartet werden, bis der Tabellenstatus von "CREATING" auf "ACTIVE" wechselt.
+    }).promise().then(
+        //Hier muss nun gewartet werden, bis der Tabellenstatus von "CREATING" auf "ACTIVE" wechselt.
+    )
+
 });
 
 module.exports = api;
