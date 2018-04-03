@@ -138,3 +138,16 @@ function responsiveMenu() {
         x.className = "leftnav";
     }
 }
+
+/*Funktion für Responsive Menu - Test*/
+function responsiveMenu2() {
+    var x = document.getElementById("myLeftnav");
+    if(x.style.display == 'none'){
+        x.style.display = 'sticky'
+    }
+    if (x.className === "leftnav") {
+        x.className += " responsive";
+    } else {
+        x.className = "leftnav";
+    }
+}
