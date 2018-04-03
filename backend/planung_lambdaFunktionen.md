@@ -4,11 +4,13 @@ Folgende Datenbankabfragen müssen über die REST-API gestellt werden:
     - Alle Pflanzen einer User-ID
     - Alle Messungen einer Pflanze
     - Aktuellste Messung einer Pflanze
-    - Liste aller Sensoren -> über die User-Access-Tabell werden die sensoren herausgesucht, auf die der aktuelle Benutzer Zugriff hat.
+    - Liste aller Sensoren -> über die User-Access-Tabell werden die Sensoren herausgesucht, auf die der aktuelle Benutzer Zugriff hat.
  - vom Arduino
     - siehe "Arduino_API.md"
     
 ~**David**: stimme dir voll zu
+~**Rahel**: Rahel auch ;). Frage: Meint "Liste aller Sensoren" ALLE Sensoren oder wie bei Punkt eins "Alle Sensoren einer User-ID"?
+
 
 Folgende Datenbank-Befüllungen müssen über die REST-API ausgeführt werden:
 - von der Web-Oberfläche

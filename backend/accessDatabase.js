@@ -30,7 +30,7 @@ api.post('/postData', function (request) { // SAVE your icecream
 
 //Beispiel für eine Scan-Anfrage.
 //Bei einer Scan-Anfrage wird (im Gegensatz zur Query) die komplette Datenbank gelesen.
-//Soll das Ergebnis dann doch noch gefiltert werden, kann das durch bearbeitung des Ergebniss-Arrays geschechen.
+//Soll das Ergebnis dann doch noch gefiltert werden, kann das durch Bearbeitung des Ergebniss-Arrays geschehen.
 api.get('/getDataScan', function (request) { // GET all users
     return dynamoDb.scan({ TableName: 'icecreams' }).promise()
         .then(response => response.Items)
@@ -84,7 +84,7 @@ api.get('/helloWorld', function (request) {
    return 'Hello ' + request.queryString.name;
 });
 
-//Post-Request zum erstellen einer Tabelle
+//Post-Request zum Erstellen einer Tabelle
 api.post('/createTableTest', function (request) {
     var params = {
         TableName : "sensor_12345",
