@@ -16,48 +16,48 @@ export default class ThermometerChart extends Component {
     render(){
         return (
             <div >
-                <div style={{float:"left",width:"100px",height:"335px"}}>
+                <div style={{float:"left",width:"100px",height:"345px"}}>
                 <Thermometer current={this.current}
                 />
                 </div>
                 <div >
-                    <ul style={{padding:"0",margin:"0",listStyle:"none"}}>
-                        <li style={{color:this.props.styleType[35], fontSize:"10px",marginTop:"-2.5px"}}>30</li>
-                        <li style={{color:this.props.styleType[34], fontSize:"10px",marginTop:"-2.5px"}}>-</li>
-                        <li style={{color:this.props.styleType[33], fontSize:"10px",marginTop:"-2.5px"}}>-</li>
-                        <li style={{color:this.props.styleType[32], fontSize:"10px",marginTop:"-2.5px"}}>-</li>
-                        <li style={{color:this.props.styleType[31], fontSize:"10px",marginTop:"-2.5px"}}>-</li>
-                        <li style={{color:this.props.styleType[30], fontSize:"10px",marginTop:"-2.5px"}}>25</li>
-                        <li style={{color:this.props.styleType[29], fontSize:"10px",marginTop:"-2.5px"}}>-</li>
-                        <li style={{color:this.props.styleType[28], fontSize:"10px",marginTop:"-2.5px"}}>-</li>
-                        <li style={{color:this.props.styleType[27], fontSize:"10px",marginTop:"-2.5px"}}>-</li>
-                        <li style={{color:this.props.styleType[26], fontSize:"10px",marginTop:"-2.5px"}}>-</li>
-                        <li style={{color:this.props.styleType[25], fontSize:"10px",marginTop:"-2.5px"}}>20</li>
-                        <li style={{color:this.props.styleType[24], fontSize:"10px",marginTop:"-2.5px"}}>-</li>
-                        <li style={{color:this.props.styleType[23], fontSize:"10px",marginTop:"-2.5px"}}>-</li>
-                        <li style={{color:this.props.styleType[22], fontSize:"10px",marginTop:"-2.5px"}}>-</li>
-                        <li style={{color:this.props.styleType[21], fontSize:"10px",marginTop:"-2.5px"}}>-</li>
-                        <li style={{color:this.props.styleType[20], fontSize:"10px",marginTop:"-2.5px"}}>15</li>
-                        <li style={{color:this.props.styleType[19], fontSize:"10px",marginTop:"-2.5px"}}>-</li>
-                        <li style={{color:this.props.styleType[18], fontSize:"10px",marginTop:"-2.5px"}}>-</li>
-                        <li style={{color:this.props.styleType[17], fontSize:"10px",marginTop:"-2.5px"}}>-</li>
-                        <li style={{color:this.props.styleType[16], fontSize:"10px",marginTop:"-2.5px"}}>-</li>
-                        <li style={{color:this.props.styleType[15], fontSize:"10px",marginTop:"-2.5px"}}>10</li>
-                        <li style={{color:this.props.styleType[14], fontSize:"10px",marginTop:"-2.5px"}}>-</li>
-                        <li style={{color:this.props.styleType[13], fontSize:"10px",marginTop:"-2.5px"}}>-</li>
-                        <li style={{color:this.props.styleType[12], fontSize:"10px",marginTop:"-2.5px"}}>-</li>
-                        <li style={{color:this.props.styleType[11], fontSize:"10px",marginTop:"-2.5px"}}>-</li>
-                        <li style={{color:this.props.styleType[10], fontSize:"10px",marginTop:"-2.5px"}}>5</li>
-                        <li style={{color:this.props.styleType[9], fontSize:"10px", marginTop:"-2.5px"}}>-</li>
-                        <li style={{color:this.props.styleType[8], fontSize:"10px", marginTop:"-2.5px"}}>-</li>
-                        <li style={{color:this.props.styleType[7], fontSize:"10px", marginTop:"-2.5px"}}>-</li>
-                        <li style={{color:this.props.styleType[6], fontSize:"10px", marginTop:"-2.5px"}}>-</li>
-                        <li style={{color:this.props.styleType[5], fontSize:"10px", marginTop:"-2.5px"}}>0</li>
-                        <li style={{color:this.props.styleType[4], fontSize:"10px", marginTop:"-2.5px"}}>-</li>
-                        <li style={{color:this.props.styleType[3], fontSize:"10px", marginTop:"-2.5px"}}>-</li>
-                        <li style={{color:this.props.styleType[2], fontSize:"10px", marginTop:"-2.5px"}}>-</li>
-                        <li style={{color:this.props.styleType[1], fontSize:"10px", marginTop:"-2.5px"}}>-</li>
-                        <li style={{color:this.props.styleType[0], fontSize:"10px", marginTop:"-2.5px"}}>-5</li>
+                    <ul style={{padding:"0px,0px,0px,0px",margin:"0px,0px,0px,0px",listStyle:"none"}}>
+                        <li style={{color:this.props.styleType[35], fontSize:"8px",marginBottom:"-10px"}}>30</li>
+                        <li style={{color:this.props.styleType[34], fontSize:"8px",marginBottom:"-10px"}}>-</li>
+                        <li style={{color:this.props.styleType[33], fontSize:"8px",marginBottom:"-10px"}}>-</li>
+                        <li style={{color:this.props.styleType[32], fontSize:"8px",marginBottom:"-10px"}}>-</li>
+                        <li style={{color:this.props.styleType[31], fontSize:"8px",marginBottom:"-10px"}}>-</li>
+                        <li style={{color:this.props.styleType[30], fontSize:"8px",marginBottom:"-10px"}}>25</li>
+                        <li style={{color:this.props.styleType[29], fontSize:"8px",marginBottom:"-10px"}}>-</li>
+                        <li style={{color:this.props.styleType[28], fontSize:"8px",marginBottom:"-10px"}}>-</li>
+                        <li style={{color:this.props.styleType[27], fontSize:"8px",marginBottom:"-10px"}}>-</li>
+                        <li style={{color:this.props.styleType[26], fontSize:"8px",marginBottom:"-10px"}}>-</li>
+                        <li style={{color:this.props.styleType[25], fontSize:"8px",marginBottom:"-10px"}}>20</li>
+                        <li style={{color:this.props.styleType[24], fontSize:"8px",marginBottom:"-10px"}}>-</li>
+                        <li style={{color:this.props.styleType[23], fontSize:"8px",marginBottom:"-10px"}}>-</li>
+                        <li style={{color:this.props.styleType[22], fontSize:"8px",marginBottom:"-10px"}}>-</li>
+                        <li style={{color:this.props.styleType[21], fontSize:"8px",marginBottom:"-10px"}}>-</li>
+                        <li style={{color:this.props.styleType[20], fontSize:"8px",marginBottom:"-10px"}}>15</li>
+                        <li style={{color:this.props.styleType[19], fontSize:"8px",marginBottom:"-10px"}}>-</li>
+                        <li style={{color:this.props.styleType[18], fontSize:"8px",marginBottom:"-10px"}}>-</li>
+                        <li style={{color:this.props.styleType[17], fontSize:"8px",marginBottom:"-10px"}}>-</li>
+                        <li style={{color:this.props.styleType[16], fontSize:"8px",marginBottom:"-10px"}}>-</li>
+                        <li style={{color:this.props.styleType[15], fontSize:"8px",marginBottom:"-10px"}}>10</li>
+                        <li style={{color:this.props.styleType[14], fontSize:"8px",marginBottom:"-10px"}}>-</li>
+                        <li style={{color:this.props.styleType[13], fontSize:"8px",marginBottom:"-10px"}}>-</li>
+                        <li style={{color:this.props.styleType[12], fontSize:"8px",marginBottom:"-10px"}}>-</li>
+                        <li style={{color:this.props.styleType[11], fontSize:"8px",marginBottom:"-10px"}}>-</li>
+                        <li style={{color:this.props.styleType[10], fontSize:"8px",marginBottom:"-10px"}}>5</li>
+                        <li style={{color:this.props.styleType[9], fontSize:"8px", marginBottom:"-10px"}}>-</li>
+                        <li style={{color:this.props.styleType[8], fontSize:"8px", marginBottom:"-10px"}}>-</li>
+                        <li style={{color:this.props.styleType[7], fontSize:"8px", marginBottom:"-10px"}}>-</li>
+                        <li style={{color:this.props.styleType[6], fontSize:"8px", marginBottom:"-10px"}}>-</li>
+                        <li style={{color:this.props.styleType[5], fontSize:"8px", marginBottom:"-10px"}}>0</li>
+                        <li style={{color:this.props.styleType[4], fontSize:"8px", marginBottom:"-10px"}}>-</li>
+                        <li style={{color:this.props.styleType[3], fontSize:"8px", marginBottom:"-10px"}}>-</li>
+                        <li style={{color:this.props.styleType[2], fontSize:"8px", marginBottom:"-10px"}}>-</li>
+                        <li style={{color:this.props.styleType[1], fontSize:"8px", marginBottom:"-10px"}}>-</li>
+                        <li style={{color:this.props.styleType[0], fontSize:"8px", marginBottom:"-10px"}}>-5</li>
                     </ul>
                 </div>
             </div>

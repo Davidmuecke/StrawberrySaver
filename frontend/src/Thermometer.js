@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import thermometermaske from './img/thermometermaske.png';
 export default class Thermometer extends Component{
 
-    current = 100-(100/36*this.props.current+1);
+    current = 100-(100/36*this.props.current);
 
     render(){
         return (
