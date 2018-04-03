@@ -29,6 +29,6 @@ Folgende Datenbank-Erstellungen (und initiale Befüllungen) müssen über die RE
     - Neuer Ort
 
 Weitere Funktionalitäten des Backends (Lambda Funktionen, die nicht (unbedingt) über die REST-API getriggert werden):
-- Aufräumen der Datenbank -> entfernen alter Messdaten, evtl. löschen ganzer Tabellen, etc.
+- Aufräumen der Datenbank -> entfernen alter Messdaten, evtl. löschen ganzer Tabellen, etc. (löschen von Benutzern?)
     
     
