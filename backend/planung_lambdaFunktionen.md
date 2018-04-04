@@ -8,8 +8,8 @@ Folgende Datenbankabfragen müssen über die REST-API gestellt werden:
  - vom Arduino
     - siehe "Arduino_API.md"
     
-~**David**: stimme dir voll zu
-~**Rahel**: Rahel auch ;). Frage: Meint "Liste aller Sensoren" ALLE Sensoren oder wie bei Punkt eins "Alle Sensoren einer User-ID"?
+&nbsp;~**David**: stimme dir voll zu
+&nbsp;~**Rahel**: Rahel auch ;). Frage: Meint "Liste aller Sensoren" ALLE Sensoren oder wie bei Punkt eins "Alle Sensoren einer User-ID"?
 
 
 Folgende Datenbank-Befüllungen müssen über die REST-API ausgeführt werden:
