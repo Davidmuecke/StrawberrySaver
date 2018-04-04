@@ -71,18 +71,18 @@
 
 ##Pflanzen
 ###Allgemein
-- pro User eine eigene Pflanzen-Tabelle: **plants_<User-ID>**
+- eine Pflanzen-Tabelle: **plants**
 - Hinweis: Je nach Art der Pflanze müssen unterschiedliche Werte für Temperatur und Wasser als Vergleichswerte gespeichert sein/ werden
-- Wichtig: ...
+- Wichtig: siehe "Aufbau der Tabelle"
 
 ###Aufbau der Tabellen
-- Die Tabelle hat folende Spalten:
-    - plant_ID: Schlüsselwert der Tabelle um die Pflanze einem Sensor und Ort zuordnene zu können
+- Die Tabelle hat folgende Spalten:
+    - plant_ID: Schlüsselwert der Tabelle um die Pflanze einem Sensor und Ort zuordnen zu können
     - plantData: Informationen zur Pflanze
         - enthalt JSON-Objekt als String mit folgenden Attributen:
             - Sorte (Attributname: "**sort**")
             - Pflanzungszeitpunkt (Attributname: "**plantationTime**")
-            - Erstellungszeitpunkt (der Pflanze in der Tabelle) (Attributname: "**initialTime**")
+            - Erstellungszeitpunkt (der Pflanze in der Tabelle) (Attributname: "**initialTimePlant**")
             - geografischerOrtID  (Attributname: "**location_ID**")
             - lokalePositionID (Attributname: "**local_position_ID**")
                 - die lokale PositionID kann dabei 3 verschiedene Werte annehmen:
@@ -104,7 +104,7 @@
             `{
              "sort":"Erdbeere",
              "plantationTime":"01-01-2018",
-             "initialTime":"04-04-2018",
+             "initialTimePlant":"04-04-2018",
              "location_ID":"Stuttgart",
              "local_position_ID":"nothing",
              "sensor_ID":"xxx",
@@ -118,23 +118,48 @@
 
     
     
+
+###Aufbau der Tabellen
+  
 ##Orte
 ###Allgemein
-- pro Ort eigene Tabelle
-- Name der Tabelle: **location_<Orts-ID>**
+- eine geografische Ort-Tabelle **locations**
+- Hinweis: wir unterschieden zwischen dem geografischen Ort (z.B. Stuttgart) und der lokalen Position (z.B. draußen oder drinnen).
+    Diese Tabelle repräsentiert dabei die geografischen Ort Daten!
+- Wichtig: ...
+
 ###Aufbau der Tabellen
-- Der Eintrag mit dem Indizé 0 enthält die Header-Informationen des Ortes:
-    - name
-    - PLZ
-    - Erstellzeitpunkt
-    - Pflanzen-ID
-- Die Einträge mit dem Indizé 1 bis X enthalten die Daten der Wettermessungen
-    - Zeitstempel
-    - Quelle
-    - Messwert 1
-    - Messwert 2
-    - Messwert X 
-    - ...
+- Die Tabelle hat folende Spalten:
+    - location_ID: Schlüsselwert der Tabelle um den Ort einer Pflanze zuordnen zu können
+    - locationData: Informationen des Ortes
+        - enthalt JSON-Objekt als String mit folgenden Attributen:
+            - Name des Ortes (Attributname: "**locationName**")
+            - PLZ (Attributname: "**plz**")
+            - Erstellungszeitpunkt (des Ortes in der Tabelle) (Attributname: "**initialTimeLocation**")
+        - Beispiel:
+            `{
+             "locationName":"Stuttgart",
+             "plz":"71299",
+             "initialTimeLocation":"04-04-2018"
+             }`
+
+    - measurements: JSON Objekt mit den ortsspezifischen Daten
+        - enthält JSON-Objekt mit folgenden Attributen:
+            - Zeitstempel (Attributname: "**measurementTimeLocation**")
+            - Quelle (Attributname: "**sourceLocationMeasurements**")
+            - Messwerte aktueller Niederschlag (Attributname: "**humidityLocation**") 
+            - Messwerte aktuelle Temperatur (Attributname: "**temperatureLocation**") 
+            - Messwert aktuelle Luftfeuchtigkeit (Attributname: "**rainfallLocation**") 
+        - Beispiel:
+             `{
+             "measurementTimeLocation":"11:30,04-04-2018",
+             "sourceLocationMeasurements":"www.wetter.de",
+             "humidityLocation":"8",
+             "temperatureLocation":"13.5",
+             "rainfallLocation":"nothing"
+             }`
+    
+    
 ##User-Access
 ###Allgemein
 - legt fest auf welche Elemente der Benutzer Zugriff hat.
