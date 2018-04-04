@@ -1,4 +1,4 @@
-var ApiBuilder = require('claudia-api-builder'),
+const ApiBuilder = require('claudia-api-builder'),
     AWS = require('aws-sdk');
 //Setzt die Region
 AWS.config.update({region: 'us-east-1'});
@@ -6,98 +6,8 @@ AWS.config.update({region: 'us-east-1'});
 var api = new ApiBuilder(),
     //Ein Document-Client (hier DB) wird instanziiert.
     dynamoDb = new AWS.DynamoDB.DocumentClient();
-    // Erstellt dsa Dynamo-DB service Objekt für das erstellen neuer Tabellen.
-    dataBase = new AWS.DynamoDB({apiVersion: '2012-08-10'});
-
-var tools = require("./tools.js");
-
-//Benoetigte Parameter im Body:
-//  - sensorID
-    api.post('/getSensorData', function (request) {
-
-        //return JSON.parse("{\"make\":\"Testmarke\",\"modelDesignation\":\"TestModell\",\"firmwareVersion\":\"Testversion\",\"initialCommissioning\":\"01.01.1970\",\"serialNumber\":\"123456\"}");
-        var sensorID = request.body.sensorID;
-        var attributes = request.body.attributes;
-        var params = {
-        //Name der Tabelle
-        TableName : "sensors",
-        //Abkuerzungen fuer die Attribut-Namen
-        ExpressionAttributeNames:{
-            "#id": "sensor_ID",
-            "#attribut": attributes
-        },
-        //Werte die aus der Tabelle abgefragt werden sollen.
-        ProjectionExpression:"#attribut",
-        //Zuordnung der Filter zu den Abkuerzungen
-        KeyConditionExpression: "#id = :id",
-        //"Filter" fuer die Attribut-Werte.
-        ExpressionAttributeValues: {
-            ":id":sensorID
-        }
-    };
-    var accessString = "response.Items[0]." + attributes;
-    return dynamoDb.query(params, function(err, data) {
-        if (err) {
-            console.log("Unable to query. Error:", JSON.stringify(err, null, 2));
-        } else {
-            console.log("Query succeeded.");
-            data.Items.forEach(function(item) {
-                console.log(" -", item.name + ": " + item.icecreamid);
-            });
-        }
-    }).promise()
-        .then(response => JSON.parse(eval(accessString)))
-});
-
-function sensorData(sensorID, attributes) {
-    var params = {
-        //Name der Tabelle
-        TableName : "sensors",
-        //Abkuerzungen fuer die Attribut-Namen
-        ExpressionAttributeNames:{
-            "#id": "sensor_ID",
-            "#attribut": attributes
-        },
-        //Werte die aus der Tabelle abgefragt werden sollen.
-        ProjectionExpression:"#attribut",
-        //Zuordnung der Filter zu den Abkuerzungen
-        KeyConditionExpression: "#id = :id",
-        //"Filter" fuer die Attribut-Werte.
-        ExpressionAttributeValues: {
-            ":id":sensorID
-        }
-    };
-    var accessString = "response.Items[0]." + attributes;
-    return dynamoDb.query(params, function(err, data) {
-        if (err) {
-            console.log("Unable to query. Error:", JSON.stringify(err, null, 2));
-        } else {
-            console.log("Query succeeded.");
-            data.Items.forEach(function(item) {
-                console.log(" -", item.name + ": " + item.icecreamid);
-            });
-        }
-    }).promise()
-        .then(response => JSON.parse(eval(accessString)))
-}
-
-//Post-Request ohne Header um Arduino-Connection zu testen.
-api.post('/requestTEST', function (request) {
-    var testValue = tools.getSensorData(request.body.sensorID, request.body.attributes);
-    //return typeof  testValue;
-    //var testObject = {
-    //    "test":"test"
-    //}
-    //return testValue.humiditySensor;
-
-    return testValue["timestamp"];
-    //return sensorData(request.body.sensorID, request.body.attributes);
-});
-
-
-
-
-
+// Erstellt dsa Dynamo-DB service Objekt für das erstellen neuer Tabellen.
+dataBase = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 
 
 
@@ -171,7 +81,7 @@ api.post('/arduinoTest', function (request) {
 
 //Get-Request mit Zugriff auf die Variablen in der URL
 api.get('/helloWorld', function (request) {
-   return 'Hello ' + request.queryString.name;
+    return 'Hello ' + request.queryString.name;
 });
 
 //Post-Request zum erstellen einer Tabelle

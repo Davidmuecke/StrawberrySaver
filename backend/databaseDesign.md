@@ -17,44 +17,58 @@
 #Datenbanktabellen
 ##Sensoren und Messungen
 ###Allgemein
-- pro Sensor eine Tabelle
+- eine Sensoren-Tabelle **sensors**
 - Hinweis: ein "Sensor" besteht aus einem Temperatur und einem Feuchttigkeitssensor ("Sensor" ist hier doppelt belegt)
-- Name der Tabelle: **sensor_<Sensor-ID>**
 - Wichtig: Alle Messwerte einer Sensortabelle müssen bei der selben Pflanzen gemessen
   werden. Wechselt ein Sensor die Pflanze, so muss die Datenbanktabelle gelöscht
   (bzw. umbenannt und als Backup gespeichert) werden.
 ###Aufbau der Tabellen
-- Der Eintrag mit dem Index 0 enthält die Produkt-Informationen des Sensors:
-	- Marke
-	- Modellbezeichnung 
-	- Firmwareversion
-	- Erstinbetriebnamezeitpunkt
-	- Gerätenummer/Seriennummer (oder MAC-Adresse?) (dient zur eindeutigen Identifikation)
-- Der Eintrag mit dem Indizé 1 enthält die Konfiguration des Sensors:
-	- PflanzenID, der zum Sensor zugeordneten Pflanze
-	- Messintervall
-	- Sendeintervall
-	- Schalter: sendOnChange (true/false)
-- Einträge mit den Indizés 2 bis X enthalten die vom Sensor gelieferten Daten:
-	- (WifiSSID: SSID des benutzten Wifis?)
-	- water: Messwert des Feuchtigkeitssensors
-	- temperature: Messwert des Temperatursensors
-	- time: Zeitpunkt zu dem die Messung gemacht worden ist.
-	
-	~**David** MAC Adresse als ID ist perfekt, hatte ich gar nicht dran gedacht!
-	
-	&nbsp;~**Jonathan** eigentlich ist geplant, das das Identifikationattribut dann auch im Tabellenname als "<Sensor-ID>" auftaucht.
-	Deswegen stellt sich hier noch die Frage, ob dafuer die MAC-Adresse verwendet werden kann, oder ob hier ein aus der MAC_Adresse
-	künstlich generierter Schlüssel verwendet werden muss (Doppelpunkte im Tabellennamen sind wahrscheinlich eher schlecht ...?)
-	
-	&nbsp;~**David** Könnte man den Eintrag 1+2 auch zusammenlegen oder warum würdest du das trennen? Beide Daten kann es ja eigentlich nur einmal geben
-	
-	&nbsp;~**Jonathan** Hier hab ich versucht gezielt konfigurierbare Werte von einmal initierten und nicht mehr (oder seltenst) änderbaren Werten zu trennen...
-	
-	&nbsp;~**David** Ggf. könnte man in die Einträge ab Index 2 auch einen Akkustand einbauen, wenn der Sensor später mit Baterien etc. betrieben wird (Würde ich gerne umsetzten, kann aber noch nicht sagen wann)
-    
-    &nbsp;~**Jonathan** Gute Idee, würde ich aber in der ersten Variante mal außen vorlassen. Dürfte aber gut möglich sein, das zu einem späteren Zeitpunkt noch zu ergänzen.
-    
+- Die Tabelle hat folende Spalten:
+    - sensor_ID: MAC-Adresse des Arduinos zur Identifikation
+    - systemData: Produkt-Informationen des Sensors
+        - enthalt JSON-Objekt als String mit folgenden Attributen:
+            - Marke (Attributname: "**make**")
+            - Modellbezeichnung (Spaltenname: "**modelDesignation**")
+            - Firmwareversion (Attributname: "**firmwareVersion**")
+            - Erstinbetriebnamezeitpunkt (Attributname: "**initialCommissioning**")
+            - Gerätenummer/Seriennummer (Attributname: "**serialNumber**")
+        - Beispiel:
+            `{
+             "make":"Testmarke",
+             "modelDesignation":"TestModell",
+             "firmwareVersion":"Testversion",
+             "initialCommissioning":"01.01.1970",
+             "serialNumber":"123456"
+             }`
+    - configData: Konfigurierbare Daten des Sensors
+        - enthält JSON-Objekt mit folgenden Attributen:
+            - PflanzenID, der zum Sensor zugeordneten Pflanze:  (Attributname: "**plant_ID**")
+            - Messintervall (Attributname: "**measuringInterval**")
+            - Sendeintervall (Attributname: "**sendInterval**")
+            - Schalter: sendOnChange (true/false)  (Attributname: "**sendOnChange**")
+            - evtl. Akkustand (Attributname: "**batteryLevel**")
+        - Beispiel: 
+            `{
+             "plant_ID":"1"
+             "measuringInterval":"10"
+             "sendInterval":"10"
+             "sendOnChange":"true"
+             "batteryLevel":"70"
+             }`
+    - measurements: JSON Objekt mit vom Sensor gelieferte Daten
+        - enthält JSON-Objekt mit folgenden Attributen:
+            - (WifiSSID: SSID des benutzten Wifis?) (Attributname: "**wifi_SSID**")
+            - water: Messwert des Feuchtigkeitssensors (Attributname: "**humiditySensor**") 
+            - temperature: Messwert des Temperatursensors (Attributname: "**temperatureSensor**") 
+            - time: Zeitpunkt zu dem die Messung gemacht worden ist. (Attributname: "**timestamp**") 
+        - Beispiel:
+             `{
+             "wifi_SSID":"testWlan"
+             "humiditySensor":"70"
+             "temperatureSensor":"25"
+             "timestamp":"1522762906"
+             }`
+
 ##Pflanzen
 ###Allgemein
 - pro User eine eigene Tabelle
