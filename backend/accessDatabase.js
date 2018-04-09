@@ -100,7 +100,11 @@ api.post('/requestUserAccessData', function (request) {
     return testValue;
 });
 
-
+//Post-Request ohne Header um Arduino-Connection zu testen.
+api.post('/requestPlantDataByUserID', function (request) {
+    var result = tools.getPlantsByUserID(request.body.plantID);
+    return result;
+});
 
 
 

@@ -35,12 +35,47 @@ module.exports = {
             } else {
             }
         }).promise().then(function(value) {
-            var test = JSON.parse(eval(accessString));
-            callback(test);
-            return test;
+            //var test = JSON.parse(eval(accessString));
+            var result = eval(accessString);
+            callback(result);
+            return result;
         });
 
     },
+    getPlantsByUserID: function (userID, plantsList, callback) {
+        var plants = plantsList.split(',');
+        var params = {
+            //Name der Tabelle
+            TableName : "plants",
+            //Abkuerzungen fuer die Attribut-Namen
+            ExpressionAttributeNames:{
+                "#id": "plant_ID",
+                "#plantData": "plantData"
+            },
+            //Werte die aus der Tabelle abgefragt werden sollen.
+            ProjectionExpression:"#id,#plantData",
+            //Zuordnung der Filter zu den Abkuerzungen
+            KeyConditionExpression: "#id IN (:a, :b)",
+            //"Filter" fuer die Attribut-Werte.
+            ExpressionAttributeValues: {
+                ":a": "1",
+                ":b": "2",
+            }
+        };
+        var accessString = "value.Items[0]";
+        return dynamoDb.query(params, function(err, data) {
+            if (err) {
+                console.log("Unable to query. Error:", JSON.stringify(err, null, 2));
+            } else {
+            }
+        }).promise().then(function(value) {
+            //var test = JSON.parse(eval(accessString));
+            var result = eval(accessString);
+            //callback(result);
+            return result;
+        });
+    },
+
     getSensorData: function(sensorID,attributes, callback) {
         var params = {
             //Name der Tabelle
@@ -66,9 +101,10 @@ module.exports = {
             } else {
             }
         }).promise().then(function(value) {
-            var test = JSON.parse(eval(accessString));
-            callback(test);
-            return test;
+            //var test = JSON.parse(eval(accessString));
+            var result = eval(accessString);
+            callback(result);
+            return result;
         });
     },
 
