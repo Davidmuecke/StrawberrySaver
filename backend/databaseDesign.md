@@ -116,10 +116,6 @@
              "waterScopeYellow":"30",
              }`
 
-    
-    
-
-###Aufbau der Tabellen
   
 ##Orte
 ###Allgemein
