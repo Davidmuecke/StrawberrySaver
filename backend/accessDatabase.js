@@ -94,7 +94,11 @@ function greeting(testValue) {
     testValue["test2"] = "TEST2";
 }
 
-
+//Post-Request ohne Header um Arduino-Connection zu testen.
+api.post('/requestUserAccessData', function (request) {
+    var testValue = tools.getUserAccessData(request.body.userID, request.body.attribute);
+    return testValue;
+});
 
 
 
