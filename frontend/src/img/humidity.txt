@@ -1,0 +1,38 @@
+ if(this.props.type==="humidity"){
+            this.state={
+                chartData:{
+                    labels:[(time.getHours()-6)+":00",(time.getHours()-3)+":00",(time.getHours())+":00",(time.getHours()+3)+":00",(time.getHours()+6)+":00"],
+                    datasets:[
+                        { label: 'Luftfeuchtigkeit',
+                            data: [
+                                getURL("http://api.openweathermap.org/data/2.5/forecast?id="+this.props.cityID+"&appid="+this.props.appid)['list'][0]['main']['humidity'],
+                                getURL("http://api.openweathermap.org/data/2.5/forecast?id=2825297&appid=9e875e006011c294e09b4ee38bec12bf")['list'][1]['main']['humidity'],
+                                getURL("http://api.openweathermap.org/data/2.5/forecast?id=2825297&appid=9e875e006011c294e09b4ee38bec12bf")['list'][2]['main']['humidity'],
+                                getURL("http://api.openweathermap.org/data/2.5/forecast?id=2825297&appid=9e875e006011c294e09b4ee38bec12bf")['list'][3]['main']['humidity'],
+                                getURL("http://api.openweathermap.org/data/2.5/forecast?id=2825297&appid=9e875e006011c294e09b4ee38bec12bf")['list'][4]['main']['humidity'],
+                            ],
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            borderColor: 'rgba(255, 99, 132)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                chartOptions:{
+                    scales: {
+                        yAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Luftfeuchtigkeit in %'
+                            },
+
+                        }],
+                        xAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString:'Uhrzeit'
+                            }
+                        }]
+                    },
+                }
+            }
+        }
