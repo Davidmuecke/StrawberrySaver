@@ -83,17 +83,16 @@ function sensorData(sensorID, attributes) {
 
 //Post-Request ohne Header um Arduino-Connection zu testen.
 api.post('/requestTEST', function (request) {
-    var testValue = tools.getSensorData(request.body.sensorID, request.body.attributes);
-    //return typeof  testValue;
-    //var testObject = {
-    //    "test":"test"
-    //}
-    //return testValue.humiditySensor;
-
-    return testValue["timestamp"];
-    //return sensorData(request.body.sensorID, request.body.attributes);
+    var testValue = tools.getSensorData(request.body.sensorID, request.body.attributes, greeting);
+    testValue.test = "TEST";
+    testValue["test2"] = "TEST2";
+    return testValue;
 });
 
+function greeting(testValue) {
+    testValue.test = "TEST";
+    testValue["test2"] = "TEST2";
+}
 
 
 
