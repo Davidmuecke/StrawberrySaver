@@ -10,7 +10,7 @@ var api = new ApiBuilder(),
 dataBase = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 
 module.exports = {
-    getUserAccessData: function (userID,attribute, callback) {
+    /*getUserAccessData: function (userID,attribute, callback) {
        var params = {
            //Name der Tabelle
            TableName : "userAccess",
@@ -74,41 +74,36 @@ module.exports = {
             //callback(result);
             return result;
         });
-    },
+    },*/
 
-
-
-
-
-
-
-
-
-
-
-
-    getPlantsData: function(userID,callback, callback2) {
-        return dynamoDb.scan({ TableName: 'plants' }).promise()
+    //Gibt bestimmte Daten für einen bestimmten Benutzer zurück.
+    //usderID: ID des Benutzers
+    //attribute: Datenbanktabelle, die ausgelesen werden soll: plants, sensors, oder locations
+    //userAccessDataMethod: Methode mit der die Access-Daten ermittelt werden
+    //computeMethod: Methode mit der die ermittelten Daten ausgewertet und bearbeitet werden.
+    requestDataForUser: function(userID, attribute, userAccessDataMethod, computeMethod) {
+        return dynamoDb.scan({ TableName: attribute }).promise()
             .then(function(value) {
                 var items = value.Items;
-                return callback(userID, items, "plants", callback2);
-                //return items;
+                return userAccessDataMethod(userID, items, attribute, computeMethod);
             });
     },
-    getUserPlants: function (userID,items, attribute, callback) {
+
+    //Ermittelt die IDS, auf die der User Zugriff hat.
+    //Ruft anschließend die Berechnen-Methode auf, um die Daten
+    //des Users aus der übgergebene Gesamtmenge herauszufiltern.
+    //userID: ID des Benutzers
+    //items: Gesamtmenge, aus der eine Teilmenge gefiltert werden soll.
+    //computeMethod: Funktion, mit der die Teilmenge ermittelt werden soll.
+    getUserAccessData: function (userID,items, attribute, computeMethod) {
         var params = {
-            //Name der Tabelle
             TableName : "userAccess",
-            //Abkuerzungen fuer die Attribut-Namen
             ExpressionAttributeNames:{
                 "#id": "user_ID",
                 "#attribute": attribute
             },
-            //Werte die aus der Tabelle abgefragt werden sollen.
             ProjectionExpression:"#attribute",
-            //Zuordnung der Filter zu den Abkuerzungen
             KeyConditionExpression: "#id = :id",
-            //"Filter" fuer die Attribut-Werte.
             ExpressionAttributeValues: {
                 ":id":userID
             }
@@ -120,44 +115,25 @@ module.exports = {
             } else {
             }
         }).promise().then(function(value) {
-            //var test = JSON.parse(eval(accessString));
             var result = eval(accessString);
-            return callback(items, result);
-            //return result;
+            return computeMethod(items, result);
         });
 
     },
-    computeData: function(items, ids) {
-        var plantIDs = ids.split(",");
-        var resultData = new Array();
 
-        items.forEach(function(item, index, array) {
+    //Filtert die für den User passenden Pflanzen heraus.
+    filterPlantData: function(data, idsToFilter) {
+        var plantIDs = idsToFilter.split(",");
+        var resultData = [];
+
+        data.forEach(function(item, index, array) {
             if(plantIDs.includes(item.plant_ID)) {
+                item.plantData = JSON.parse(item.plantData);
                 resultData.push(item);
             }
         });
-
         return resultData;
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    ,
+    },
 
     getSensorData: function(sensorID,attributes, callback) {
         var params = {

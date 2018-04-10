@@ -107,9 +107,9 @@ api.post('/requestPlantDataByUserID', function (request) {
     return result;
 });
 
-//liefert die komplette Pflanzen Datenbank zurück
-api.post('/requestPlantDataForUser', function (request) {
-   return tools.getPlantsData(request.body.userID,tools.getUserPlants, tools.computeData);
+//liefert alle Pflanzen für einen bestimmten Benutzer zurück.
+api.post('/getPlantsForUser', function (request) {
+   return tools.requestDataForUser(request.body.userID,"plants",tools.getUserAccessData, tools.filterPlantData);
 });
 
 
