@@ -83,15 +83,16 @@ function sensorData(sensorID, attributes) {
 
 //Post-Request ohne Header um Arduino-Connection zu testen.
 api.post('/requestTEST', function (request) {
-    var testValue = tools.getSensorData(request.body.sensorID, request.body.attributes, greeting);
-    testValue.test = "TEST";
-    testValue["test2"] = "TEST2";
+    var testValue = tools.getSensorData(request.body.sensorID, request.body.attributes, test_function);
     return testValue;
 });
 
-function greeting(testValue) {
-    testValue.test = "TEST";
-    testValue["test2"] = "TEST2";
+function test_function(testValue) {
+    var text = '{ "employees" : [' +
+        '{ "firstName":"John" , "lastName":"Doe" },' +
+        '{ "firstName":"Anna" , "lastName":"Smith" },' +
+        '{ "firstName":"Peter" , "lastName":"Jones" } ]}';
+    return JSON.parse(text);
 }
 
 //Post-Request ohne Header um Arduino-Connection zu testen.
@@ -102,10 +103,14 @@ api.post('/requestUserAccessData', function (request) {
 
 //Post-Request ohne Header um Arduino-Connection zu testen.
 api.post('/requestPlantDataByUserID', function (request) {
-    var result = tools.getPlantsByUserID(request.body.plantID);
+    var result = tools.getPlantsByUserID(request.body.plantID,"1,2,3");
     return result;
 });
 
+//liefert die komplette Pflanzen Datenbank zurück
+api.post('/requestPlantDataForUser', function (request) {
+   return tools.getPlantsData(request.body.userID,tools.getUserPlants, tools.computeData);
+});
 
 
 //Beispiel zum Laden von Daten in die Datenbank
@@ -173,7 +178,7 @@ api.post('/data', function (request) {
 });
 //Post-Request ohne Header um Arduino-Connection zu testen.
 api.post('/arduinoTest', function (request) {
-    return "arduinoTest: succesfull";
+    return request;
 });
 
 //Get-Request mit Zugriff auf die Variablen in der URL

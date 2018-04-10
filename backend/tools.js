@@ -37,13 +37,13 @@ module.exports = {
         }).promise().then(function(value) {
             //var test = JSON.parse(eval(accessString));
             var result = eval(accessString);
-            callback(result);
+            //callback(result);
             return result;
         });
 
     },
     getPlantsByUserID: function (userID, plantsList, callback) {
-        var plants = plantsList.split(',');
+        //var plants = plantsList.split(',');
         var params = {
             //Name der Tabelle
             TableName : "plants",
@@ -55,7 +55,7 @@ module.exports = {
             //Werte die aus der Tabelle abgefragt werden sollen.
             ProjectionExpression:"#id,#plantData",
             //Zuordnung der Filter zu den Abkuerzungen
-            KeyConditionExpression: "#id IN (:a, :b)",
+            FilterExpression: "#id IN (:a, :b)",
             //"Filter" fuer die Attribut-Werte.
             ExpressionAttributeValues: {
                 ":a": "1",
@@ -75,6 +75,89 @@ module.exports = {
             return result;
         });
     },
+
+
+
+
+
+
+
+
+
+
+
+
+    getPlantsData: function(userID,callback, callback2) {
+        return dynamoDb.scan({ TableName: 'plants' }).promise()
+            .then(function(value) {
+                var items = value.Items;
+                return callback(userID, items, "plants", callback2);
+                //return items;
+            });
+    },
+    getUserPlants: function (userID,items, attribute, callback) {
+        var params = {
+            //Name der Tabelle
+            TableName : "userAccess",
+            //Abkuerzungen fuer die Attribut-Namen
+            ExpressionAttributeNames:{
+                "#id": "user_ID",
+                "#attribute": attribute
+            },
+            //Werte die aus der Tabelle abgefragt werden sollen.
+            ProjectionExpression:"#attribute",
+            //Zuordnung der Filter zu den Abkuerzungen
+            KeyConditionExpression: "#id = :id",
+            //"Filter" fuer die Attribut-Werte.
+            ExpressionAttributeValues: {
+                ":id":userID
+            }
+        };
+        var accessString = "value.Items[0]." + attribute;
+        return dynamoDb.query(params, function(err, data) {
+            if (err) {
+                console.log("Unable to query. Error:", JSON.stringify(err, null, 2));
+            } else {
+            }
+        }).promise().then(function(value) {
+            //var test = JSON.parse(eval(accessString));
+            var result = eval(accessString);
+            return callback(items, result);
+            //return result;
+        });
+
+    },
+    computeData: function(items, ids) {
+        var plantIDs = ids.split(",");
+        var resultData = new Array();
+
+        items.forEach(function(item, index, array) {
+            if(plantIDs.includes(item.plant_ID)) {
+                resultData.push(item);
+            }
+        });
+
+        return resultData;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    ,
 
     getSensorData: function(sensorID,attributes, callback) {
         var params = {
@@ -102,8 +185,8 @@ module.exports = {
             }
         }).promise().then(function(value) {
             //var test = JSON.parse(eval(accessString));
-            var result = eval(accessString);
-            callback(result);
+            var result = JSON.parse(eval(accessString));
+            result = callback(result);
             return result;
         });
     },
