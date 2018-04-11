@@ -10,3 +10,6 @@
     "authorizationType": "AWS_IAM"
   }
 }
+
+//Quelle zum Setzen des Authorization Typs:
+//https://github.com/claudiajs/claudia-api-builder/blob/master/docs/authorization.md
