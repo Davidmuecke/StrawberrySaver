@@ -6,6 +6,7 @@
   },
   "api": {
     "id": "5zdey468pk",
-    "module": "accessDatabase"
+    "module": "accessDatabase",
+    "authorizationType": "AWS_IAM"
   }
 }
