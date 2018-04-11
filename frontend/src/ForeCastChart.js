@@ -13,11 +13,13 @@ class LineChart extends Component{
 
     constructor(props){
         super(props);
-        var time = new Date(getURL("http://api.openweathermap.org/data/2.5/forecast?id="+this.props.cityID+"&appid="+this.props.appid)['list'][0]['dt']);
+       var time = new Date();
+       var unixtime =getURL("http://api.openweathermap.org/data/2.5/forecast?id="+this.props.cityID+"&appid="+this.props.appid)['list'][0]['dt'];
+       time.setTime(unixtime);
         if(this.props.type==="humidity"){
             this.state={
                 chartData:{
-                    labels:[((time.getHours()+6)%24)+":00",((time.getHours()+9)%24)+":00",((time.getHours()+12)%24)+":00",((time.getHours()+15)%24)+":00",((time.getHours()+18)%24)+":00"],
+                    labels:[(time.getUTCHours()-1)+":00",(time.getUTCHours()+2)+":00",(time.getUTCHours()+5)+":00",(time.getUTCHours()+8)+":00",(time.getUTCHours()+11)+":00"],
                     datasets:[
                         {
                             data: [
@@ -59,7 +61,7 @@ class LineChart extends Component{
         else if(this.props.type==="temp"){
             this.state={
                 chartData:{
-                    labels:[((time.getHours()+6)%24)+":00",((time.getHours()+9)%24)+":00",((time.getHours()+12)%24)+":00",((time.getHours()+15)%24)+":00",((time.getHours()+18)%24)+":00"],
+                    labels:[(time.getUTCHours()-1)+":00",(time.getUTCHours()+2)+":00",(time.getUTCHours()+5)+":00",(time.getUTCHours()+8)+":00",(time.getUTCHours()+11)+":00"],
                     datasets:[
                         {
                             data: [
@@ -100,7 +102,7 @@ class LineChart extends Component{
         else if(this.props.type==="rain"){
             this.state={
                 chartData:{
-                    labels:[((time.getHours()+6)%24)+":00",((time.getHours()+9)%24)+":00",((time.getHours()+12)%24)+":00",((time.getHours()+15)%24)+":00",((time.getHours()+18)%24)+":00"],
+                    labels:[(time.getUTCHours()-1)+":00",(time.getUTCHours()+2)+":00",(time.getUTCHours()+5)+":00",(time.getUTCHours()+8)+":00",(time.getUTCHours()+11)+":00"],
                     datasets:[
                         {
                             data: [
@@ -126,7 +128,6 @@ class LineChart extends Component{
                                 display: true,
                                 labelString: 'Niederschlag in mm'
                             },
-
                         }],
                         xAxes: [{
                             scaleLabel: {
