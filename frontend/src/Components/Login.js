@@ -11,6 +11,9 @@ export default class Login extends Component {
             email: "",
             password: ""
         };
+        if(this.props.isAuthenticated === true){
+            this.props.history.push("/");
+        }
     }
 
     validateForm() {
@@ -30,6 +33,7 @@ export default class Login extends Component {
             await Auth.signIn(this.state.email, this.state.password).then(x => console.log(x));
             console.log(Auth.currentSession());
             this.props.userHasAuthenticated(true);
+            this.props.history.push("/");
         } catch (e) {
             alert(e.message);
         }
@@ -38,6 +42,7 @@ export default class Login extends Component {
     render() {
         return (
             <div className="Login">
+                <h1>Anmeldung</h1>
                 <form onSubmit={this.handleSubmit}>
                     <FormGroup controlId="email" bsSize="large">
                         <ControlLabel>Email</ControlLabel>

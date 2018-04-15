@@ -1,12 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import './App.css';
-import ThermometerChart from './ThermometerChart';
-import LineChart from './ForeCastChart';
-import { Tab } from "semantic-ui-react";
 import Routes from "./Routes";
+import {withRouter, Link } from "react-router-dom";
 import { Auth } from "aws-amplify";
 
-//Für die Skala beim Thermometer
+/*Für die Skala beim Thermometer
 var styletype= ["red","red","red","red","red","red","red","red","red","red","red","red",
     "red","red","red","red","red","red","red","red","green","green","green","green",
     "green","green","red","red","red","red","red","red","red","red","red","red"];
@@ -14,7 +12,7 @@ const panes = [
     { menuItem: 'Temperatur', render: () => <Tab.Pane><div className="tempchart"> <LineChart type="temp" appid="9e875e006011c294e09b4ee38bec12bf" cityID="2825297"/> </div></Tab.Pane>},
     { menuItem: 'Regen', render: () => <Tab.Pane><div className="rainchart"><LineChart type="rain" appid="9e875e006011c294e09b4ee38bec12bf" cityID="2825297"/> </div></Tab.Pane>},
 ];
-
+*/
 class App extends Component{
     constructor(props) {
         super(props);
@@ -43,9 +41,12 @@ class App extends Component{
             /*if (e !== 'No current user') {
                 alert(e);
             }*/
+            if(this.props.location.pathname !== "/register") {
+                this.props.history.push("/login");
+            }
         }
-
         this.setState({ isAuthenticating: false });
+
     }
 
     userHasAuthenticated = authenticated => {
@@ -57,8 +58,8 @@ class App extends Component{
             .then(data => console.log(data))
             .catch(err => console.log(err));
         await Auth.signOut();
-
         this.userHasAuthenticated(false);
+        this.props.history.push("/login");
     }
 
     render() {
@@ -68,32 +69,31 @@ class App extends Component{
             handleLogout: this.handleLogout
         };
         return (
-            !this.state.isAuthenticating &&<div>
-        <Routes childProps={childProps}/>
-        <h1>Login: {childProps.isAuthenticated.toString()}</h1>
+            <div>
+                {!this.state.isAuthenticating&&
+                <div>
+                    <h1>Menüleiste</h1>
+                    {this.state.isAuthenticated
+                        ? <button onClick={childProps.handleLogout}>Logout</button>
+                        : <Fragment>
+                            <Link to="/register">
+                                <button>Register</button>
+                            </Link>
+                            <Link to="/login">
+                                <button>Login</button>
+                            </Link>
+                        </Fragment>
+                    }
+                    <Routes childProps={childProps}/>
+                </div>
+                }
             </div>
         );
     }
-        /* From Render Method
-        <div className="App">
-            <header className="App-header">
-            <h1 className="App-title">Strawberry Saver</h1>
-            </header>
-
-            <p className="App-intro">
-                Save your plants from drying out!
-            </p>
-
-        </div>
-        <h3>Aktuelle Werte:</h3>
-        <div className="Thermometerchart" >
-            <ThermometerChart styleType={styletype} appid="9e875e006011c294e09b4ee38bec12bf" cityID="2825297"/>
-        </div>
-        <h3>Vorbericht</h3>
-        <div className="forecast" >
-            <Tab menu={{ fluid: true, vertical: true, tabular: 'right' }} panes={panes} />
-        </div>*/
 
 
 }
-export default App;
+export default withRouter(App);
+/*
+<Redirect to={{pathname: "/login"}}/>
+ */
