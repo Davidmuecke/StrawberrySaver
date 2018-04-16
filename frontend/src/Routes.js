@@ -4,12 +4,16 @@ import AppliedRoute from "./containers/AppliedRoute";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import TEST from "./components/TEST";
+import PlantsOverview from "./components/PlantsOverview";
+import Impressum from "./components/Impressum";
 
 export default ({ childProps }) =>
     <Switch>
-        <AppliedRoute path="/" exact component={TEST} props={childProps} />
+        <AppliedRoute path="/" exact component={PlantsOverview} props={childProps} />
         <AppliedRoute path="/login" exact component={Login} props={childProps} />
         <AppliedRoute path="/register" exact component={Register} props={childProps} />
+        <AppliedRoute path="/test" exact component={TEST} props={childProps} />
+        <AppliedRoute path="/impressum" exact component={Impressum} props={childProps} />
         { /* Finally, catch all unmatched routes */ }
 
     </Switch>;

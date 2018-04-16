@@ -1,9 +1,9 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component} from 'react';
 import './App.css';
 import Routes from "./Routes";
-import {withRouter, Link } from "react-router-dom";
+import {withRouter } from "react-router-dom";
 import { Auth } from "aws-amplify";
-import NavigationBar from "./components/Navigation";
+import NavigationBar from "./components/NavigationBar";
 
 
 
@@ -47,16 +47,17 @@ class App extends Component{
 
     userHasAuthenticated = authenticated => {
         this.setState({ isAuthenticated: authenticated });
-    }
+    };
 
-    handleLogout = async event => {
+    handleLogout = async () => {
+        console.log("loggg");
         Auth.signOut()
             .then(data => console.log(data))
             .catch(err => console.log(err));
         await Auth.signOut();
         this.userHasAuthenticated(false);
         this.props.history.push("/login");
-    }
+    };
 
     render() {
         const childProps = {
@@ -69,18 +70,7 @@ class App extends Component{
                 {!this.state.isAuthenticating&&
                 <div>
                     <h1>Menüleiste</h1>
-                    <div><NavigationBar/></div>
-                    {this.state.isAuthenticated
-                        ? <button onClick={childProps.handleLogout}>Logout</button>
-                        : <Fragment>
-                            <Link to="/register">
-                                <button>Register</button>
-                            </Link>
-                            <Link to="/login">
-                                <button>Login</button>
-                            </Link>
-                        </Fragment>
-                    }
+                    <div><NavigationBar childProps={childProps}/></div>
                     <Routes childProps={childProps}/>
                 </div>
                 }

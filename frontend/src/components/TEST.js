@@ -22,7 +22,7 @@ export default class TEST extends Component {
         this.setState({ isLoading: true });
 
         try {
-            var reply = await this.arduinoTest({
+            let reply = await this.arduinoTest({
                 content: this.state.content
             });
             console.log(reply);
@@ -31,9 +31,9 @@ export default class TEST extends Component {
             alert(e);
             this.setState({ isLoading: false });
         }
-    }
+    };
 
-    arduinoTest(note) {
+    static arduinoTest(note) {
        /* let myInit = { // OPTIONAL
             headers: {}, // OPTIONAL
             response: true // OPTIONAL (return entire response object instead of response.data)
@@ -41,7 +41,7 @@ export default class TEST extends Component {
         return API.get("strawberry","/hello-world",myInit ) */
         return API.post("strawberry", "/arduinoTest", {
             headers:{} ,
-            body: note
+            body: {userID: "1", note: note}
         });
     }
 

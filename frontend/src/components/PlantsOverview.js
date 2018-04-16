@@ -3,8 +3,8 @@ import {Grid,
         Segment,
         Button,
         Header,
-        Container,
-        Label} from "semantic-ui-react";
+        Container
+        } from "semantic-ui-react";
 import strawberry from '../img/strawbarry.png';
 import gurke from '../img/gurke.png';
 import haze from '../img/supersilverhaze.png';
@@ -34,7 +34,7 @@ const Plant = (image,sorte, id, einpflanzungszeitpunkt,erstellungszeitpunkt,geog
     return (
         <Grid.Column width={8} stretched >
             <Segment>
-                <img style={{float:"right"}} src={image}/>
+                <img style={{float:"right"}} src={image} alt={""}/>
                 <h2> Art: {sorte}</h2>
                 <h4> Einpflanzungszeitpunkt: {einpflanzungszeitpunkt}</h4>
                 <h4>Ort: {geographischerOrt}</h4>
