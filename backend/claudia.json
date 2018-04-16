@@ -6,12 +6,7 @@
   },
   "api": {
     "id": "5zdey468pk",
-    "module": "accessDatabase",
-    "authorizationType": "AWS_IAM"
+    "module": "accessDatabase"
+
   }
 }
-
-//Quelle zum Setzen des Authorization Typs:
-//https://github.com/claudiajs/claudia-api-builder/blob/master/docs/authorization.md
-// evtl. lieber mit --> api.get('/hello', function (request) {...}, {authorizationType: 'AWS_IAM'} );
-// wegen dem Arduino
