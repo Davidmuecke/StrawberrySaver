@@ -9,16 +9,16 @@ var api = new ApiBuilder(),
     // Erstellt dsa Dynamo-DB service Objekt für das erstellen neuer Tabellen.
     dataBase = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 
-var tools = require("./tools.js");
+var toolsPlants = require("./toolsPlants.js");
 
 //liefert alle Pflanzen für einen bestimmten Benutzer zurück.
 api.post('/getPlantsForUser', function (request) {
-   return tools.requestDataForUser(request.context.cognitoIdentityId,"plants",tools.getUserAccessData);
+   return toolsPlants.requestDataForUser(request.context.cognitoIdentityId,"plants",toolsPlants.getUserAccessData);
 }, {authorizationType: 'AWS_IAM'});
 
 
 api.post('/deleteCachedSensorData', function (request) {
-    return tools.deleteCacheEntries(request.body.sensorID);
+    return toolsPlants.deleteCacheEntries(request.body.sensorID);
 }, {authorizationType: 'AWS_IAM'});
 
 
@@ -44,7 +44,7 @@ api.post('/sensorMeasurement', function (request) { // SAVE your icecream
 }, { success: 201 }); // returns HTTP status 201 - Created if successful
 
 api.post('/getCachedMeasurements', function(request) {
-   return tools.getCachedMeasurements();
+   return toolsPlants.getCachedMeasurements();
 }, {authorizationType: 'AWS_IAM'});
 
 
