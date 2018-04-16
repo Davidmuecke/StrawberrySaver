@@ -1,9 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import './App.css';
-import ThermometerChart from './ThermometerChart';
-import LineChart from './ForeCastChart';
-import { Tab } from "semantic-ui-react";
 import Routes from "./Routes";
+import {withRouter, Link } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import NavigationBar from "./Navigation";
 
@@ -39,9 +37,12 @@ class App extends Component{
             /*if (e !== 'No current user') {
                 alert(e);
             }*/
+            if(this.props.location.pathname !== "/register") {
+                this.props.history.push("/login");
+            }
         }
-
         this.setState({ isAuthenticating: false });
+
     }
 
     userHasAuthenticated = authenticated => {
@@ -53,8 +54,8 @@ class App extends Component{
             .then(data => console.log(data))
             .catch(err => console.log(err));
         await Auth.signOut();
-
         this.userHasAuthenticated(false);
+        this.props.history.push("/login");
     }
 
     render() {
@@ -64,14 +65,29 @@ class App extends Component{
             handleLogout: this.handleLogout
         };
         return (
-            !this.state.isAuthenticating &&<div>
-                <div><NavigationBar/></div>
-        <Routes childProps={childProps}/>
-        <h1>Login: {childProps.isAuthenticated.toString()}</h1>
+            <div>
+                {!this.state.isAuthenticating&&
+                <div>
+                    <h1>Menüleiste</h1>
+                    <div><NavigationBar/></div>
+                    {this.state.isAuthenticated
+                        ? <button onClick={childProps.handleLogout}>Logout</button>
+                        : <Fragment>
+                            <Link to="/register">
+                                <button>Register</button>
+                            </Link>
+                            <Link to="/login">
+                                <button>Login</button>
+                            </Link>
+                        </Fragment>
+                    }
+                    <Routes childProps={childProps}/>
+                </div>
+                }
             </div>
         );
     }
 
 
 }
-export default App;
+export default withRouter(App);

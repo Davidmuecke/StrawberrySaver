@@ -7,7 +7,6 @@ import registerServiceWorker from './registerServiceWorker';
 import 'semantic-ui-css/semantic.min.css'
 import Amplify from "aws-amplify";
 import config from "./config";
-import Routes from "./Routes";
 
 Amplify.configure({
     Auth: {
