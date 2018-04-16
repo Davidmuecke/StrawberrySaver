@@ -33,7 +33,7 @@ export default class TEST extends Component {
         }
     };
 
-    static arduinoTest(note) {
+     arduinoTest(note) {
        /* let myInit = { // OPTIONAL
             headers: {}, // OPTIONAL
             response: true // OPTIONAL (return entire response object instead of response.data)
@@ -41,7 +41,7 @@ export default class TEST extends Component {
         return API.get("strawberry","/hello-world",myInit ) */
         return API.post("strawberry", "/arduinoTest", {
             headers:{} ,
-            body: {userID: "1", note: note}
+            body: {userID: "1"}
         });
     }
 
