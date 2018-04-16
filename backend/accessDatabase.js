@@ -13,7 +13,7 @@ var tools = require("./tools.js");
 
 //liefert alle Pflanzen für einen bestimmten Benutzer zurück.
 api.post('/getPlantsForUser', function (request) {
-   return tools.requestDataForUser(request.body.userID,"plants",tools.getUserAccessData);
+   return tools.requestDataForUser(request.context.cognitoIdentityId,"plants",tools.getUserAccessData);
 }, {authorizationType: 'AWS_IAM'});
 
 
