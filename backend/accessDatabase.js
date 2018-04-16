@@ -10,7 +10,13 @@ var api = new ApiBuilder(),
     dataBase = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 
 var tools = require("./tools.js");
-var tools = require("./toolsSensors.js");
+var toolsSensors = require("./toolsSensors.js");
+
+
+/*---------------------------------------------------------------------------------------------------------------------*/
+/*                          Funktion für Pflanze(n) Abfrage                                                            */
+/*---------------------------------------------------------------------------------------------------------------------*/
+
 
 //liefert alle Pflanzen für einen bestimmten Benutzer zurück.
 api.post('/getPlantsForUser', function (request) {
@@ -55,4 +61,25 @@ api.post('/arduinoTest', function (request) {
 }, {authorizationType: 'AWS_IAM'});
 
 
+
+/*---------------------------------------------------------------------------------------------------------------------*/
+/*                          Funktion für Sensor(en) Abfrage                                                            */
+/*---------------------------------------------------------------------------------------------------------------------*/
+
+//liefert alle Sensoren für einen bestimmten Benutzer zurück.
+api.post('/getSensorsForUser', function (request) {
+    return toolsSensors.requestDataForUser(request.context.cognitoIdentityId,"sensors",toolsSensors.getUserAccessData);
+}, {authorizationType: 'AWS_IAM'});
+
+
+//liefert alle Sensoren für einen bestimmten Benutzer zurück.
+api.post('/getSensorData', function (request) {
+    return toolsSensors.requestSensorData(request.body.sensor_ID);
+}, {authorizationType: 'AWS_IAM'});
+
+
+
+/*---------------------------------------------------------------------------------------------------------------------*/
+/*                          Wichtig, um Funktionen ansprechen zu können                                                */
+/*---------------------------------------------------------------------------------------------------------------------*/
 module.exports = api;

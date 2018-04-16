@@ -1,3 +1,7 @@
+/*---------------------------------------------------------------------------------------------------------------------*/
+/*                                        Allgemeiner Header                                                           */
+/*---------------------------------------------------------------------------------------------------------------------*/
+
 var ApiBuilder = require('claudia-api-builder'),
     AWS = require('aws-sdk');
 //Setzt die Region
@@ -9,6 +13,11 @@ var api = new ApiBuilder(),
 // Erstellt dsa Dynamo-DB service Objekt für das erstellen neuer Tabellen.
 dataBase = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 
+
+
+/*---------------------------------------------------------------------------------------------------------------------*/
+/*                            Funktionskette, die alle Sensoren eines Users ausgiebt                                   */
+/*---------------------------------------------------------------------------------------------------------------------*/
 
 //Gibt bestimmte Daten für einen bestimmten Benutzer zurück.
 //usderID: ID des Benutzers
@@ -22,6 +31,7 @@ function requestDataForUser (userID, attribute, userAccessDataMethod) {
             return userAccessDataMethod(userID, allItems, attribute, filterSensorData);
         });
 }
+
 
 //Ermittelt die IDS, auf die der User Zugriff hat.
 //Ruft anschließend die Berechnen-Methode auf, um die Daten
@@ -54,6 +64,7 @@ function getUserAccessData (userID,items, attribute, computeMethod) {
     });
 }
 
+
 //Filtert die für den User passenden Sensoren heraus.
 function filterSensorData(data, idsToFilter) {
     var sensorIDs = idsToFilter.split(",");
@@ -71,9 +82,28 @@ function filterSensorData(data, idsToFilter) {
 
 
 
+/*---------------------------------------------------------------------------------------------------------------------*/
+/*                          Funktion, die alle Werte für einen bestimmten Sensoren ausgiebt                            */
+/*---------------------------------------------------------------------------------------------------------------------*/
+
+function requestSensorData (sensorID) {
+    return dynamoDb.scan({ TableName: 'sensors' }).promise()
+        .then(function(value) {
+            var allItems = value.Items;
+            return allItems;
+        });
+}
+
+
+
+/*---------------------------------------------------------------------------------------------------------------------*/
+/*                            Fooder, der je nach Funktionsnamen angepasst werden muss                                 */
+/*                            Stellt die Verbindung zur accessDatabase.js Datei her                                    */
+/*---------------------------------------------------------------------------------------------------------------------*/
 
 module.exports = {
     requestDataForUser: requestDataForUser,
     getUserAccessData: getUserAccessData,
-    filterSensorData: filterSensorData
+    filterSensorData: filterSensorData,
+    requestSensorData: requestSensorData
 };
