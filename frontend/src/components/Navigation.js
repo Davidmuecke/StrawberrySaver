@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Menu,Segment } from "semantic-ui-react";
-import Uebersicht  from "./Uebersicht"
+import PlantsOverview  from "./PlantsOverview"
 import Impressum from "./Impressum"
 
 export default class NavigationBar extends  Component{
@@ -20,7 +20,7 @@ export default class NavigationBar extends  Component{
             </Menu>
             <Segment>
                 {this.state.activeItem === "uebersicht" ? (
-                    <Uebersicht />
+                    <PlantsOverview />
                 ) : null}
                 {this.state.activeItem === "impressum" ? (
                     <Impressum />

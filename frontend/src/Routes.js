@@ -1,9 +1,9 @@
 import React from "react";
 import { Switch } from "react-router-dom";
 import AppliedRoute from "./containers/AppliedRoute";
-import Login from "./Components/Login";
-import Register from "./Components/Register";
-import TEST from "./Components/TEST";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import TEST from "./components/TEST";
 
 export default ({ childProps }) =>
     <Switch>

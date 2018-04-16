@@ -5,10 +5,10 @@ import {Grid,
         Header,
         Container,
         Label} from "semantic-ui-react";
-import strawberry from './img/strawbarry.png';
-import gurke from './img/gurke.png';
-import haze from './img/supersilverhaze.png';
-export default class Uebersicht extends Component{
+import strawberry from '../img/strawbarry.png';
+import gurke from '../img/gurke.png';
+import haze from '../img/supersilverhaze.png';
+export default class PlantsOverview extends Component{
     render(){
         return (
             <Container fluid={true}>
