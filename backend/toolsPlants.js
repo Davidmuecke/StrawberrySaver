@@ -9,7 +9,9 @@ var api = new ApiBuilder(),
 // Erstellt dsa Dynamo-DB service Objekt für das erstellen neuer Tabellen.
 dataBase = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 
-
+/*----------------------------------------------------------------------------------------------------------------------*/
+/*                 Liefert alle Pflanzen für den aktuellen User zurück.                                                 */
+/*----------------------------------------------------------------------------------------------------------------------*/
 //Gibt bestimmte Daten für einen bestimmten Benutzer zurück.
 //usderID: ID des Benutzers
 //attribute: Datenbanktabelle, die ausgelesen werden soll: plants, sensors, oder locations
@@ -22,6 +24,7 @@ function requestDataForUser (userID, attribute, userAccessDataMethod) {
             return userAccessDataMethod(userID, allItems, attribute, filterPlantData);
         });
 }
+
 
 //Ermittelt die IDS, auf die der User Zugriff hat.
 //Ruft anschließend die Berechnen-Methode auf, um die Daten
@@ -135,6 +138,65 @@ function deleteCacheEntries(sensorIDs) {
     return itemsArray;
 }
 
+function  savePlantsData() {
+    //dynamoDB upgrade Function
+    // um den Eintrag einer Pflanze zu aktualisieren.
+
+}
+//Ermittelt die letzte Messung für eine Plfanze und entfernt alle anderen.
+function findLastMeasurement(plantsData) {
+    plantsData.forEach(function (item, index, array) {
+        var lastMeasurementTimestamp = 0;
+        var lastMeasurement;
+
+        plantsData.measurements.forEach(function (item, index, array) {
+            if(item.timestamp > lastMeasurementTimestamp) {
+                lastMeasurement = item;
+            }
+        });
+
+        item.measurement = lastMeasurement;
+        item.measurements= NULL;
+    });
+
+    return plantsData;
+}
+
+/*----------------------------------------------------------------------------------------------------------------------*/
+/*                 Liefert alle Daten einer bestimmten Pflanze zurück.                                                  */
+/*----------------------------------------------------------------------------------------------------------------------*/
+function getPlantData(plantID) {
+    var params = {
+        //Name der Tabelle
+        TableName : "plants",
+        //Abkuerzungen fuer die Attribut-Namen
+        ExpressionAttributeNames:{
+            "#id": "plant_ID",
+            "#measure": "measurements",
+            "#data": "plantData"
+        },
+        //Werte die aus der Tabelle abgefragt werden sollen.
+        ProjectionExpression:"#id, #data, #measure",
+        //Zuordnung der Filter zu den Abkuerzungen
+        KeyConditionExpression: "#id = :id",
+        //"Filter" fuer die Attribut-Werte.
+        ExpressionAttributeValues: {
+            ":id":plantID
+        }
+    };
+    return dynamoDb.query(params, function(err, data) {
+        if (err) {
+            console.log("Unable to query. Error:", JSON.stringify(err, null, 2));
+        } else {
+            console.log("Query succeeded.");
+        }
+    }).promise()
+        .then(response => response.Items)
+};
+
+/*----------------------------------------------------------------------------------------------------------------------*/
+/*                 footer: zu exportierende Funktionen.                                                                 */
+/*----------------------------------------------------------------------------------------------------------------------*/
 module.exports = {
     requestDataForUser: requestDataForUser,
     getUserAccessData: getUserAccessData,

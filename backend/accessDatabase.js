@@ -22,9 +22,9 @@ api.post('/deleteCachedSensorData', function (request) {
 }, {authorizationType: 'AWS_IAM'});
 
 
-
+//Muss der Sensor als Benutzer registriert sein?
 //Speichert die Messung eines Sensors in die Datenbank
-api.post('/sensorMeasurement', function (request) { // SAVE your icecream
+api.post('/sensorMeasurement', function (request) {
     var data = {
         wifi_SSID : request.body.wifi_SSID,
         humiditySensor : request.body.humiditySensor,
@@ -41,7 +41,7 @@ api.post('/sensorMeasurement', function (request) { // SAVE your icecream
     }
     //Es wird in die Datenbank geschrieben, das Ergebnis der Operation wird zurück gegeben.
     return dynamoDb.put(params).promise(); // returns dynamo result
-}, { success: 201 }); // returns HTTP status 201 - Created if successful
+}, { success: 201 }, {authorizationType: 'AWS_IAM'}); // returns HTTP status 201 - Created if successful
 
 api.post('/getCachedMeasurements', function(request) {
    return toolsPlants.getCachedMeasurements();
