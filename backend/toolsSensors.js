@@ -72,8 +72,8 @@ function filterSensorData(data, idsToFilter) {
 
     data.forEach(function(item, index, array) {
         if(sensorIDs.includes(item.sensor_ID)) {
-            item.conficData = JSON.parse(item.conficData);
-            item.systemDate = JSON.parse(item.systemDate);
+            item.configData = JSON.parse(item.configData);
+            item.systemData = JSON.parse(item.systemData);
             resultData.push(item);
         }
     });
