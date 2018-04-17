@@ -24,7 +24,6 @@ class App extends Component{
             if (await Auth.currentSession()) {
                 console.log(Auth.currentSession());
                 let user = await Auth.currentAuthenticatedUser();
-
                 let attributes = await  Auth.userAttributes(user);
                 console.log(attributes[2].Name);
                 console.log(attributes);
@@ -50,7 +49,6 @@ class App extends Component{
     };
 
     handleLogout = async () => {
-        console.log("loggg");
         Auth.signOut()
             .then(data => console.log(data))
             .catch(err => console.log(err));
