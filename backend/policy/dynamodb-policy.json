@@ -8,7 +8,9 @@
         "dynamodb:PutItem",
         "dynamodb:Scan",
         "dynamodb:Query",
-        "dynamodb:CreateTable"
+        "dynamodb:CreateTable",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:UpdateItem"
       ],
       "Effect": "Allow",
       "Resource": "*"

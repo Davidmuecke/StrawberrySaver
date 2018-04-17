@@ -105,37 +105,97 @@ function mergeCachedData(plantsData, cachedData) {
 }
 
 
-function deleteCacheEntries(sensorIDs) {
-    var sensors= ["00:80:41:ae:fd:7", "xxx"];
-    var itemsArray = [];
+function deleteCacheEntries() {
+    var sensors= [1523381841294, 1];
 
-    sensors.forEach(function(item, index, array) {
-        var deletion = {
-            DeleteRequest : {
-                Key : {
-                    'sensor_ID' : item
-                }
+    var tableName = "icecreams";
+    dataBase.deleteItem({
+        "TableName": tableName,
+        "Key" : {
+            "icecreamid": {
+                "N" : 1
+            }
+        }
+    }, function (err, data) {
+        if (err) {
+            //context.fail('FAIL:  Error deleting item from dynamodb - ' + err);
+            return "fail";
+        } else {
+            console.log("DEBUG:  deleteItem worked. ");
+            //context.succeed(data);
+            return "done";
+        }
+    });
+
+
+    /*
+        var params = {
+            TableName : 'icecreams',
+            Key: {
+                icecreamid: 1
             }
         };
-        itemsArray.push(deletion);
-    });
+
+        var documentClient = new AWS.DynamoDB.DocumentClient();
+
+        documentClient.delete(params, function(err, data) {
+            if (err) console.log(er;
+            else console.log(data);
+        });
+    /*
+        var name = "cherry";
+        var table = "icecreams"
+        var icecreamid = 1;
+
+        var params = {
+            TableName:table,
+            Key:{
+                "icecreamid":icecreamid,
+                "name":name
+            }
+        };
+
+        dynamoDb.delete(params, function(err, data) {
+            if (err) {
+                console.error("Unable to delete item. Error JSON:", JSON.stringify(err, null, 2));
+            } else {
+                console.log("DeleteItem succeeded:", JSON.stringify(data, null, 2));
+            }
+        });
 
 
-    var params = {
-        RequestItems : {
-            'cache' : itemsArray
-        }
-    };
-    dynamoDb.batchWrite(params, function(err, data) {
-        if (err) {
-            console.log('Batch delete unsuccessful ...');
-            console.log(err, err.stack); // an error occurred
-        } else {
-            console.log('Batch delete successful ...');
-            console.log(data); // successful response
-        }
-    });
-    return itemsArray;
+
+
+
+
+
+        var itemsArray = [];
+
+            var deletion = {
+                DeleteRequest : {
+                    Key : {
+                        'timestamp' : 1523381841294
+                    }
+                }
+            };
+            itemsArray.push(deletion);
+
+
+        var params = {
+            RequestItems: {
+                'cache': deletion
+            }
+        };
+        dynamoDb.batchWrite(params, function(err, data) {
+                if (err) {
+                console.log('Batch delete unsuccessful ...');
+                console.log(err, err.stack); // an error occurred
+            } else {
+                console.log('Batch delete successful ...');
+                console.log(data); // successful response
+            }
+        });*/
+
 }
 
 function  savePlantsData() {
@@ -194,14 +254,60 @@ function getPlantData(plantID) {
         .then(response => response.Items)
 };
 
+
+/*----------------------------------------------------------------------------------------------------------------------*/
+/*                 Legt eine neue Pflanze in der Datenbank an.                                                          */
+/*----------------------------------------------------------------------------------------------------------------------*/
+//Item-Attribute müssen noch angepasst werden.
+function insertNewPlant (plant){
+    var params = {
+        //Tabellenname
+        TableName: 'plants',
+        //Elemente die gespeichert werden sollen
+        Item: {
+            //Attribut, wird aus dem Request-Header entnommen.
+            plantData: plant.plantData,
+            //Attribut, wird aus dem Request-Header entnommen.
+            measurements: "",
+            plant_ID: "plant_" + Date.now()
+        }
+    }
+    //Es wird in die Datenbank geschrieben, das Ergebnis der Operation wird zurück gegeben.
+    return dynamoDb.put(params).promise(); // returns dynamo result
+}
+
+
+/*----------------------------------------------------------------------------------------------------------------------*/
+/*                 Aktualisiert die Daten einer Pflanze in der Datenbank.                                               */
+/*----------------------------------------------------------------------------------------------------------------------*/
+//Item-Attribute müssen noch angepasst werden.
+//Hier muss noch die passende Update Syntax verwendet werden --> siehe AWS-Doku
+function updatePlant (plant){
+    var params = {
+        //Tabellenname
+        TableName: 'plants',
+        //Elemente die gespeichert werden sollen
+        Item: {
+            //Attribut, wird aus dem Request-Header entnommen.
+            plantData: plant.plantData,
+            //Attribut, wird aus dem Request-Header entnommen.
+            //Können wahrscheinlich einfach weggelassen werden, da sie an deiser Stelle nicht aktualisiert werden müssen.
+            measurements: plant.measurements,
+            plant_ID: plant.plantID
+        }
+    }
+    //Es wird in die Datenbank geschrieben, das Ergebnis der Operation wird zurück gegeben.
+    return dynamoDb.put(params).promise(); // returns dynamo result
+}
 /*----------------------------------------------------------------------------------------------------------------------*/
 /*                 footer: zu exportierende Funktionen.                                                                 */
 /*----------------------------------------------------------------------------------------------------------------------*/
 module.exports = {
     requestDataForUser: requestDataForUser,
     getUserAccessData: getUserAccessData,
-    filterPlantData: filterPlantData,
-    getCachedMeasurements:getCachedMeasurements,
-    mergeCachedData: mergeCachedData,
+    getPlantData: getPlantData,
+    insertNewPlant: insertNewPlant,
+    updatePlant: updatePlant,
+    getCachedMeasurements: getCachedMeasurements,
     deleteCacheEntries:deleteCacheEntries
 };
