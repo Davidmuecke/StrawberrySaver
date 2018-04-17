@@ -77,11 +77,11 @@ function getCachedMeasurements (plantsData, nextFunction2) {
     return dynamoDb.scan({ TableName: "cache" }).promise()
         .then(function(value) {
             var cachedData = value.Items;
-            return nextFunction2(plantsData, cachedData);
+            return nextFunction2(plantsData, cachedData, findLastMeasurement);
         });
 }
 
-function mergeCachedData(plantsData, cachedData) {
+function mergeCachedData(plantsData, cachedData, nextFunction) {
     //sensor_IDs der "Verfügbaren" Pflanzen ermitteln
     var sensorIDs = [];
     plantsData.forEach(function(item, index, array) {
@@ -101,19 +101,19 @@ function mergeCachedData(plantsData, cachedData) {
         }
     });
 
-    return plantsData;
+    return nextFunction(plantsData);
 }
 
 
 function deleteCacheEntries() {
     var sensors= [1523381841294, 1];
 
-    var tableName = "icecreams";
+    var tableName = "cache";
     dataBase.deleteItem({
         "TableName": tableName,
         "Key" : {
-            "icecreamid": {
-                "N" : 1
+            "timestamp": {
+                "N" : 1523381841294
             }
         }
     }, function (err, data) {
@@ -209,14 +209,15 @@ function findLastMeasurement(plantsData) {
         var lastMeasurementTimestamp = 0;
         var lastMeasurement;
 
-        plantsData.measurements.forEach(function (item, index, array) {
+        (item.measurements).forEach(function (item, index, array) {
             if(item.timestamp > lastMeasurementTimestamp) {
                 lastMeasurement = item;
+                lastMeasurementTimestamp = item.timestamp;
             }
         });
 
         item.measurement = lastMeasurement;
-        item.measurements= NULL;
+        delete item.measurements;
     });
 
     return plantsData;
