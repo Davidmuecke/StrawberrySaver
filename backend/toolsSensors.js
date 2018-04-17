@@ -87,7 +87,24 @@ function filterSensorData(data, idsToFilter) {
 /*---------------------------------------------------------------------------------------------------------------------*/
 
 function requestSensorData (sensorID) {
-    return dynamoDb.scan({ TableName: 'sensors' }).promise()
+
+    var params = {
+        TableName : 'sensors',
+        ExpressionAttributeNames:{
+            "#id": "sensor_ID"
+        },
+        KeyConditionExpression: "#id = :id",
+        ExpressionAttributeValues: {
+            ":id":sensorID
+        }
+    };
+
+    return dynamoDb.query(params, function(err, data) {
+        if (err) {
+            console.log("Unable to query. Error:", JSON.stringify(err, null, 2));
+        } else {
+        }
+    }).promise()
         .then(function(value) {
             var allItems = value.Items;
             return allItems;
