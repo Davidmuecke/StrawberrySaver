@@ -17,13 +17,13 @@ var toolsSensors = require("./toolsSensors.js");
 
 
 /*---------------------------------------------------------------------------------------------------------------------*/
-/*                          Funktion                                                         */
+/*                          Funktions                                                                                  */
 /*---------------------------------------------------------------------------------------------------------------------*/
-
 
 /*----------------------------------------------------------------------------------------------------------------------*/
 /*  Diese Operationen behandeln die Pflanzen.                                                                           */
 /*----------------------------------------------------------------------------------------------------------------------*/
+
 //liefert alle Pflanzen für einen bestimmten Benutzer zurück.
 api.post('/getPlantsForUser', function (request) {
    return toolsPlants.requestDataForUser(request.context.cognitoIdentityId,"plants",toolsPlants.getUserAccessData);
@@ -49,6 +49,7 @@ api.post('/updatePlantData', function (request) {
 /*----------------------------------------------------------------------------------------------------------------------*/
 /*  Diese Operationen behandeln die Daten, die von den Sensoren geliefert werden.                                       */
 /*----------------------------------------------------------------------------------------------------------------------*/
+
 // TEST: Löscht alle gecachten Daten eines bestimmten Sensors.
 api.post('/deleteCachedSensorData', function (request) {
     return toolsPlants.deleteCacheEntries();
@@ -86,10 +87,14 @@ api.post('/arduinoTest', function (request) {
     return request;
 }, {authorizationType: 'AWS_IAM'});
 
+/*......................................................................................................................*/
+
+
+
 
 
 /*---------------------------------------------------------------------------------------------------------------------*/
-/*  Diese Operationen behandeln den Sensor.                                                                            */
+/*  Diese Operationen behandeln die Daten die für die Sensoren ausgegeben werden sollen                                */
 /*---------------------------------------------------------------------------------------------------------------------*/
 
 //liefert alle Sensoren für einen bestimmten Benutzer zurück.
