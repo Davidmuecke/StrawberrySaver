@@ -28,7 +28,7 @@
     - systemData: Produkt-Informationen des Sensors
         - enthalt JSON-Objekt als String mit folgenden Attributen:
             - Marke (Attributname: "**make**")
-            - Modellbezeichnung (Spaltenname: "**modelDesignation**")
+            - Modellbezeichnung (Attributname: "**modelDesignation**")
             - Firmwareversion (Attributname: "**firmwareVersion**")
             - Erstinbetriebnamezeitpunkt (Attributname: "**initialCommissioning**")
             - Gerätenummer/Seriennummer (Attributname: "**serialNumber**")
@@ -71,32 +71,91 @@
 
 ##Pflanzen
 ###Allgemein
-- pro User eine eigene Tabelle
-- Name der Tabelle: **plants_<User-ID>**
+- eine Pflanzen-Tabelle: **plants**
+- Hinweis: Je nach Art der Pflanze müssen unterschiedliche Werte für Temperatur und Wasser als Vergleichswerte gespeichert sein/ werden
+- Wichtig: siehe "Aufbau der Tabelle"
+
 ###Aufbau der Tabellen
-- Die Einträge mit dem Indizé 0 bis X enthalten die Header-Informationen der Pflanze:
-    - Sorte
-    - ID
-    - Sensor-ID (mit der Pflanze verknüpfter Sensor (genauer gesagt Arduino)) (bei Löschen beachten)
-    - Erstellzeitpunkt
-    
+- Die Tabelle hat folgende Spalten:
+    - plant_ID: Schlüsselwert der Tabelle um die Pflanze einem Sensor und Ort zuordnen zu können
+    - plantData: Informationen zur Pflanze
+        - enthalt JSON-Objekt als String mit folgenden Attributen:
+            - Sorte (Attributname: "**sort**")
+            - Pflanzungszeitpunkt (Attributname: "**plantationTime**")
+            - Erstellungszeitpunkt (der Pflanze in der Tabelle) (Attributname: "**initialTimePlant**")
+            - geografischerOrtID  (Attributname: "**location_ID**")
+            - lokalePositionID (Attributname: "**local_position_ID**")
+                - die lokale PositionID kann dabei 3 verschiedene Werte annehmen:
+                    - draußen und unueberdacht: temp_rain
+                    - draußen und ueberdacht: temp
+                    - drinnen: nothing
+                - Je nach Position sind die Wetter- und Regen-Aussichten relevant oder eben nicht          
+            - SensorID (mit der Pflanze verknüpfter Sensor (genauer gesagt Arduino)) (Attributname: "**sensor_ID**")
+                - Wichtig:  beim Löschen einer Pflanze bzw. eines Sensores muss die Verknüpfung unbedingt beachtet und entsprechend reagiert werden. Wenn der Sensor die Pflanze wechselt muss ebenfalls die Pflanzen-ID in der Sensor Tabelle angepepasst werden! (siehe "Sensoren und Messungen")
+            - TemperaturwertPerfekt (Attributname: "**perfectTemperature**")
+            - TemperaturabweichungGruen (Attributname: "**temperatureScopeGreen**")
+            - TemperaturabweichungGelb: (Attributname: "**temperatureScopeYellow**")
+            - WasserwertPerfekt (Attributname: "**perfectWater**")
+            - WasserabweichungGruen (Attributname: "**waterScopeGreen**")
+            - WasserabweichungGelb: (Attributname: "**waterScopeYellow**")
+                - Achtung: Für die Wasser- und die Temperaturberechnung wird jeweils der prefekte Wert angegeben.
+                Von diesem Wert aus, werden dann die beiden Bereiche "Gelb" und "Gruen". BEIDE um perfekten Startwert aus!
+        - Beispiel:
+            `{
+             "sort":"Erdbeere",
+             "plantationTime":"01-01-2018",
+             "initialTimePlant":"04-04-2018",
+             "location_ID":"Stuttgart",
+             "local_position_ID":"nothing",
+             "sensor_ID":"xxx",
+             "perfectTemperature":"15",
+             "temperatureScopeGreen":"5",
+             "temperatureScopeYellow":"10",
+             "perfectWater":"100",
+             "waterScopeGreen":"20",
+             "waterScopeYellow":"30",
+             }`
+
+  
 ##Orte
 ###Allgemein
-- pro Ort eigene Tabelle
-- Name der Tabelle: **location_<Orts-ID>**
+- eine geografische Ort-Tabelle **locations**
+- Hinweis: wir unterschieden zwischen dem geografischen Ort (z.B. Stuttgart) und der lokalen Position (z.B. draußen oder drinnen).
+    Diese Tabelle repräsentiert dabei die geografischen Ort Daten!
+- Wichtig: ...
+
 ###Aufbau der Tabellen
-- Der Eintrag mit dem Indizé 0 enthält die Header-Informationen des Ortes:
-    - name
-    - PLZ
-    - Erstellzeitpunkt
-    - Pflanzen-ID
-- Die Einträge mit dem Indizé 1 bis X enthalten die Daten der Wettermessungen
-    - Zeitstempel
-    - Quelle
-    - Messwert 1
-    - Messwert 2
-    - Messwert X 
-    - ...
+- Die Tabelle hat folende Spalten:
+    - location_ID: Schlüsselwert der Tabelle um den Ort einer Pflanze zuordnen zu können
+    - locationData: Informationen des Ortes
+        - enthalt JSON-Objekt als String mit folgenden Attributen:
+            - Name des Ortes (Attributname: "**locationName**")
+            - PLZ (Attributname: "**plz**")
+            - Erstellungszeitpunkt (des Ortes in der Tabelle) (Attributname: "**initialTimeLocation**")
+        - Beispiel:
+            `{
+             "locationName":"Stuttgart",
+             "plz":"71299",
+             "initialTimeLocation":"04-04-2018"
+             }`
+
+    - measurements: JSON Objekt mit den ortsspezifischen Daten
+        - enthält JSON-Objekt mit folgenden Attributen:
+            - Zeitstempel (Attributname: "**measurementTimeLocation**")
+            - Quelle (Attributname: "**sourceLocationMeasurements**")
+            - Messwerte aktueller Niederschlag (Attributname: "**humidityLocation**") 
+            - Messwerte aktuelle Temperatur (Attributname: "**temperatureLocation**") 
+            - Messwert aktuelle Luftfeuchtigkeit (Attributname: "**rainfallLocation**") 
+        - Beispiel:
+             `{
+             "measurementTimeLocation":"11:30,04-04-2018",
+             "sourceLocationMeasurements":"www.wetter.de",
+             "humidityLocation":"8",
+             "temperatureLocation":"13.5",
+             "rainfallLocation":"nothing"
+             }`
+    
+    
 ##User-Access
 ###Allgemein
 - legt fest auf welche Elemente der Benutzer Zugriff hat.

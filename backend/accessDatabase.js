@@ -13,6 +13,14 @@ var api = new ApiBuilder(),
 /*  Hier werden die Requirements aufgelistet.                                                                           */
 /*----------------------------------------------------------------------------------------------------------------------*/
 var toolsPlants = require("./toolsPlants.js");
+var tools = require("./tools.js");
+var toolsSensors = require("./toolsSensors.js");
+
+
+/*---------------------------------------------------------------------------------------------------------------------*/
+/*                          Funktion für Pflanze(n) Abfrage                                                            */
+/*---------------------------------------------------------------------------------------------------------------------*/
+
 
 
 /*----------------------------------------------------------------------------------------------------------------------*/
@@ -81,6 +89,27 @@ api.post('/arduinoTest', function (request) {
 }, {authorizationType: 'AWS_IAM'});
 
 
+
+/*---------------------------------------------------------------------------------------------------------------------*/
+/*                          Funktion für Sensor(en) Abfrage                                                            */
+/*---------------------------------------------------------------------------------------------------------------------*/
+
+//liefert alle Sensoren für einen bestimmten Benutzer zurück.
+api.post('/getSensorsForUser', function (request) {
+    return toolsSensors.requestDataForUser(request.context.cognitoIdentityId,"sensors",toolsSensors.getUserAccessData);
+}, {authorizationType: 'AWS_IAM'});
+
+
+//liefert alle Sensoren für einen bestimmten Benutzer zurück.
+api.post('/getSensorData', function (request) {
+    return toolsSensors.requestSensorData(request.body.sensor_ID);
+}, {authorizationType: 'AWS_IAM'});
+
+
+
+/*---------------------------------------------------------------------------------------------------------------------*/
+/*                          Wichtig, um Funktionen ansprechen zu können                                                */
+/*---------------------------------------------------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------------------------------------------------*/
 /*  footer: die hier zu exportierenden module.                                                                          */
