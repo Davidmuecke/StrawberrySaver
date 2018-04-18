@@ -11,6 +11,7 @@ dataBase = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 
 
 
+
 //Beispiel zum Laden von Daten in die Datenbank
 api.post('/postData', function (request) { // SAVE your icecream
     var params = {

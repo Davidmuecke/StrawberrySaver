@@ -9,29 +9,55 @@ var api = new ApiBuilder(),
     // Erstellt dsa Dynamo-DB service Objekt für das erstellen neuer Tabellen.
     dataBase = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 
-var tools = require("./tools.js");
+/*----------------------------------------------------------------------------------------------------------------------*/
+/*  Hier werden die Requirements aufgelistet.                                                                           */
+/*----------------------------------------------------------------------------------------------------------------------*/
+var toolsPlants = require("./toolsPlants.js");
 var toolsSensors = require("./toolsSensors.js");
 
 
 /*---------------------------------------------------------------------------------------------------------------------*/
-/*                          Funktion für Pflanze(n) Abfrage                                                            */
+/*                          Funktion                                                         */
 /*---------------------------------------------------------------------------------------------------------------------*/
 
 
+/*----------------------------------------------------------------------------------------------------------------------*/
+/*  Diese Operationen behandeln die Pflanzen.                                                                           */
+/*----------------------------------------------------------------------------------------------------------------------*/
 //liefert alle Pflanzen für einen bestimmten Benutzer zurück.
 api.post('/getPlantsForUser', function (request) {
-   return tools.requestDataForUser(request.context.cognitoIdentityId,"plants",tools.getUserAccessData);
+   return toolsPlants.requestDataForUser(request.context.cognitoIdentityId,"plants",toolsPlants.getUserAccessData);
 }, {authorizationType: 'AWS_IAM'});
 
 
+
+//liefert alle Daten einer bestimmten Pflanze zurück.
+api.post('/getPlantData', function (request) {
+    return toolsPlants.getPlantData(request.body.plantID);
+}, {authorizationType: 'AWS_IAM'});
+
+//speichert eine neue Pflanze in der Datenbank.
+api.post('/insertNewPlant', function (request) {
+    return toolsPlants.insertNewPlant(request.body.plant);
+}, {success: 201}, {authorizationType: 'AWS_IAM'});
+
+//aktualisiert die Daten einer Pflanze in der Datenbank.
+api.post('/updatePlantData', function (request) {
+    return toolsPlants.updatePlant(request.body.plant);
+}, {authorizationType: 'AWS_IAM'});
+
+/*----------------------------------------------------------------------------------------------------------------------*/
+/*  Diese Operationen behandeln die Daten, die von den Sensoren geliefert werden.                                       */
+/*----------------------------------------------------------------------------------------------------------------------*/
+// TEST: Löscht alle gecachten Daten eines bestimmten Sensors.
 api.post('/deleteCachedSensorData', function (request) {
-    return tools.deleteCacheEntries(request.body.sensorID);
+    return toolsPlants.deleteCacheEntries();
 }, {authorizationType: 'AWS_IAM'});
 
 
-
+//Muss der Sensor als Benutzer registriert sein?
 //Speichert die Messung eines Sensors in die Datenbank
-api.post('/sensorMeasurement', function (request) { // SAVE your icecream
+api.post('/sensorMeasurement', function (request) {
     var data = {
         wifi_SSID : request.body.wifi_SSID,
         humiditySensor : request.body.humiditySensor,
@@ -48,14 +74,14 @@ api.post('/sensorMeasurement', function (request) { // SAVE your icecream
     }
     //Es wird in die Datenbank geschrieben, das Ergebnis der Operation wird zurück gegeben.
     return dynamoDb.put(params).promise(); // returns dynamo result
-}, { success: 201 }); // returns HTTP status 201 - Created if successful
+}, { success: 201 }, {authorizationType: 'AWS_IAM'}); // returns HTTP status 201 - Created if successful
 
 api.post('/getCachedMeasurements', function(request) {
-   return tools.getCachedMeasurements();
+   return toolsPlants.getCachedMeasurements();
 }, {authorizationType: 'AWS_IAM'});
 
 
-//Post-Request ohne Header um Arduino-Connection zu testen.
+//TEST: post-Request ohne Header um Arduino-Connection zu testen.
 api.post('/arduinoTest', function (request) {
     return request;
 }, {authorizationType: 'AWS_IAM'});
@@ -63,7 +89,7 @@ api.post('/arduinoTest', function (request) {
 
 
 /*---------------------------------------------------------------------------------------------------------------------*/
-/*                          Funktion für Sensor(en) Abfrage                                                            */
+/*  Diese Operationen behandeln den Sensor.                                                                            */
 /*---------------------------------------------------------------------------------------------------------------------*/
 
 //liefert alle Sensoren für einen bestimmten Benutzer zurück.
@@ -79,7 +105,7 @@ api.post('/getSensorData', function (request) {
 
 
 
-/*---------------------------------------------------------------------------------------------------------------------*/
-/*                          Wichtig, um Funktionen ansprechen zu können                                                */
-/*---------------------------------------------------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------------------------------------------------*/
+/*  footer: die hier zu exportierenden module.                                                                          */
+/*----------------------------------------------------------------------------------------------------------------------*/
 module.exports = api;
