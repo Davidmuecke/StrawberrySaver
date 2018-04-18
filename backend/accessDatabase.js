@@ -14,6 +14,7 @@ var api = new ApiBuilder(),
 /*----------------------------------------------------------------------------------------------------------------------*/
 var toolsPlants = require("./toolsPlants.js");
 var toolsSensors = require("./toolsSensors.js");
+var newSensor = require("./newSensor");
 
 
 /*---------------------------------------------------------------------------------------------------------------------*/
@@ -107,6 +108,7 @@ api.post('/getSensorsForUser', function (request) {
 api.post('/getSensorData', function (request) {
     return toolsSensors.requestSensorData(request.body.sensor_ID);
 }, {authorizationType: 'AWS_IAM'});
+
 
 
 

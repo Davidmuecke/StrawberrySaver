@@ -20,7 +20,7 @@ dataBase = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 /*---------------------------------------------------------------------------------------------------------------------*/
 
 //Ein neuer Sensor wird in der Tabelle "sensors" angelegt
-function createNewSensorItem() {
+function createNewSensorItem(userID) {
 
 /*---Hier müssen noch die dynamischen Werte vom Sensor angepasst werden,
      aber ich hab keine Ahung, wie man da drauf zugreift??!! @David?---*/
@@ -63,13 +63,15 @@ function createNewSensorItem() {
         }
     };
 
-    dynamoDb.put(params, function(err, data) {
+    dynamoDb.put(params, function(err, data,) {
         if (err) {
            // document.getElementById('textarea').innerHTML = "Unable to add item: " + "\n" + JSON.stringify(err, undefined, 2);
         } else {
            // document.getElementById('textarea').innerHTML = "PutItem succeeded: " + "\n" + JSON.stringify(data, undefined, 2);
         }
     });
+
+    editNewSensorForUser(userID,sensorID);
 }
 
 
@@ -79,10 +81,6 @@ function createNewSensorItem() {
 
 //Nach dem Anlegen des Sensors muss er in der "userAccess" Tabelle
 //noch dem entsprechenden Nutzer zugeordnet werden
-
-//-->grade angemeldeter User raussuchen und dort an sensors den neuen sensors noch anhängen!!
-
-
 
 function editNewSensorForUser(userID,sensorID) {
     //hier werden die bereitsexistierenden IDs ausgelesen
@@ -129,13 +127,3 @@ function editNewSensorForUser(userID,sensorID) {
     });
 
 }
-
-/*---------------------------------------------------------------------------------------------------------------------*/
-/*                            Fooder, der je nach Funktionsnamen angepasst werden muss                                 */
-/*                            Stellt die Verbindung zur accessDatabase.js Datei her                                    */
-/*---------------------------------------------------------------------------------------------------------------------*/
-
-module.exports = {
-    createNewSensorItem: createNewSensorItem,
-    editNewSensorForUser: editNewSensorForUser,
-};
