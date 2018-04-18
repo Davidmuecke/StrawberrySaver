@@ -13,24 +13,18 @@ var api = new ApiBuilder(),
 /*  Hier werden die Requirements aufgelistet.                                                                           */
 /*----------------------------------------------------------------------------------------------------------------------*/
 var toolsPlants = require("./toolsPlants.js");
-var tools = require("./tools.js");
 var toolsSensors = require("./toolsSensors.js");
 
 
 /*---------------------------------------------------------------------------------------------------------------------*/
-/*                          Funktion für Pflanze(n) Abfrage                                                            */
+/*                          Funktion für Pflanze(n) Abfragen                                                           */
 /*---------------------------------------------------------------------------------------------------------------------*/
 
 
-
-/*----------------------------------------------------------------------------------------------------------------------*/
-/*  Diese Operationen behandeln die Pflanzen.                                                                           */
-/*----------------------------------------------------------------------------------------------------------------------*/
 //liefert alle Pflanzen für einen bestimmten Benutzer zurück.
 api.post('/getPlantsForUser', function (request) {
    return toolsPlants.requestDataForUser(request.context.cognitoIdentityId,"plants",toolsPlants.getUserAccessData);
 }, {authorizationType: 'AWS_IAM'});
-
 
 
 //liefert alle Daten einer bestimmten Pflanze zurück.
@@ -57,7 +51,6 @@ api.post('/deleteCachedSensorData', function (request) {
 }, {authorizationType: 'AWS_IAM'});
 
 
-//Muss der Sensor als Benutzer registriert sein?
 //Speichert die Messung eines Sensors in die Datenbank
 api.post('/sensorMeasurement', function (request) {
     var data = {
@@ -76,7 +69,7 @@ api.post('/sensorMeasurement', function (request) {
     }
     //Es wird in die Datenbank geschrieben, das Ergebnis der Operation wird zurück gegeben.
     return dynamoDb.put(params).promise(); // returns dynamo result
-}, { success: 201 }, {authorizationType: 'AWS_IAM'}); // returns HTTP status 201 - Created if successful
+}, { success: 201 }); // returns HTTP status 201 - Erfolgreich erstellt.
 
 api.post('/getCachedMeasurements', function(request) {
    return toolsPlants.getCachedMeasurements();
@@ -91,7 +84,7 @@ api.post('/arduinoTest', function (request) {
 
 
 /*---------------------------------------------------------------------------------------------------------------------*/
-/*                          Funktion für Sensor(en) Abfrage                                                            */
+/*                          Funktionen für Sensor-Abfragen                                                          */
 /*---------------------------------------------------------------------------------------------------------------------*/
 
 //liefert alle Sensoren für einen bestimmten Benutzer zurück.
@@ -106,10 +99,6 @@ api.post('/getSensorData', function (request) {
 }, {authorizationType: 'AWS_IAM'});
 
 
-
-/*---------------------------------------------------------------------------------------------------------------------*/
-/*                          Wichtig, um Funktionen ansprechen zu können                                                */
-/*---------------------------------------------------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------------------------------------------------*/
 /*  footer: die hier zu exportierenden module.                                                                          */
