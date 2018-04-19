@@ -14,12 +14,11 @@ var api = new ApiBuilder(),
 /*----------------------------------------------------------------------------------------------------------------------*/
 var toolsPlants = require("./toolsPlants.js");
 var toolsSensors = require("./toolsSensors.js");
-
+var newSensor = require("./newSensor");
 
 /*---------------------------------------------------------------------------------------------------------------------*/
 /*                          Funktion für Pflanze(n) Abfragen                                                           */
 /*---------------------------------------------------------------------------------------------------------------------*/
-
 
 //liefert alle Pflanzen für einen bestimmten Benutzer zurück.
 api.post('/getPlantsForUser', function (request) {
@@ -45,6 +44,7 @@ api.post('/updatePlantData', function (request) {
 /*----------------------------------------------------------------------------------------------------------------------*/
 /*  Diese Operationen behandeln die Daten, die von den Sensoren geliefert werden.                                       */
 /*----------------------------------------------------------------------------------------------------------------------*/
+
 // TEST: Löscht alle gecachten Daten eines bestimmten Sensors.
 api.post('/deleteCachedSensorData', function (request) {
     return toolsPlants.deleteCacheEntries();
@@ -81,10 +81,15 @@ api.post('/arduinoTest', function (request) {
     return request;
 }, {authorizationType: 'AWS_IAM'});
 
+/*......................................................................................................................*/
+
+
+
 
 
 /*---------------------------------------------------------------------------------------------------------------------*/
 /*                          Funktionen für Sensor-Abfragen                                                          */
+/*  Diese Operationen behandeln die Daten die für die Sensoren ausgegeben werden sollen                                */
 /*---------------------------------------------------------------------------------------------------------------------*/
 
 //liefert alle Sensoren für einen bestimmten Benutzer zurück.
@@ -97,6 +102,18 @@ api.post('/getSensorsForUser', function (request) {
 api.post('/getSensorData', function (request) {
     return toolsSensors.requestSensorData(request.body.sensor_ID);
 }, {authorizationType: 'AWS_IAM'});
+
+
+
+/*---------------------------------------------------------------------------------------------------------------------*/
+/*                          Funktion zum Hinzufügen von einem Sensor für einen Nutzer                                  */
+/*---------------------------------------------------------------------------------------------------------------------*/
+
+api.post('/createNewSensorItem', function (request) {
+    return newSensor.createNewSensorItem(request.context.cognitoIdentityId,request.body, newSensor.getUserAccessData);
+}, {authorizationType: 'AWS_IAM'});
+
+
 
 
 
