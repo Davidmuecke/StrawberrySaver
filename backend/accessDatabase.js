@@ -37,7 +37,7 @@ api.post('/insertNewPlant', function (request) {
 
 //aktualisiert die Daten einer Pflanze in der Datenbank.
 api.post('/updatePlantData', function (request) {
-    return toolsPlants.updatePlant(request.body.plant);
+    return toolsPlants.updatePlant();
 }, {authorizationType: 'AWS_IAM'});
 
 /*----------------------------------------------------------------------------------------------------------------------*/
@@ -52,8 +52,10 @@ api.post('/deleteCachedSensorData', function (request) {
 //Muss der Sensor als Benutzer registriert sein?
 //Speichert die Messung eines Sensors in die Datenbank
 api.post('/sensorMeasurement', function (request) {
+
+    //var body = JSON.parse(request.body);
     var data = {
-        wifi_SSID : request.body.wifi_SSID,
+        wifiSSID : request.body.wifiSSID,
         humiditySensor : request.body.humiditySensor,
         temperatureSensor : request.body.temperatureSensor
     };
@@ -62,13 +64,14 @@ api.post('/sensorMeasurement', function (request) {
         TableName: 'cache',
         Item: {
             timestamp: Date.now(),
-            sensor_ID: request.body.sensorID,
-            measurement: JSON.stringify(data)
+            sensor_ID: request.body.sensor_ID,
+            measurement: JSON.stringify(data),
+            testvalue: request.body
            }
     }
     //Es wird in die Datenbank geschrieben, das Ergebnis der Operation wird zurück gegeben.
     return dynamoDb.put(params).promise(); // returns dynamo result
-}, { success: 201 }, {authorizationType: 'AWS_IAM'}); // returns HTTP status 201 - Created if successful
+});
 
 api.post('/getCachedMeasurements', function(request) {
    return toolsPlants.getCachedMeasurements();
