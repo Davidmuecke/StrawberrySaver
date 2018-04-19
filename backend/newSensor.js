@@ -96,8 +96,8 @@ function editNewSensorForUser(userID,sensorID) {
         } else {
            // document.getElementById('textarea').innerHTML = "GetItem succeeded: " + "\n" + JSON.stringify(data, undefined, 2);
         }
-    }).data.Item[2];
-
+    }).data.column[2];
+    //Wir wollen von dem Item, der zu der entsprechenden userID gehört nur die Werte von "sensors" ausgegeben haben --> 3te Spalte
 
     //Dabei wird ein JSON zurückgegeben, welcher zu einem Array konvertiert wird, um dann die neue sensorID hinten anzufügen
     // ich bin mir gar nicht sicher, ob hier ein JSON zurück gegeben wird, aber ansonsten ist es noch einfacher!
