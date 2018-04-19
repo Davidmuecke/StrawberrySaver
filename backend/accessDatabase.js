@@ -116,7 +116,7 @@ api.post('/getSensorData', function (request) {
 /*---------------------------------------------------------------------------------------------------------------------*/
 
 api.post('/createNewSensorItem', function (request) {
-    return newSensor.createNewSensorItem(request.context.cognitoIdentityId, newSensor.editNewSensorForUser);
+    return newSensor.createNewSensorItem(request.context.cognitoIdentityId,request.body, newSensor.getUserAccessData);
 }, {authorizationType: 'AWS_IAM'});
 
 
