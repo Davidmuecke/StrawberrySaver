@@ -20,13 +20,14 @@ dataBase = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 /*---------------------------------------------------------------------------------------------------------------------*/
 
 //Ein neuer Sensor wird in der Tabelle "sensors" angelegt
-function createNewSensorItem(userID) {
+function createNewSensorItem(userID, callback) {
 
 /*---Hier müssen noch die dynamischen Werte vom Sensor angepasst werden,
      aber ich hab keine Ahung, wie man da drauf zugreift??!! @David?---*/
 
     //als Schlüssel wird die MAC-Adresse des Sensors benutzt
-    var sensorID = "01:98:ed:45:01:8";
+    var sensorID = "1";
+    var plantID = "1";
 
     //Variablen um den den configData JSON zu füllen
     var measuringIntervalSensor = "10";
@@ -38,51 +39,71 @@ function createNewSensorItem(userID) {
     var model = "TestModell";
     var version = "Testversion";
     var commissioning = "01.01.1970";
-    var serialNumber = "123456"
+    var serialNumber = "123456";
 
+    var configData = {
+        "plant_ID":plantID,
+        "measuringInterval":measuringIntervalSensor,
+        "sendInterval":sendIntervalSensor,
+        "sendOnChange":"true",
+        "batteryLevel":batteryLevelSensor
+    };
+
+    var systemData = {
+        "make":brand,
+        "modelDesignation":model,
+        "firmwareVersion":version,
+        "initialCommissioning":commissioning,
+        "serialNumber":serialNumber
+    };
 
     var params = {
         TableName :"sensors",
         Item:{
             "sensor_ID": sensorID,
-            "configData":{
-                "plant_ID":plantID,
-                "measuringInterval":measuringIntervalSensor,
-                "sendInterval":sendIntervalSensor,
-                "sendOnChange":"true",
-                "batteryLevel":batteryLevelSensor
-            },
-            "systemData":{
-                "make":brand,                       //warum heißt das hier make??? sollte das nicht mark heißen??
-                "modelDesignation":model,
-                "firmwareVersion":version,
-                "initialCommissioning":commissioning,
-                "serialNumber":serialNumber
-
-            },
+            "configData":JSON.stringify(configData),
+            "systemData":JSON.stringify(systemData)
         }
     };
 
-    dynamoDb.put(params, function(err, data,) {
-        if (err) {
-           // document.getElementById('textarea').innerHTML = "Unable to add item: " + "\n" + JSON.stringify(err, undefined, 2);
-        } else {
-           // document.getElementById('textarea').innerHTML = "PutItem succeeded: " + "\n" + JSON.stringify(data, undefined, 2);
-        }
+    return dynamoDb.put(params).promise().then(function (value) {
+        return callback(userID, "sensors", editNewSensorForUser)
+        return "put ist fertig!";
     });
-
-    editNewSensorForUser(userID,sensorID);
 }
 
-
-
+//copy - past aus toolsPlants und minimal angepasst
+function getUserAccessData (userID, attribute, callback) {
+    var params = {
+        TableName : "userAccess",
+        ExpressionAttributeNames:{
+            "#id": "user_ID",
+            "#attribute": attribute
+        },
+        ProjectionExpression:"#attribute",
+        KeyConditionExpression: "#id = :id",
+        ExpressionAttributeValues: {
+            ":id":userID
+        }
+    };
+    var accessString = "value.Items[0]." + attribute;
+    return dynamoDb.query(params, function(err, data) {
+        if (err) {
+            console.log("Unable to query. Error:", JSON.stringify(err, null, 2));
+        } else {
+        }
+    }).promise().then(function(value) {
+        var result = eval(accessString);
+        return result;
+        return callback(userID,result);
+    });
+}
 
 
 
 //Nach dem Anlegen des Sensors muss er in der "userAccess" Tabelle
 //noch dem entsprechenden Nutzer zugeordnet werden
-
-function editNewSensorForUser(userID,sensorID) {
+function editNewSensorForUser(userID,sensorIDs) {
     //hier werden die bereitsexistierenden IDs ausgelesen
     var params = {
         TableName: "userAccess",
@@ -126,6 +147,8 @@ function editNewSensorForUser(userID,sensorID) {
         } else {
             //document.getElementById('textarea').innerHTML = "UpdateItem succeeded: " + "\n" + JSON.stringify(data, undefined, 2);
         }
+    }).promise().then(function (value) {
+        return "Durchgelaufen!";
     });
 
 }
@@ -137,4 +160,5 @@ function editNewSensorForUser(userID,sensorID) {
 
 module.exports = {
     createNewSensorItem: createNewSensorItem,
+    editNewSensorForUser: editNewSensorForUser
 };
