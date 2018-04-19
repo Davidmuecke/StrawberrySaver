@@ -111,6 +111,17 @@ api.post('/getSensorData', function (request) {
 
 
 
+/*---------------------------------------------------------------------------------------------------------------------*/
+/*                          Funktion zum Hinzufügen von einem Sensor für einen Nutzer                                  */
+/*---------------------------------------------------------------------------------------------------------------------*/
+
+api.post('/createNewSensorItem', function (request) {
+    return newSensor.createNewSensorItem(request.context.cognitoIdentityId);
+}, {authorizationType: 'AWS_IAM'});
+
+
+
+
 
 /*----------------------------------------------------------------------------------------------------------------------*/
 /*  footer: die hier zu exportierenden module.                                                                          */

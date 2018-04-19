@@ -129,3 +129,12 @@ function editNewSensorForUser(userID,sensorID) {
     });
 
 }
+
+/*---------------------------------------------------------------------------------------------------------------------*/
+/*                            Fooder, der je nach Funktionsnamen angepasst werden muss                                 */
+/*                            Stellt die Verbindung zur accessDatabase.js Datei her                                    */
+/*---------------------------------------------------------------------------------------------------------------------*/
+
+module.exports = {
+    createNewSensorItem: createNewSensorItem,
+};
