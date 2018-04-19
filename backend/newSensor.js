@@ -96,7 +96,8 @@ function editNewSensorForUser(userID,sensorID) {
         } else {
            // document.getElementById('textarea').innerHTML = "GetItem succeeded: " + "\n" + JSON.stringify(data, undefined, 2);
         }
-    }).data;
+    }).data.Item[2];
+
 
     //Dabei wird ein JSON zurückgegeben, welcher zu einem Array konvertiert wird, um dann die neue sensorID hinten anzufügen
     // ich bin mir gar nicht sicher, ob hier ein JSON zurück gegeben wird, aber ansonsten ist es noch einfacher!
