@@ -77,126 +77,68 @@ function getCachedMeasurements (plantsData,plantIDs, nextFunction2) {
     return dynamoDb.scan({ TableName: "cache" }).promise()
         .then(function(value) {
             var cachedData = value.Items;
-            return nextFunction2(plantsData,plantIDs, cachedData, findLastMeasurement);
+            return nextFunction2(plantsData,plantIDs, cachedData, deleteCacheEntries);
         });
 }
 
 function mergeCachedData(plantsData,plantIDs, cachedData, nextFunction) {
     //sensor_IDs der "Verfügbaren" Pflanzen ermitteln
     var sensorIDs = [];
+    var cacheTimestamps = [];
     plantsData.forEach(function(item, index, array) {
         sensorIDs.push(item.plantData.sensor_ID);
     });
 
     cachedData.forEach(function (cachedDataItem, cachedDataIndex, cachedDataArray) {
         if(sensorIDs.includes(cachedDataItem.sensor_ID)) {
+            cacheTimestamps.push(cachedDataItem.timestamp);
             plantsData.forEach(function(plantsItem, plantsIndex, plantsArray) {
                 if(plantsItem.plantData.sensor_ID ===cachedDataItem.sensor_ID) {
                     cachedDataItem.measurement = JSON.parse(cachedDataItem.measurement);
                     cachedDataItem.measurement.timestamp = cachedDataItem.timestamp;
                     (plantsItem.measurements).push(cachedDataItem.measurement);
-                    //Hier müssen nun noch die "benutzten Daten aus dem Cache gelöscht werden.
                 }
             });
         }
     });
 
-    return nextFunction(plantsData);
+    return nextFunction(plantsData, plantIDs, cacheTimestamps, findLastMeasurement);
 }
 
+function deleteCacheEntries(plantsData,plantIDs, keyArray, nextFunction) {
+    var itemsArray = [];
 
-function deleteCacheEntries() {
-    var sensors= [1523381841294, 1];
-
-    var tableName = "cache";
-    dataBase.deleteItem({
-        "TableName": tableName,
-        "Key" : {
-            "timestamp": {
-                "N" : 1523381841294
+    keyArray.forEach(function (value) {
+        var deletion = {
+            DeleteRequest : {
+                Key : {
+                    'timestamp' : value
+                }
             }
-        }
-    }, function (err, data) {
-        if (err) {
-            //context.fail('FAIL:  Error deleting item from dynamodb - ' + err);
-            return "fail";
-        } else {
-            console.log("DEBUG:  deleteItem worked. ");
-            //context.succeed(data);
-            return "done";
-        }
+        };
+        itemsArray.push(deletion);
     });
 
-
-    /*
-        var params = {
-            TableName : 'icecreams',
-            Key: {
-                icecreamid: 1
-            }
-        };
-
-        var documentClient = new AWS.DynamoDB.DocumentClient();
-
-        documentClient.delete(params, function(err, data) {
-            if (err) console.log(er;
-            else console.log(data);
-        });
-    /*
-        var name = "cherry";
-        var table = "icecreams"
-        var icecreamid = 1;
-
-        var params = {
-            TableName:table,
-            Key:{
-                "icecreamid":icecreamid,
-                "name":name
-            }
-        };
-
-        dynamoDb.delete(params, function(err, data) {
-            if (err) {
-                console.error("Unable to delete item. Error JSON:", JSON.stringify(err, null, 2));
-            } else {
-                console.log("DeleteItem succeeded:", JSON.stringify(data, null, 2));
-            }
-        });
-
-
-
-
-
-
-
-        var itemsArray = [];
-
-            var deletion = {
-                DeleteRequest : {
-                    Key : {
-                        'timestamp' : 1523381841294
-                    }
-                }
-            };
-            itemsArray.push(deletion);
-
-
-        var params = {
-            RequestItems: {
-                'cache': deletion
-            }
-        };
-        dynamoDb.batchWrite(params, function(err, data) {
-                if (err) {
-                console.log('Batch delete unsuccessful ...');
-                console.log(err, err.stack); // an error occurred
-            } else {
-                console.log('Batch delete successful ...');
-                console.log(data); // successful response
-            }
-        });*/
-
+    var params = {
+        RequestItems: {
+            'cache': itemsArray
+        }
+    };
+    return dynamoDb.batchWrite(params, function(err, data) {
+        if (err) {
+            console.log('Batch delete unsuccessful ...');
+            console.log(err, err.stack); // an error occurred
+        } else {
+            console.log('Batch delete successful ...');
+            console.log(data); // successful response
+        }
+    }).promise().then(function (value) {
+        //Hier muss "savePlantData" aufgerufen werden
+        return nextFunction(plantsData);
+        return "Eintraege wurden geloescht!"
+    });
 }
+
 
 
 
@@ -211,8 +153,8 @@ function  savePlantsData(plantsData,plantIDS, callbackFunction) {
 
 function savePlantData(plantsData, plantIDs, measurementsList, callbackFunction) {
     var table = "plants";
-    var plant_ID = plantIDs[1];
-    var measurements = measurementsList[1];
+    var plant_ID = plantIDs[0];
+    var measurements = measurementsList[0];
     plantIDs.splice(0,1);
     measurementsList.splice(0,1);
 
@@ -262,6 +204,26 @@ function findLastMeasurement(plantsData) {
     });
 
     return plantsData;
+}
+
+
+//funktioniert!!!
+function testDeletion() {
+    //var sensors= [1523381841294, 1];
+
+    var params = {
+        TableName:"icecreams",
+        Key:{
+            "icecreamid":"123"
+        }
+    };
+    return dynamoDb.delete(params, function(err, data) {
+        if (err) {
+            console.error("Unable to delete item. Error JSON:", JSON.stringify(err, null, 2));
+        } else {
+            console.log("DeleteItem succeeded:", JSON.stringify(data, null, 2));
+        }
+    }).promise().then(function (value) { return "Datenloeschen abgeschlossen." });
 }
 
 /*----------------------------------------------------------------------------------------------------------------------*/
