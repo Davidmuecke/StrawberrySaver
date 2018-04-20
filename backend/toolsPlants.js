@@ -69,19 +69,19 @@ function filterPlantData(data, idsToFilter, callback) {
             resultData.push(item);
         }
     });
-    return callback(resultData, plantIDs, mergeCachedData);
+    return callback(resultData, mergeCachedData);
 }
 
 //Liest die gecacheten Daten der Datenbank.
-function getCachedMeasurements (plantsData,plantIDs, nextFunction2) {
+function getCachedMeasurements (plantsData,nextFunction2) {
     return dynamoDb.scan({ TableName: "cache" }).promise()
         .then(function(value) {
             var cachedData = value.Items;
-            return nextFunction2(plantsData,plantIDs, cachedData, deleteCacheEntries);
+            return nextFunction2(plantsData,cachedData, deleteCacheEntries);
         });
 }
 
-function mergeCachedData(plantsData,plantIDs, cachedData, nextFunction) {
+function mergeCachedData(plantsData,cachedData, nextFunction) {
     //sensor_IDs der "Verfügbaren" Pflanzen ermitteln
     var sensorIDs = [];
     var cacheTimestamps = [];
@@ -102,94 +102,101 @@ function mergeCachedData(plantsData,plantIDs, cachedData, nextFunction) {
         }
     });
 
-    return nextFunction(plantsData, plantIDs, cacheTimestamps, findLastMeasurement);
+    return nextFunction(plantsData, cacheTimestamps, savePlantsData);
 }
 
-function deleteCacheEntries(plantsData,plantIDs, keyArray, nextFunction) {
+function deleteCacheEntries(plantsData,keyArray, nextFunction) {
     var itemsArray = [];
-
-    keyArray.forEach(function (value) {
-        var deletion = {
-            DeleteRequest : {
-                Key : {
-                    'timestamp' : value
+    if(keyArray.length > 0) {
+        keyArray.forEach(function (value) {
+            var deletion = {
+                DeleteRequest: {
+                    Key: {
+                        'timestamp': value
+                    }
                 }
+            };
+            itemsArray.push(deletion);
+        });
+
+        var params = {
+            RequestItems: {
+                'cache': itemsArray
             }
         };
-        itemsArray.push(deletion);
-    });
-
-    var params = {
-        RequestItems: {
-            'cache': itemsArray
-        }
-    };
-    return dynamoDb.batchWrite(params, function(err, data) {
-        if (err) {
-            console.log('Batch delete unsuccessful ...');
-            console.log(err, err.stack); // an error occurred
-        } else {
-            console.log('Batch delete successful ...');
-            console.log(data); // successful response
-        }
-    }).promise().then(function (value) {
-        //Hier muss "savePlantData" aufgerufen werden
-        return nextFunction(plantsData);
-        return "Eintraege wurden geloescht!"
-    });
+        return dynamoDb.batchWrite(params, function (err, data) {
+            if (err) {
+                console.log('Batch delete unsuccessful ...');
+                console.log(err, err.stack); // an error occurred
+            } else {
+                console.log('Batch delete successful ...');
+                console.log(data); // successful response
+            }
+        }).promise().then(function (value) {
+            return nextFunction(plantsData, savePlantData);
+        });
+    } else {
+        return nextFunction(plantsData, savePlantData);
+    }
 }
 
 
 
 
-function  savePlantsData(plantsData,plantIDS, callbackFunction) {
+function  savePlantsData(plantsData,callbackFunction) {
     var measurementsList = [];
+    var plantIDs = []
     plantsData.forEach(function (item, index, array) {
+        plantIDs.push(item.plant_ID);
         measurementsList.push(item.measurements);
     });
-    return callbackFunction(plantsData, plantIDS, measurementsList, savePlantData)
+    return callbackFunction(plantsData, plantIDs, measurementsList, savePlantData)
 }
 
 
 function savePlantData(plantsData, plantIDs, measurementsList, callbackFunction) {
     var table = "plants";
-    var plant_ID = plantIDs[0];
-    var measurements = measurementsList[0];
-    plantIDs.splice(0,1);
-    measurementsList.splice(0,1);
+    if(plantIDs.length > 0) {
+        var plant_ID = plantIDs[0];
+        var measurements = measurementsList[0];
+        plantIDs.splice(0, 1);
+        measurementsList.splice(0, 1);
 
-    var params = {
-        TableName:table,
-        Key:{
-            "plant_ID": plant_ID
-        },
-        UpdateExpression: "set measurements = :measurements",
-        ExpressionAttributeValues:{
-            ":measurements":measurements
-        },
-        ReturnValues:"UPDATED_NEW"
-    };
+        var params = {
+            TableName: table,
+            Key: {
+                "plant_ID": plant_ID
+            },
+            UpdateExpression: "set measurements = :measurements",
+            ExpressionAttributeValues: {
+                ":measurements": JSON.stringify(measurements)
+            },
+            ReturnValues: "UPDATED_NEW"
+        };
 
-    dynamoDb.update(params, function(err, data) {
-        if (err) {
-            console.error("Unable to update item. Error JSON:", JSON.stringify(err, null, 2));
-        } else {
-            console.log("UpdateItem succeeded:", JSON.stringify(data, null, 2));
-        }
-    }).promise().then(function (value) {
-        if(plantIDs.length === 1) {
-            return callbackFunction(plantsData, plantIDs, measurementsList, findLastMeasurement);
-        } else if (plantIDs.length === 0) {
-            return callbackFunction(plantsData);
-        }
-    });
+        return dynamoDb.update(params, function (err, data) {
+            if (err) {
+                console.error("Unable to update item. Error JSON:", JSON.stringify(err, null, 2));
+            } else {
+                console.log("UpdateItem succeeded:", JSON.stringify(data, null, 2));
+            }
+        }).promise().then(function (value) {
+            if (plantIDs.length > 0) {
+                return callbackFunction(plantsData, plantIDs, measurementsList, savePlantData);
+            } else {
+                return callbackFunction(plantsData, plantIDs, measurementsList, findLastMeasurement);
+            }
+        });
+    } else {
+        return callbackFunction(plantsData);
+    }
 }
 
 
-//Ermittelt die letzte Messung für eine Plfanze und entfernt alle anderen.
+//Ermittelt die letzte Messung für eine Pflanze und entfernt alle anderen.
 function findLastMeasurement(plantsData) {
     plantsData.forEach(function (item, index, array) {
-        var lastMeasurementTimestamp = 0;
+        var lastMeasurementTimestamp = -1;
         var lastMeasurement;
 
         (item.measurements).forEach(function (item, index, array) {
