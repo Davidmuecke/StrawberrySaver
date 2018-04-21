@@ -105,10 +105,17 @@ function mergeCachedData(plantsData,cachedData, nextFunction) {
     return nextFunction(plantsData, cacheTimestamps, savePlantsData);
 }
 
+
 function deleteCacheEntries(plantsData,keyArray, nextFunction) {
+    var keyArraySplit = keyArray;
+    var numberOfDeletions = keyArray.length;
+    if(numberOfDeletions > 25) {
+        keyArraySplit = keyArray.slice(numberOfDeletions-25,numberOfDeletions);
+        keyArray.splice(numberOfDeletions-25,25);
+    }
     var itemsArray = [];
-    if(keyArray.length > 0) {
-        keyArray.forEach(function (value) {
+    if(keyArraySplit.length > 0) {
+        keyArraySplit.forEach(function (value) {
             var deletion = {
                 DeleteRequest: {
                     Key: {
@@ -133,6 +140,7 @@ function deleteCacheEntries(plantsData,keyArray, nextFunction) {
                 console.log(data); // successful response
             }
         }).promise().then(function (value) {
+            deleteCacheEntries(plantsData, keyArray, nextFunction);
             return nextFunction(plantsData, savePlantData);
         });
     } else {
@@ -145,7 +153,7 @@ function deleteCacheEntries(plantsData,keyArray, nextFunction) {
 
 function  savePlantsData(plantsData,callbackFunction) {
     var measurementsList = [];
-    var plantIDs = []
+    var plantIDs = [];
     plantsData.forEach(function (item, index, array) {
         plantIDs.push(item.plant_ID);
         measurementsList.push(item.measurements);
