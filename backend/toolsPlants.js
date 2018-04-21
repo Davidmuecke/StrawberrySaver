@@ -6,8 +6,8 @@ AWS.config.update({region: 'us-east-1'});
 var api = new ApiBuilder(),
     //Ein Document-Client (hier DB) wird instanziiert.
     dynamoDb = new AWS.DynamoDB.DocumentClient();
-// Erstellt dsa Dynamo-DB service Objekt für das erstellen neuer Tabellen.
-dataBase = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+    // Erstellt dsa Dynamo-DB service Objekt für das erstellen neuer Tabellen.
+    dataBase = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 
 /*----------------------------------------------------------------------------------------------------------------------*/
 /*                 Liefert alle Pflanzen für den aktuellen User zurück.                                                 */
@@ -73,140 +73,138 @@ function filterPlantData(data, idsToFilter, callback) {
 }
 
 //Liest die gecacheten Daten der Datenbank.
-function getCachedMeasurements (plantsData, nextFunction2) {
+function getCachedMeasurements (plantsData,nextFunction2) {
     return dynamoDb.scan({ TableName: "cache" }).promise()
         .then(function(value) {
             var cachedData = value.Items;
-            return nextFunction2(plantsData, cachedData, findLastMeasurement);
+            return nextFunction2(plantsData,cachedData, deleteCacheEntries);
         });
 }
 
-function mergeCachedData(plantsData, cachedData, nextFunction) {
+function mergeCachedData(plantsData,cachedData, nextFunction) {
     //sensor_IDs der "Verfügbaren" Pflanzen ermitteln
     var sensorIDs = [];
+    var cacheTimestamps = [];
     plantsData.forEach(function(item, index, array) {
         sensorIDs.push(item.plantData.sensor_ID);
     });
 
     cachedData.forEach(function (cachedDataItem, cachedDataIndex, cachedDataArray) {
         if(sensorIDs.includes(cachedDataItem.sensor_ID)) {
+            cacheTimestamps.push(cachedDataItem.timestamp);
             plantsData.forEach(function(plantsItem, plantsIndex, plantsArray) {
                 if(plantsItem.plantData.sensor_ID ===cachedDataItem.sensor_ID) {
                     cachedDataItem.measurement = JSON.parse(cachedDataItem.measurement);
                     cachedDataItem.measurement.timestamp = cachedDataItem.timestamp;
                     (plantsItem.measurements).push(cachedDataItem.measurement);
-                    //Hier müssen nun noch die "benutzten Daten aus dem Cache gelöscht werden.
                 }
             });
         }
     });
 
-    return nextFunction(plantsData);
+    return nextFunction(plantsData, cacheTimestamps, savePlantsData);
 }
 
 
-function deleteCacheEntries() {
-    var sensors= [1523381841294, 1];
-
-    var tableName = "cache";
-    dataBase.deleteItem({
-        "TableName": tableName,
-        "Key" : {
-            "timestamp": {
-                "N" : 1523381841294
-            }
-        }
-    }, function (err, data) {
-        if (err) {
-            //context.fail('FAIL:  Error deleting item from dynamodb - ' + err);
-            return "fail";
-        } else {
-            console.log("DEBUG:  deleteItem worked. ");
-            //context.succeed(data);
-            return "done";
-        }
-    });
-
-
-    /*
-        var params = {
-            TableName : 'icecreams',
-            Key: {
-                icecreamid: 1
-            }
-        };
-
-        var documentClient = new AWS.DynamoDB.DocumentClient();
-
-        documentClient.delete(params, function(err, data) {
-            if (err) console.log(er;
-            else console.log(data);
-        });
-    /*
-        var name = "cherry";
-        var table = "icecreams"
-        var icecreamid = 1;
-
-        var params = {
-            TableName:table,
-            Key:{
-                "icecreamid":icecreamid,
-                "name":name
-            }
-        };
-
-        dynamoDb.delete(params, function(err, data) {
-            if (err) {
-                console.error("Unable to delete item. Error JSON:", JSON.stringify(err, null, 2));
-            } else {
-                console.log("DeleteItem succeeded:", JSON.stringify(data, null, 2));
-            }
-        });
-
-
-
-
-
-
-
-        var itemsArray = [];
-
+function deleteCacheEntries(plantsData,keyArray, nextFunction) {
+    var keyArraySplit = keyArray;
+    var numberOfDeletions = keyArray.length;
+    if(numberOfDeletions > 25) {
+        keyArraySplit = keyArray.slice(numberOfDeletions-25,numberOfDeletions);
+        keyArray.splice(numberOfDeletions-25,25);
+    }
+    var itemsArray = [];
+    if(keyArraySplit.length > 0) {
+        keyArraySplit.forEach(function (value) {
             var deletion = {
-                DeleteRequest : {
-                    Key : {
-                        'timestamp' : 1523381841294
+                DeleteRequest: {
+                    Key: {
+                        'timestamp': value
                     }
                 }
             };
             itemsArray.push(deletion);
-
+        });
 
         var params = {
             RequestItems: {
-                'cache': deletion
+                'cache': itemsArray
             }
         };
-        dynamoDb.batchWrite(params, function(err, data) {
-                if (err) {
+        return dynamoDb.batchWrite(params, function (err, data) {
+            if (err) {
                 console.log('Batch delete unsuccessful ...');
                 console.log(err, err.stack); // an error occurred
             } else {
                 console.log('Batch delete successful ...');
                 console.log(data); // successful response
             }
-        });*/
-
+        }).promise().then(function (value) {
+            deleteCacheEntries(plantsData, keyArray, nextFunction);
+            return nextFunction(plantsData, savePlantData);
+        });
+    } else {
+        return nextFunction(plantsData, savePlantData);
+    }
 }
 
-function  savePlantsData() {
-    //dynamoDB upgrade Function
-    // um den Eintrag einer Pflanze zu aktualisieren.
 
+
+
+function  savePlantsData(plantsData,callbackFunction) {
+    var measurementsList = [];
+    var plantIDs = [];
+    plantsData.forEach(function (item, index, array) {
+        plantIDs.push(item.plant_ID);
+        measurementsList.push(item.measurements);
+    });
+    return callbackFunction(plantsData, plantIDs, measurementsList, savePlantData)
 }
-//Ermittelt die letzte Messung für eine Plfanze und entfernt alle anderen.
+
+
+function savePlantData(plantsData, plantIDs, measurementsList, callbackFunction) {
+    var table = "plants";
+    if(plantIDs.length > 0) {
+        var plant_ID = plantIDs[0];
+        var measurements = measurementsList[0];
+        plantIDs.splice(0, 1);
+        measurementsList.splice(0, 1);
+
+        var params = {
+            TableName: table,
+            Key: {
+                "plant_ID": plant_ID
+            },
+            UpdateExpression: "set measurements = :measurements",
+            ExpressionAttributeValues: {
+                ":measurements": JSON.stringify(measurements)
+            },
+            ReturnValues: "UPDATED_NEW"
+        };
+
+        return dynamoDb.update(params, function (err, data) {
+            if (err) {
+                console.error("Unable to update item. Error JSON:", JSON.stringify(err, null, 2));
+            } else {
+                console.log("UpdateItem succeeded:", JSON.stringify(data, null, 2));
+            }
+        }).promise().then(function (value) {
+            if (plantIDs.length > 0) {
+                return callbackFunction(plantsData, plantIDs, measurementsList, savePlantData);
+            } else {
+                return callbackFunction(plantsData, plantIDs, measurementsList, findLastMeasurement);
+            }
+        });
+    } else {
+        return callbackFunction(plantsData);
+    }
+}
+
+
+//Ermittelt die letzte Messung für eine Pflanze und entfernt alle anderen.
 function findLastMeasurement(plantsData) {
     plantsData.forEach(function (item, index, array) {
-        var lastMeasurementTimestamp = 0;
+        var lastMeasurementTimestamp = -1;
         var lastMeasurement;
 
         (item.measurements).forEach(function (item, index, array) {
@@ -221,6 +219,26 @@ function findLastMeasurement(plantsData) {
     });
 
     return plantsData;
+}
+
+
+//funktioniert!!!
+function testDeletion() {
+    //var sensors= [1523381841294, 1];
+
+    var params = {
+        TableName:"icecreams",
+        Key:{
+            "icecreamid":"123"
+        }
+    };
+    return dynamoDb.delete(params, function(err, data) {
+        if (err) {
+            console.error("Unable to delete item. Error JSON:", JSON.stringify(err, null, 2));
+        } else {
+            console.log("DeleteItem succeeded:", JSON.stringify(data, null, 2));
+        }
+    }).promise().then(function (value) { return "Datenloeschen abgeschlossen." });
 }
 
 /*----------------------------------------------------------------------------------------------------------------------*/
@@ -283,22 +301,31 @@ function insertNewPlant (plant){
 /*----------------------------------------------------------------------------------------------------------------------*/
 //Item-Attribute müssen noch angepasst werden.
 //Hier muss noch die passende Update Syntax verwendet werden --> siehe AWS-Doku
-function updatePlant (plant){
+function updatePlant (){
+
+    var table = "plants";
+    var plant_ID = "1";
+    var measurements = "{test: \"test\"}";
+
     var params = {
-        //Tabellenname
-        TableName: 'plants',
-        //Elemente die gespeichert werden sollen
-        Item: {
-            //Attribut, wird aus dem Request-Header entnommen.
-            plantData: plant.plantData,
-            //Attribut, wird aus dem Request-Header entnommen.
-            //Können wahrscheinlich einfach weggelassen werden, da sie an deiser Stelle nicht aktualisiert werden müssen.
-            measurements: plant.measurements,
-            plant_ID: plant.plantID
+        TableName:table,
+        Key:{
+            "plant_ID": plant_ID
+        },
+        UpdateExpression: "set measurements = :measurements",
+        ExpressionAttributeValues:{
+            ":measurements":measurements
+        },
+        ReturnValues:"UPDATED_NEW"
+    };
+
+    dynamoDb.update(params, function(err, data) {
+        if (err) {
+            console.error("Unable to update item. Error JSON:", JSON.stringify(err, null, 2));
+        } else {
+            console.log("UpdateItem succeeded:", JSON.stringify(data, null, 2));
         }
-    }
-    //Es wird in die Datenbank geschrieben, das Ergebnis der Operation wird zurück gegeben.
-    return dynamoDb.put(params).promise(); // returns dynamo result
+    }).promise();
 }
 /*----------------------------------------------------------------------------------------------------------------------*/
 /*                 footer: zu exportierende Funktionen.                                                                 */

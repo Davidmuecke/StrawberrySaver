@@ -15,11 +15,12 @@ var api = new ApiBuilder(),
 var toolsPlants = require("./toolsPlants.js");
 var toolsSensors = require("./toolsSensors.js");
 var newSensor = require("./newSensor");
+var toolsArduino = require("./toolsArduino.js");
 
-/*---------------------------------------------------------------------------------------------------------------------*/
-/*                          Funktion für Pflanze(n) Abfragen                                                           */
-/*---------------------------------------------------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------------------------------------------------*/
+/*  Diese Operationen behandeln die Pflanzen.                                                                           */
+/*----------------------------------------------------------------------------------------------------------------------*/
 //liefert alle Pflanzen für einen bestimmten Benutzer zurück.
 api.post('/getPlantsForUser', function (request) {
    return toolsPlants.requestDataForUser(request.context.cognitoIdentityId,"plants",toolsPlants.getUserAccessData);
@@ -42,7 +43,7 @@ api.post('/updatePlantData', function (request) {
 }, {authorizationType: 'AWS_IAM'});
 
 /*----------------------------------------------------------------------------------------------------------------------*/
-/*  Diese Operationen behandeln die Daten, die von den Sensoren geliefert werden.                                       */
+/*  Diese Operationen behandeln dem Arduino                                                                           */
 /*----------------------------------------------------------------------------------------------------------------------*/
 
 // TEST: Löscht alle gecachten Daten eines bestimmten Sensors.
