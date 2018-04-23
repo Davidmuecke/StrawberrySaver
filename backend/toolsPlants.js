@@ -301,25 +301,24 @@ function insertNewPlant (plant){
 /*----------------------------------------------------------------------------------------------------------------------*/
 //Item-Attribute müssen noch angepasst werden.
 //Hier muss noch die passende Update Syntax verwendet werden --> siehe AWS-Doku
-function updatePlant (){
+function updatePlant (plantID, plantData){
 
     var table = "plants";
-    var plant_ID = "1";
-    var measurements = "{test: \"test\"}";
+    plantData = JSON.stringify(plantData);
 
     var params = {
         TableName:table,
         Key:{
-            "plant_ID": plant_ID
+            "plant_ID": plantID
         },
-        UpdateExpression: "set measurements = :measurements",
+        UpdateExpression: "set plantData = :plantData",
         ExpressionAttributeValues:{
-            ":measurements":measurements
+            ":plantData":plantData
         },
         ReturnValues:"UPDATED_NEW"
     };
 
-    dynamoDb.update(params, function(err, data) {
+    return dynamoDb.update(params, function(err, data) {
         if (err) {
             console.error("Unable to update item. Error JSON:", JSON.stringify(err, null, 2));
         } else {

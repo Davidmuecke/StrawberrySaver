@@ -35,42 +35,22 @@ api.post('/getPlantData', function (request) {
 //speichert eine neue Pflanze in der Datenbank.
 api.post('/insertNewPlant', function (request) {
     return toolsPlants.insertNewPlant(request.body.plant);
-}, {success: 201}, {authorizationType: 'AWS_IAM'});
+}, {authorizationType: 'AWS_IAM'});
 
 //aktualisiert die Daten einer Pflanze in der Datenbank.
 api.post('/updatePlantData', function (request) {
-    return toolsPlants.updatePlant(request.body.plant);
+    return toolsPlants.updatePlant(request.body.plant_ID, request.body.plantData);
 }, {authorizationType: 'AWS_IAM'});
 
 /*----------------------------------------------------------------------------------------------------------------------*/
 /*  Diese Operationen behandeln dem Arduino                                                                           */
 /*----------------------------------------------------------------------------------------------------------------------*/
 
-// TEST: Löscht alle gecachten Daten eines bestimmten Sensors.
-api.post('/deleteCachedSensorData', function (request) {
-    return toolsPlants.deleteCacheEntries();
-}, {authorizationType: 'AWS_IAM'});
-
 
 //Speichert die Messung eines Sensors in die Datenbank
 api.post('/sensorMeasurement', function (request) {
-    var data = {
-        wifi_SSID : request.body.wifi_SSID,
-        humiditySensor : request.body.humiditySensor,
-        temperatureSensor : request.body.temperatureSensor
-    };
-    var params = {
-        //Tabellenname
-        TableName: 'cache',
-        Item: {
-            timestamp: Date.now(),
-            sensor_ID: request.body.sensorID,
-            measurement: JSON.stringify(data)
-           }
-    }
-    //Es wird in die Datenbank geschrieben, das Ergebnis der Operation wird zurück gegeben.
-    return dynamoDb.put(params).promise(); // returns dynamo result
-}, { success: 201 }); // returns HTTP status 201 - Erfolgreich erstellt.
+    return toolsArduino.sensorMeasurement(request.body, toolsArduino.requestSensorData);
+});
 
 api.post('/getCachedMeasurements', function(request) {
    return toolsPlants.getCachedMeasurements();
@@ -113,6 +93,11 @@ api.post('/getSensorData', function (request) {
 api.post('/createNewSensorItem', function (request) {
     return newSensor.createNewSensorItem(request.context.cognitoIdentityId,request.body, newSensor.getUserAccessData);
 }, {authorizationType: 'AWS_IAM'});
+
+api.post('/updateSensorConfig', function (request) {
+    return toolsSensors.updateSensorConfig(request.body.sensor_ID,request.body.configData);
+}, {authorizationType: 'AWS_IAM'});
+
 
 
 

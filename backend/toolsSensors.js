@@ -113,6 +113,26 @@ function requestSensorData (sensorID) {
 
 
 
+
+function updateSensorConfig(sensor_ID, configData) {
+    var params = {
+        TableName: "sensors",
+        Key: {
+            "sensor_ID": sensor_ID
+        },
+        UpdateExpression: "set configData = :configData",
+        ExpressionAttributeValues: {
+            ":configData": JSON.stringify(configData)
+        },
+        ReturnValues: "UPDATED_NEW"
+    };
+
+    return dynamoDb.update(params).promise().then(function (value) {
+       return value.Attributes.configData;
+    });
+}
+
+
 /*---------------------------------------------------------------------------------------------------------------------*/
 /*                            Fooder, der je nach Funktionsnamen angepasst werden muss                                 */
 /*                            Stellt die Verbindung zur accessDatabase.js Datei her                                    */
@@ -122,5 +142,6 @@ module.exports = {
     requestDataForUser: requestDataForUser,
     getUserAccessData: getUserAccessData,
     filterSensorData: filterSensorData,
-    requestSensorData: requestSensorData
+    requestSensorData: requestSensorData,
+    updateSensorConfig:updateSensorConfig
 };

@@ -110,7 +110,7 @@ function addNewSensorToUser(userID,sensorID, sensorIDList) {
             console.log("UpdateItem succeeded:", JSON.stringify(data, null, 2));
         }
     }).promise().then(function (value) {
-        return "Der Sensor" + sensorID + "wurde angelegt und dem User hinzugefügt.";
+        return "Der Sensor" + sensorID + " wurde angelegt und dem aktuellen User hinzugefügt.";
     });
 }
 

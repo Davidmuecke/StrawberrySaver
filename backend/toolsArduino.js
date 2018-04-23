@@ -12,27 +12,58 @@ dataBase = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 
 //Muss der Sensor als Benutzer registriert sein?
 //Speichert die Messung eines Sensors in die Datenbank
-api.post('/sensorMeasurement', function (request) {
-
-    //var body = JSON.parse(request.body);
+function sensorMeasurement(sensorData, callback) {
     var data = {
-        wifiSSID : request.body.wifi_SSID,
-        humiditySensor : request.body.humiditySensor,
-        temperatureSensor : request.body.temperatureSensor
+        wifiSSID : sensorData.wifi_SSID,
+        humiditySensor : sensorData.humiditySensor,
+        temperatureSensor : sensorData.temperatureSensor
     };
     var params = {
         //Tabellenname
         TableName: 'cache',
         Item: {
             timestamp: Date.now(),
-            sensor_ID: request.body.sensor_ID,
+            sensor_ID: sensorData.sensor_ID,
             measurement: JSON.stringify(data),
-            testvalue: request.body
+            testvalue: sensorData
         }
-    }
+    };
     //Es wird in die Datenbank geschrieben, das Ergebnis der Operation wird zurück gegeben.
-    return dynamoDb.put(params).promise(); // returns dynamo result
-});
+    return dynamoDb.put(params).promise().then(function (value) {
+        return callback(sensorData.sensor_ID);
+    });
+}
+
+
+function requestSensorData (sensorID) {
+    var params = {
+        TableName : 'sensors',
+        ExpressionAttributeNames:{
+            "#id": "sensor_ID",
+            "#config": "configData"
+        },
+        ProjectionExpression:"#config",
+        KeyConditionExpression: "#id = :id",
+        ExpressionAttributeValues: {
+            ":id":sensorID
+        }
+    };
+
+    return dynamoDb.query(params, function(err, data) {
+        if (err) {
+            console.log("Unable to query. Error:", JSON.stringify(err, null, 2));
+        } else {
+        }
+    }).promise()
+        .then(function(value) {
+            var item = value.Items[0];
+            var configData = JSON.parse(item.configData);
+
+            return "true," + configData.measuringInterval + "," + configData.sendInterval + "," + configData.sendOnChange;
+        });
+}
+
+
 
 //TEST: post-Request ohne Header um Arduino-Connection zu testen.
 api.post('/arduinoTest', function (request) {
@@ -51,5 +82,6 @@ api.post('/deleteCachedSensorData', function (request) {
 /*                 footer: zu exportierende Funktionen.                                                                 */
 /*----------------------------------------------------------------------------------------------------------------------*/
 module.exports = {
-    sensorMeasurement: sensorMeasurement
+    sensorMeasurement: sensorMeasurement,
+    requestSensorData: requestSensorData
 };
