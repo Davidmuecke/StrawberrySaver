@@ -1,0 +1,25 @@
+/*CSS File um das Aussehen des Impressums zu gestalten*/
+/*Autor: Rahel Illi*/
+/*Date: 23.04.2018*/
+
+/*******************************************/
+/*  CSS STYLE SHEET STRAWBEERY SAVER Impressum */
+/*******************************************/
+
+/*Äußers DIV, dessen Kinder auf "center" gesetzt sind*/
+.impressum{
+    height:100%;
+    padding-bottom: 3%;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 30px;      /*Setzt den Abstand zum Menüband fest*/
+    width: 100%
+}
+/*ENDE - Äußeres DIV*/
+
+
+/*Eingabeboxen Login, deren Breite hier auf maximal 500px gesetzt wird*/
+#impressum_name{
+    padding-top: 20px;
+}
+/*ENDE - Eingabeboxen Login*/
