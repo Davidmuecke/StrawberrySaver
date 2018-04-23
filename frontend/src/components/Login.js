@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import "./Login.css";
+import { Button, Form } from 'semantic-ui-react'
 import { Auth } from "aws-amplify";
 
 export default class Login extends Component {
@@ -43,33 +43,33 @@ export default class Login extends Component {
         return (
             <div className="Login">
                 <h1>Anmeldung</h1>
-                <form onSubmit={this.handleSubmit}>
-                    <FormGroup controlId="email" bsSize="large">
-                        <ControlLabel>Email</ControlLabel>
-                        <FormControl
+                <Form onSubmit={this.handleSubmit}>
+                    <Form.Field >
+                        <label>Email</label>
+                        <input
+                            id={"email"}
                             autoFocus
-                            type="email"
+                            type={"email"}
                             value={this.state.email}
                             onChange={this.handleChange}
                         />
-                    </FormGroup>
-                    <FormGroup controlId="password" bsSize="large">
-                        <ControlLabel>Password</ControlLabel>
-                        <FormControl
+                    </Form.Field>
+                    <Form.Field>
+                        <label>Password</label>
+                        <input
+                            id={"password"}
                             value={this.state.password}
                             onChange={this.handleChange}
-                            type="password"
+                            type={"password"}
                         />
-                    </FormGroup>
+                    </Form.Field>
                     <Button
-                        block
-                        bsSize="large"
                         disabled={!this.validateForm()}
                         type="submit"
                     >
                         Login
                     </Button>
-                </form>
+                </Form>
             </div>
         );
     }
