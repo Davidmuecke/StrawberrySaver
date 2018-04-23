@@ -41,7 +41,7 @@ export default class Login extends Component {
 
     render() {
         return (
-            <div className="Login">
+            <div className="login">
                 <h1>Anmeldung</h1>
                 <Form onSubmit={this.handleSubmit}>
                     <Form.Field >
@@ -52,6 +52,7 @@ export default class Login extends Component {
                             type={"email"}
                             value={this.state.email}
                             onChange={this.handleChange}
+                            className="login_box"
                         />
                     </Form.Field>
                     <Form.Field>
@@ -61,6 +62,7 @@ export default class Login extends Component {
                             value={this.state.password}
                             onChange={this.handleChange}
                             type={"password"}
+                            className="login_box"
                         />
                     </Form.Field>
                     <Button
