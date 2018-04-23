@@ -39,9 +39,9 @@ export default class TEST extends Component {
             response: true // OPTIONAL (return entire response object instead of response.data)
         }
         return API.get("strawberry","/hello-world",myInit ) */
-        return API.post("strawberry", "/arduinoTest", {
+        return API.post("strawberry", "/getPlantsForUser", {
             headers:{} ,
-            body: {userID: "1"}
+            body: {}
         });
     }
 

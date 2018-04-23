@@ -13,13 +13,12 @@ class LineChart extends Component{
 
     constructor(props){
         super(props);
-       var time = new Date();
        var unixtime =getURL("http://api.openweathermap.org/data/2.5/forecast?id="+this.props.cityID+"&appid="+this.props.appid)['list'][0]['dt'];
-       time.setTime(unixtime);
+       var time =new Date(unixtime*1000);
         if(this.props.type==="humidity"){
             this.state={
                 chartData:{
-                    labels:[(time.getUTCHours()-1)+":00",(time.getUTCHours()+2)+":00",(time.getUTCHours()+5)+":00",(time.getUTCHours()+8)+":00",(time.getUTCHours()+11)+":00"],
+                    labels:[(time.getUTCHours())+":00",(time.getUTCHours()+3)+":00",(time.getUTCHours()+6)+":00",(time.getUTCHours()+9)+":00",(time.getUTCHours()+12)+":00"],
                     datasets:[
                         {
                             data: [
@@ -61,7 +60,7 @@ class LineChart extends Component{
         else if(this.props.type==="temp"){
             this.state={
                 chartData:{
-                    labels:[(time.getUTCHours()-1)+":00",(time.getUTCHours()+2)+":00",(time.getUTCHours()+5)+":00",(time.getUTCHours()+8)+":00",(time.getUTCHours()+11)+":00"],
+                    labels:[(time.getUTCHours())+":00",(time.getUTCHours()+3)+":00",(time.getUTCHours()+6)+":00",(time.getUTCHours()+9)+":00",(time.getUTCHours()+12)+":00"],
                     datasets:[
                         {
                             data: [
