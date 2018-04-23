@@ -12,10 +12,9 @@ var api = new ApiBuilder(),
 /*----------------------------------------------------------------------------------------------------------------------*/
 /*  Hier werden die Requirements aufgelistet.                                                                           */
 /*----------------------------------------------------------------------------------------------------------------------*/
-var toolsPlants = require("./toolsPlants.js");
-var toolsSensors = require("./toolsSensors.js");
-var newSensor = require("./newSensor");
-var toolsArduino = require("./toolsArduino.js");
+var toolsPlants = require("./tools/toolsPlants.js");
+var toolsSensors = require("./tools/toolsSensors.js");
+var toolsArduino = require("./tools/toolsArduino.js");
 
 
 /*----------------------------------------------------------------------------------------------------------------------*/
@@ -45,37 +44,23 @@ api.post('/updatePlantData', function (request) {
 /*----------------------------------------------------------------------------------------------------------------------*/
 /*  Diese Operationen behandeln dem Arduino                                                                           */
 /*----------------------------------------------------------------------------------------------------------------------*/
-
-
 //Speichert die Messung eines Sensors in die Datenbank
 api.post('/sensorMeasurement', function (request) {
     return toolsArduino.sensorMeasurement(request.body, toolsArduino.requestSensorData);
 });
 
-api.post('/getCachedMeasurements', function(request) {
-   return toolsPlants.getCachedMeasurements();
-}, {authorizationType: 'AWS_IAM'});
-
-
 //TEST: post-Request ohne Header um Arduino-Connection zu testen.
 api.post('/arduinoTest', function (request) {
-    return request;
-}, {authorizationType: 'AWS_IAM'});
-
-/*......................................................................................................................*/
-
-
-
-
+    return toolsArduino.arduinoTest();
+});
 
 /*---------------------------------------------------------------------------------------------------------------------*/
 /*                          Funktionen für Sensor-Abfragen                                                          */
 /*  Diese Operationen behandeln die Daten die für die Sensoren ausgegeben werden sollen                                */
 /*---------------------------------------------------------------------------------------------------------------------*/
-
 //liefert alle Sensoren für einen bestimmten Benutzer zurück.
 api.post('/getSensorsForUser', function (request) {
-    return toolsSensors.requestDataForUser(request.context.cognitoIdentityId,"sensors",toolsSensors.getUserAccessData);
+    return toolsSensors.requestDataForUser(request.context.cognitoIdentityId,"sensors",toolsSensors.getSensorsForUser);
 }, {authorizationType: 'AWS_IAM'});
 
 
@@ -85,22 +70,16 @@ api.post('/getSensorData', function (request) {
 }, {authorizationType: 'AWS_IAM'});
 
 
-
 /*---------------------------------------------------------------------------------------------------------------------*/
 /*                          Funktion zum Hinzufügen von einem Sensor für einen Nutzer                                  */
 /*---------------------------------------------------------------------------------------------------------------------*/
-
-api.post('/createNewSensorItem', function (request) {
-    return newSensor.createNewSensorItem(request.context.cognitoIdentityId,request.body, newSensor.getUserAccessData);
+api.post('/createSensor', function (request) {
+    return toolsSensors.createSensor(request.context.cognitoIdentityId,request.body, toolsSensors.getUserAccessData);
 }, {authorizationType: 'AWS_IAM'});
 
 api.post('/updateSensorConfig', function (request) {
     return toolsSensors.updateSensorConfig(request.body.sensor_ID,request.body.configData);
 }, {authorizationType: 'AWS_IAM'});
-
-
-
-
 
 
 /*----------------------------------------------------------------------------------------------------------------------*/

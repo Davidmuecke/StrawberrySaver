@@ -10,6 +10,9 @@ var api = new ApiBuilder(),
 dataBase = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 
 
+/*---------------------------------------------------------------------------------------------------------------------*/
+/*                            Neue Messung in den Cache schreiben.                                                     */
+/*---------------------------------------------------------------------------------------------------------------------*/
 //Muss der Sensor als Benutzer registriert sein?
 //Speichert die Messung eines Sensors in die Datenbank
 function sensorMeasurement(sensorData, callback) {
@@ -63,25 +66,19 @@ function requestSensorData (sensorID) {
         });
 }
 
-
-
+/*---------------------------------------------------------------------------------------------------------------------*/
+/*                            Testen des Arduinos.                                                                     */
+/*---------------------------------------------------------------------------------------------------------------------*/
 //TEST: post-Request ohne Header um Arduino-Connection zu testen.
-api.post('/arduinoTest', function (request) {
+function arduinoTest() {
     return request;
-}, {authorizationType: 'AWS_IAM'});
-
-
-// TEST: Löscht alle gecachten Daten eines bestimmten Sensors.
-api.post('/deleteCachedSensorData', function (request) {
-    return toolsPlants.deleteCacheEntries();
-}, {authorizationType: 'AWS_IAM'});
-
-
+}
 
 /*----------------------------------------------------------------------------------------------------------------------*/
 /*                 footer: zu exportierende Funktionen.                                                                 */
 /*----------------------------------------------------------------------------------------------------------------------*/
 module.exports = {
     sensorMeasurement: sensorMeasurement,
-    requestSensorData: requestSensorData
+    requestSensorData: requestSensorData,
+    arduinoTest:arduinoTest
 };

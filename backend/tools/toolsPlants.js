@@ -9,9 +9,9 @@ var api = new ApiBuilder(),
     // Erstellt dsa Dynamo-DB service Objekt für das erstellen neuer Tabellen.
     dataBase = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 
-/*----------------------------------------------------------------------------------------------------------------------*/
-/*                 Liefert alle Pflanzen für den aktuellen User zurück.                                                 */
-/*----------------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------------------*/
+/*                            Gibt alle Pflanzen eines User aus.                                                       */
+/*---------------------------------------------------------------------------------------------------------------------*/
 //Gibt bestimmte Daten für einen bestimmten Benutzer zurück.
 //usderID: ID des Benutzers
 //attribute: Datenbanktabelle, die ausgelesen werden soll: plants, sensors, oder locations
@@ -149,8 +149,6 @@ function deleteCacheEntries(plantsData,keyArray, nextFunction) {
 }
 
 
-
-
 function  savePlantsData(plantsData,callbackFunction) {
     var measurementsList = [];
     var plantIDs = [];
@@ -241,9 +239,9 @@ function testDeletion() {
     }).promise().then(function (value) { return "Datenloeschen abgeschlossen." });
 }
 
-/*----------------------------------------------------------------------------------------------------------------------*/
-/*                 Liefert alle Daten einer bestimmten Pflanze zurück.                                                  */
-/*----------------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------------------*/
+/*                            Gibt alle Daten einer Pflanze zurück.                                                    */
+/*---------------------------------------------------------------------------------------------------------------------*/
 function getPlantData(plantID) {
     var params = {
         //Name der Tabelle
@@ -274,9 +272,9 @@ function getPlantData(plantID) {
 };
 
 
-/*----------------------------------------------------------------------------------------------------------------------*/
-/*                 Legt eine neue Pflanze in der Datenbank an.                                                          */
-/*----------------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------------------*/
+/*                            Neue Pflanze anlegen.                                                                    */
+/*---------------------------------------------------------------------------------------------------------------------*/
 //Item-Attribute müssen noch angepasst werden.
 function insertNewPlant (plant){
     var params = {
@@ -296,9 +294,9 @@ function insertNewPlant (plant){
 }
 
 
-/*----------------------------------------------------------------------------------------------------------------------*/
-/*                 Aktualisiert die Daten einer Pflanze in der Datenbank.                                               */
-/*----------------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------------------*/
+/*                            Daten einer Pflanze aktualisieren.                                                       */
+/*---------------------------------------------------------------------------------------------------------------------*/
 //Item-Attribute müssen noch angepasst werden.
 //Hier muss noch die passende Update Syntax verwendet werden --> siehe AWS-Doku
 function updatePlant (plantID, plantData){
