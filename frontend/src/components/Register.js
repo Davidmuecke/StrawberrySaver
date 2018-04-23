@@ -1,6 +1,7 @@
 import React, { Component} from "react";
 import { Button, Form } from 'semantic-ui-react'
 import { Auth } from "aws-amplify";
+import "./Register.css";
 
 export default class Register extends Component {
     constructor(props) {
@@ -30,6 +31,7 @@ export default class Register extends Component {
             this.state.password === this.state.confirmPassword
         );
     }
+
 
     validateConfirmationForm() {
         return this.state.confirmationCode.length > 0;
@@ -85,7 +87,7 @@ export default class Register extends Component {
 
     renderConfirmationForm() {
         return (
-            <div>
+            <div className="registration">
                 <h1>Registrierung bestätigen</h1>
                 <Form onSubmit={this.handleConfirmationSubmit}>
                     <Form.Field >
@@ -96,6 +98,7 @@ export default class Register extends Component {
                             type="tel"
                             value={this.state.confirmationCode}
                             onChange={this.handleChange}
+                            className="registration_box"
                         />
                     </Form.Field>
                     <Button
@@ -109,7 +112,7 @@ export default class Register extends Component {
 
     renderForm() {
         return (
-            <div>
+            <div className="registration">
                 <h1>Registrierung</h1>
                 <Form onSubmit={this.handleSubmit}>
                     <Form.Field  >
@@ -120,6 +123,7 @@ export default class Register extends Component {
                             type="email"
                             value={this.state.email}
                             onChange={this.handleChange}
+                            className="registration_box"
                         />
                     </Form.Field>
                     <Form.Field  >
@@ -129,6 +133,7 @@ export default class Register extends Component {
                             type="text"
                             value={this.state.given_name}
                             onChange={this.handleChange}
+                            className="registration_box"
                         />
                     </Form.Field>
                     <Form.Field  >
@@ -138,6 +143,7 @@ export default class Register extends Component {
                             type="text"
                             value={this.state.family_name}
                             onChange={this.handleChange}
+                            className="registration_box"
                         />
                     </Form.Field>
                     <Form.Field>
@@ -147,6 +153,7 @@ export default class Register extends Component {
                             value={this.state.password}
                             onChange={this.handleChange}
                             type="password"
+                            className="registration_box"
                         />
                     </Form.Field>
                     <Form.Field >
@@ -156,6 +163,7 @@ export default class Register extends Component {
                             value={this.state.confirmPassword}
                             onChange={this.handleChange}
                             type="password"
+                            className="registration_box"
                         />
                     </Form.Field>
                     <Button
