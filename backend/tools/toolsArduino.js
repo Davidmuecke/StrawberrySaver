@@ -9,7 +9,6 @@ var api = new ApiBuilder(),
 // Erstellt dsa Dynamo-DB service Objekt für das erstellen neuer Tabellen.
 dataBase = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 
-
 /*---------------------------------------------------------------------------------------------------------------------*/
 /*                            Neue Messung in den Cache schreiben.                                                     */
 /*---------------------------------------------------------------------------------------------------------------------*/
@@ -36,7 +35,6 @@ function sensorMeasurement(sensorData, callback) {
         return callback(sensorData.sensor_ID);
     });
 }
-
 
 function requestSensorData (sensorID) {
     var params = {

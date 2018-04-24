@@ -324,6 +324,20 @@ function updatePlant (plantID, plantData){
         }
     }).promise();
 }
+
+/*---------------------------------------------------------------------------------------------------------------------*/
+/*                                         Verknüpft Sensor mit Pflanze.                                               */
+/*---------------------------------------------------------------------------------------------------------------------*/
+function connectSensorWithPlant(sensorID, plantID, callback) {
+
+    /*
+    1. Sensor-Daten des zu bearbeitetenden Sensors abfragen
+    2. Sensor-Daten updaten (SensorID in "configData" einfügen).
+
+    Evtl. Diesen Prozess in das Anlegen einer Pflanze integrieren.
+     */
+}
+
 /*----------------------------------------------------------------------------------------------------------------------*/
 /*                 footer: zu exportierende Funktionen.                                                                 */
 /*----------------------------------------------------------------------------------------------------------------------*/
@@ -334,5 +348,6 @@ module.exports = {
     insertNewPlant: insertNewPlant,
     updatePlant: updatePlant,
     getCachedMeasurements: getCachedMeasurements,
-    deleteCacheEntries:deleteCacheEntries
+    deleteCacheEntries:deleteCacheEntries,
+    connectSensorWithPlant: connectSensorWithPlant
 };

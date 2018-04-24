@@ -25,7 +25,6 @@ api.post('/getPlantsForUser', function (request) {
    return toolsPlants.requestDataForUser(request.context.cognitoIdentityId,"plants",toolsPlants.getUserAccessData);
 }, {authorizationType: 'AWS_IAM'});
 
-
 //liefert alle Daten einer bestimmten Pflanze zurück.
 api.post('/getPlantData', function (request) {
     return toolsPlants.getPlantData(request.body.plantID);
@@ -60,27 +59,27 @@ api.post('/arduinoTest', function (request) {
 /*---------------------------------------------------------------------------------------------------------------------*/
 //liefert alle Sensoren für einen bestimmten Benutzer zurück.
 api.post('/getSensorsForUser', function (request) {
-    return toolsSensors.requestDataForUser(request.context.cognitoIdentityId,"sensors",toolsSensors.getSensorsForUser);
+    return toolsSensors.requestSensorsForUser(request.context.cognitoIdentityId);
 }, {authorizationType: 'AWS_IAM'});
 
+api.post('/getFreeSensorsForUser', function (request) {
+    return toolsSensors.requestFreeSensorsForUser(request.context.cognitoIdentityId)
+}, {authorizationType: 'AWS_IAM'});
 
 //liefert alle Sensoren für einen bestimmten Benutzer zurück.
 api.post('/getSensorData', function (request) {
     return toolsSensors.requestSensorData(request.body.sensor_ID);
 }, {authorizationType: 'AWS_IAM'});
 
-
-/*---------------------------------------------------------------------------------------------------------------------*/
-/*                          Funktion zum Hinzufügen von einem Sensor für einen Nutzer                                  */
-/*---------------------------------------------------------------------------------------------------------------------*/
+//Erstellt einen neuen Sensor für den aktuellen Benutzer.
 api.post('/createSensor', function (request) {
-    return toolsSensors.createSensor(request.context.cognitoIdentityId,request.body, toolsSensors.getUserAccessData);
+    return toolsSensors.createSensor(request.context.cognitoIdentityId,request.body);
 }, {authorizationType: 'AWS_IAM'});
 
+//Aktualisiert die Konfiguration eines Sensors.
 api.post('/updateSensorConfig', function (request) {
     return toolsSensors.updateSensorConfig(request.body.sensor_ID,request.body.configData);
 }, {authorizationType: 'AWS_IAM'});
-
 
 /*----------------------------------------------------------------------------------------------------------------------*/
 /*  footer: die hier zu exportierenden module.                                                                          */
