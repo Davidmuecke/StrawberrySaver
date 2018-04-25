@@ -76,7 +76,7 @@ class App extends Component{
             <div>
                 {!this.state.isAuthenticating&&
                 <div>
-                    <div><NavigationBar childProps={childProps} /></div>
+                    <div style={{height:"100%"}}><NavigationBar childProps={childProps} /></div>
                     <Routes childProps={childProps}/>
                 </div>
                 }
