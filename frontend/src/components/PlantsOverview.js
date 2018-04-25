@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import "./PlantsOverview.css";
 import {Grid,
         Segment,
         Button,
@@ -69,7 +70,7 @@ export default class PlantsOverview extends Component{
             <Container fluid={true}>
             <Grid>
                 <Grid.Column width={16} stretched>
-                    <Header as='h1'>Uebersicht</Header>
+                    <Header><h1 id="headerUebersicht">Übersicht</h1></Header>
                     <p>Hier können sie alle registrierten Pflanzen einsehen, klicken Sie auf Details umd die Detailseite der jeweiligen Pflanze aufzurufen</p>
                 </Grid.Column>
                 {rows}
@@ -88,7 +89,7 @@ const Plant = (image,sorte, id, einpflanzungszeitpunkt,erstellungszeitpunkt,geog
     return (
         <Grid.Column width={8} stretched >
             <Segment>
-                <img style={{float:"right"}} src={image} alt={""}/>
+                <img id="plantImage"  src={image} alt={""}/>
                 <h2> Art: {sorte}</h2>
                 <h4> Einpflanzungszeitpunkt: {einpflanzungszeitpunkt}</h4>
                 <h4>Ort: {geographischerOrt}</h4>
