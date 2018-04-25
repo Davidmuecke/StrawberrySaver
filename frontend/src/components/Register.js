@@ -1,5 +1,5 @@
 import React, { Component} from "react";
-import { Button, Form } from 'semantic-ui-react'
+import { Button, Form } from 'semantic-ui-react';
 import { Auth } from "aws-amplify";
 
 export default class Register extends Component {

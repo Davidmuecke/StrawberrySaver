@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { API } from "aws-amplify";
-import {Auth} from "aws-amplify/lib/index";
+
 
 
 export default class TEST extends Component {
@@ -13,19 +13,6 @@ export default class TEST extends Component {
         };
     }
 
-    deleteUser = async event => {
-        event.preventDefault();
-
-        let user = await Auth.currentAuthenticatedUser();
-        await user.deleteUser(function (err,succ){
-            console.log(err + ":"+succ);
-            if(succ !== null){
-                this.props.history.push("/login");
-            }
-
-        });
-
-    }
     handleSubmit = async event => {
         event.preventDefault();
 
@@ -67,7 +54,6 @@ export default class TEST extends Component {
                 <button onClick={this.handleSubmit}>Test API Call</button>
                 <p>Answer:</p>
                 <p>{this.state.answer}</p>
-                <button onClick={this.deleteUser}>!!DELETE THIS USER!!</button>
             </div>
         );
     }

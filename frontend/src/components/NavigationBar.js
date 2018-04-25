@@ -23,7 +23,8 @@ export default class NavigationBar extends  Component{
             case "/login":
                 this.state={ activeItem:"login"};
                 break;
-
+            default:
+                this.state={ activeItem:"impressum"};
         }
 
     }
@@ -58,6 +59,7 @@ export default class NavigationBar extends  Component{
                                         :<div/> }
                                 </Menu.Item>
                                 <Menu.Item as={Link} to="/test" name='test' active={activeItem === 'test'} onClick={this.handleItemClick} />
+                            <Menu.Item as={Link} to="/user" name='user' active={activeItem === 'user'} onClick={this.handleItemClick} />
                                 <Menu.Item as={Link} to="/impressum" name='impressum' active={activeItem === 'impressum'} onClick={this.handleItemClick} />
                                 <Menu.Item name='logout' active={activeItem ==='logout'} onClick={this.handleItemClick}/>
 
