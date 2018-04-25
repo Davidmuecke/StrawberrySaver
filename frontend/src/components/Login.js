@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./Login.css";
 import { Button, Form,Container,Grid } from 'semantic-ui-react'
 import { Auth } from "aws-amplify";
+import {API} from "aws-amplify/lib/index";
 
 export default class Login extends Component {
     constructor(props) {
@@ -14,6 +15,18 @@ export default class Login extends Component {
         if(this.props.isAuthenticated === true){
             this.props.history.push("/");
         }
+    }
+
+    integrateUser() {
+        /* let myInit = { // OPTIONAL
+             headers: {}, // OPTIONAL
+             response: true // OPTIONAL (return entire response object instead of response.data)
+         }
+         return API.get("strawberry","/hello-world",myInit ) */
+        return API.post("strawberry", "/checkUserData", {
+            headers:{} ,
+            body: {}
+        });
     }
 
     validateForm() {
@@ -33,6 +46,8 @@ export default class Login extends Component {
             await Auth.signIn(this.state.email, this.state.password).then(x => console.log(x));
             console.log(Auth.currentSession());
             this.props.userHasAuthenticated(true);
+            let x = await this.integrateUser();
+            console.log(x);
             this.props.history.push("/");
         } catch (e) {
             alert(e.message);
