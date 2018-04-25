@@ -5,21 +5,73 @@ import {Grid,
         Header,
         Container
         } from "semantic-ui-react";
-import strawberry from '../img/strawbarry.png';
 import gurke from '../img/gurke.png';
-import haze from '../img/supersilverhaze.png';
+import {API} from "aws-amplify/lib/index";
+import { Link } from "react-router-dom";
 export default class PlantsOverview extends Component{
+    constructor(props) {
+        super(props);
+        this.state = {
+            isLoading: false,
+            content: "Hallo",
+            answer: [["test"],["Test2"]]
+        };
+
+        this.handleSubmit();
+
+    }
+
+   async handleSubmit() {
+
+        try {
+            let reply = await this.arduinoTest({});
+            console.log(reply);
+            //bearbeitung zu Array
+            let outputArray =[];
+            let nameArray=[];
+            for(let i=0;i<reply.length; i++)
+            {
+                   outputArray.push([reply[i].plantData.sort,reply[i].plantData.plantationTime,reply[i].plantData.initialTimePlant,reply[i].plantData.location_ID])
+                nameArray.push(reply[i].plantData.sort);
+            }
+            this.setState({answer:outputArray});
+            this.props.callback(nameArray);
+            //[[reply[0].plantData.sortreply[0].plantData.plantationTime,reply[0].plantData.initialTimePlant,reply[0].plantData.local_position_ID,reply[0].plantData.location_ID],reply[1],reply[2]]});
+            //this.setState({answer: reply});
+           // Plant(strawberry,reply[0].plantData.sort,0,reply[0].plantData.plantationTime,reply[0].plantData.initialTimePlant,reply[0].plantData.local_position_ID,reply[0].plantData.location_ID)
+        } catch (e) {
+            alert(e);
+        }
+    };
+    arduinoTest(note) {
+        /* let myInit = { // OPTIONAL
+             headers: {}, // OPTIONAL
+             response: true // OPTIONAL (return entire response object instead of response.data)
+         }
+         return API.get("strawberry","/hello-world",myInit ) */
+        return API.post("strawberry", "/getPlantsForUser", {
+            headers:{} ,
+            body: {}
+        });
+    }
+
     render(){
+
+        var rows=[];
+        for(let i=0;i<this.state.answer.length;i++)
+        {
+            rows.push(Plant(gurke,this.state.answer[i][0], i,this.state.answer[i][1],this.state.answer[i][2],this.state.answer[i][3],this.state.answer[i][3],1,"22°"));
+        }
         return (
+
             <Container fluid={true}>
             <Grid>
                 <Grid.Column width={16} stretched>
                     <Header as='h1'>Uebersicht</Header>
                     <p>Hier können sie alle registrierten Pflanzen einsehen, klicken Sie auf Details umd die Detailseite der jeweiligen Pflanze aufzurufen</p>
                 </Grid.Column>
-                {Plant(strawberry,"Erdbeere", 0,"01.04.18","01.04.18","Stuttgart","draussen",0,"20°")}
-                {Plant(gurke,"Gurke", 1,"01.04.18","01.04.18","Stuttgart","drinnen",1,"22°")}
-                {Plant(haze,"Super Silver Haze", 2,"01.05.18","01.04.18","Duisburg","draussen",2,"25°")}
+                {rows}
+                <p>{console.log(this.state.answer)}</p>
             </Grid>
             </Container>
         )
@@ -41,7 +93,7 @@ const Plant = (image,sorte, id, einpflanzungszeitpunkt,erstellungszeitpunkt,geog
                 <h4>Temperatur: {temperaturwert}</h4>
 
                 <br />
-                <Button color="blue" onClick={this.handleClick}> Details </Button>
+                <Button as={Link} to={"/plantDetail?name="+sorte} color="blue" onClick={this.handleClick}> Details </Button>
             </Segment>
         </Grid.Column>
     );

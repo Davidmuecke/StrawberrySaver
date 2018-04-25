@@ -18,8 +18,8 @@ export default class ThermometerChart extends Component {
     render(){
         return (
             <div className="Thermometerchart" >
-                <h3>Aktuelle Werte:</h3>
-                <div style={{float:"left",width:"100px",height:"335px"}}>
+                <h2>Aktuelle Werte:</h2>
+                <div style={{float:"left",width:"100px",height:"295px"}}>
                 <Thermometer current={this.current}
                 />
                 </div>

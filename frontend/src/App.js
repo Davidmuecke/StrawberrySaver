@@ -15,7 +15,8 @@ class App extends Component{
 
         this.state = {
             isAuthenticated: false,
-            isAuthenticating: true
+            isAuthenticating: true,
+            names:""
         };
     }
 
@@ -56,19 +57,26 @@ class App extends Component{
         this.userHasAuthenticated(false);
         this.props.history.push("/login");
     };
-
+     getNames= (plantNames)=>{
+             this.setState({names:plantNames});
+    };
     render() {
+
+
         const childProps = {
             isAuthenticated: this.state.isAuthenticated,
             userHasAuthenticated: this.userHasAuthenticated,
-            handleLogout: this.handleLogout
+            handleLogout: this.handleLogout,
+            callback: this.getNames,
+            names:this.state.names,
+            pathname:this.props.location.pathname
         };
+
         return (
             <div>
                 {!this.state.isAuthenticating&&
                 <div>
-                    <h1>Menüleiste</h1>
-                    <div><NavigationBar childProps={childProps}/></div>
+                    <div><NavigationBar childProps={childProps} /></div>
                     <Routes childProps={childProps}/>
                 </div>
                 }
