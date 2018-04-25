@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { API } from "aws-amplify";
+import "./style_test.css";
 
 
 
@@ -49,11 +50,13 @@ export default class TEST extends Component {
 
     render() {
         return (
+            <div id="seite">
             <div className="Test">
                 <h1>Test</h1>
                 <button onClick={this.handleSubmit}>Test API Call</button>
                 <p>Answer:</p>
                 <p>{this.state.answer}</p>
+            </div>
             </div>
         );
     }
