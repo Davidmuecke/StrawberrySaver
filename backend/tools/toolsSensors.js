@@ -33,7 +33,7 @@ function getSensorsForUser (userID) {
             };
             return dynamoDb.query(params).promise().then(function(value) {
                 var resultData = [];
-                if (typeof value.Items[0] === 'undefined' || value.Items[0] === null) {
+                if (typeof value.Items[0] !== 'undefined' && value.Items[0] !== null) {
                     var idsToFilter = value.Items[0].sensors;
                     var sensorIDs = idsToFilter.split(",");
 
@@ -71,7 +71,7 @@ function getFreeSensorsForUser (userID) {
             };
             return dynamoDb.query(params).promise().then(function(value) {
                 var resultData = [];
-                if (typeof value.Items[0] === 'undefined' || value.Items[0] === null) {
+                if (typeof value.Items[0] !== 'undefined' && value.Items[0] !== null) {
                     var result = value.Items[0].sensors;
                     var sensorIDs = result.split(",");
 

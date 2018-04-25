@@ -45,14 +45,14 @@ function getUserAccessData (userID,items, attribute) {
     var accessString = "value.Items[0]." + attribute;
     return dynamoDb.query(params).promise().then(function(value) {
         var result = eval(accessString);
-        return filterPlantData(items,result,getCachedMeasurements);
+        return filterPlantData(items,result);
     });
 }
 
 //Filtert die für den User passenden Pflanzen heraus.
-function filterPlantData(data, idsToFilter, callback) {
+function filterPlantData(data, idsToFilter) {
     var plantIDs = []
-    if (typeof idsToFilter === 'undefined' || idsToFilter === null) {
+    if (typeof idsToFilter !== 'undefined' && idsToFilter !== null) {
         plantIDs = idsToFilter.split(",");
     }
     var resultData = [];
@@ -132,6 +132,22 @@ function deleteCacheEntries(plantsData,keyArray) {
     } else {
         return savePlantsData(plantsData);
     }
+}
+
+//Löscht alle Messwerte, die älter als 24 Stunden sind.
+function deleteOldMeasurements(plantsData) {
+    plantsData.forEach(function (plantItem) {
+        var currentTime = Date.now();
+        var delteDate = currentTime - 86400000;
+        var lastMeasurement;
+
+        (plantItem.measurements).forEach(function (measurementItem, index) {
+            if(item.timestamp <= delteDate) {
+                delete measurementItem.measurements[index];
+            }
+        });
+    });
+    return plantsData;
 }
 
 //Aktualisiert die Daten der Pflanzen des Benutzers in der Datenbank.
@@ -245,7 +261,6 @@ function createPlant (userID, plantData){
             }
         };
         return dynamoDb.query(paramsQuery).promise().then(function(value) {
-
             var configData = JSON.parse(value.Items[0].configData);
             configData.plant_ID = plant_ID;
             var paramsUpdate = {
@@ -274,8 +289,10 @@ function createPlant (userID, plantData){
                     }
                 };
                 return dynamoDb.query(userAccessParams).promise().then(function(value) {
-
-                    var plantsIDList = value.Items[0].plants;
+                    var plantsIDList = "";
+                    if (typeof value.Items[0].plants !== 'undefined' && value.Items[0].plants !== null) {
+                        plantsIDList = value.Items[0].plants;
+                    }
                     plantsIDList = plantsIDList + "," + plant_ID;
 
                     var updatePlantListParams = {
