@@ -9,16 +9,22 @@ function getURL(url) {
 }
 
 export default class ThermometerChart extends Component {
+    constructor(props){
+        super(props);
+        this.styleType[Math.round(this.props.temp/2.3)]="green";
+        console.log(this.props.temp/2.3);
+    }
 //aktuelle Temperatur, die -268,15 entstehen aus der Umrechnung von Kelvin in Celsius sowie die Transformation in das Thermometer(Das geht intern von 0 bis 35
     current=  getURL("http://api.openweathermap.org/data/2.5/weather?id="+this.props.cityID+"&appid="+this.props.appid)['main']['temp']-273.15;
     styleType= ["red","red","red","red","red",
-        "red","red","red","green","green",
-        "green","red","red","red","red"];
+        "red","red","red","red","red",
+        "red","red","red","red","red"];
+
 
     render(){
         return (
             <div className="Thermometerchart" >
-                <h2>Aktuelle Werte:</h2>
+                <h2>Aktuelle Wetterdaten:</h2>
                 <div style={{float:"left",width:"100px",height:"295px"}}>
                 <Thermometer current={this.current}
                 />

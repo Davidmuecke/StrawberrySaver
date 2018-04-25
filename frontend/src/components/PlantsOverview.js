@@ -31,11 +31,13 @@ export default class PlantsOverview extends Component{
             let nameArray=[];
             for(let i=0;i<reply.length; i++)
             {
-                   outputArray.push([reply[i].plantData.sort,reply[i].plantData.plantationTime,reply[i].plantData.initialTimePlant,reply[i].plantData.location_ID])
+                   outputArray.push([reply[i].plantData.sort,reply[i].plantData.plantationTime,reply[i].plantData.initialTimePlant,reply[i].plantData.location_ID,
+                       reply[i].measurement.temperatureSensor,reply[i].plantData.perfectTemperature,reply[i].plantData.temperatureScopeGreen,reply[i].plantData.temperatureScopeYellow]);
                 nameArray.push(reply[i].plantData.sort);
             }
             this.setState({answer:outputArray});
             this.props.callback(nameArray);
+            this.props.getPlants(outputArray);
             //[[reply[0].plantData.sortreply[0].plantData.plantationTime,reply[0].plantData.initialTimePlant,reply[0].plantData.local_position_ID,reply[0].plantData.location_ID],reply[1],reply[2]]});
             //this.setState({answer: reply});
            // Plant(strawberry,reply[0].plantData.sort,0,reply[0].plantData.plantationTime,reply[0].plantData.initialTimePlant,reply[0].plantData.local_position_ID,reply[0].plantData.location_ID)
@@ -93,7 +95,7 @@ const Plant = (image,sorte, id, einpflanzungszeitpunkt,erstellungszeitpunkt,geog
                 <h4>Temperatur: {temperaturwert}</h4>
 
                 <br />
-                <Button as={Link} to={"/plantDetail?name="+sorte} color="blue" onClick={this.handleClick}> Details </Button>
+                <Button as={Link} to={"/plantDetail?name="+id} color="blue" onClick={this.handleClick}> Details </Button>
             </Segment>
         </Grid.Column>
     );

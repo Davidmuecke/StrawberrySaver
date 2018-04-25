@@ -51,9 +51,9 @@ export default class NavigationBar extends  Component{
                                     <strong>Pflanzen</strong>
                                     {activeItem==="uebersicht"?
                                     <Menu.Menu >
-                                        <Menu.Item as={Link} to={"/plantDetail?name="+this.props.childProps.names[0]} name={this.props.childProps.names[0]} active={activeItem === this.props.childProps.names[0]} onClick={this.handleItemClick}/>
-                                        <Menu.Item as={Link} to={"/plantDetail?name="+this.props.childProps.names[1]} name={this.props.childProps.names[1]} active={activeItem === this.props.childProps.names[1]} onClick={this.handleItemClick}/>
-                                        <Menu.Item as={Link} to={"/plantDetail?name="+this.props.childProps.names[2]} name={this.props.childProps.names[2]} active={activeItem === this.props.childProps.names[2]} onClick={this.handleItemClick}/>
+                                        <Menu.Item as={Link} to={"/plantDetail?name="+0} name={this.props.childProps.names[0]} active={activeItem === this.props.childProps.names[0]} onClick={this.handleItemClick}/>
+                                        <Menu.Item as={Link} to={"/plantDetail?name="+1} name={this.props.childProps.names[1]} active={activeItem === this.props.childProps.names[1]} onClick={this.handleItemClick}/>
+                                        <Menu.Item as={Link} to={"/plantDetail?name="+2} name={this.props.childProps.names[2]} active={activeItem === this.props.childProps.names[2]} onClick={this.handleItemClick}/>
                                     </Menu.Menu>
                                         :<div/> }
                                 </Menu.Item>

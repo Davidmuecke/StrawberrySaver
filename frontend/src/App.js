@@ -16,7 +16,8 @@ class App extends Component{
         this.state = {
             isAuthenticated: false,
             isAuthenticating: true,
-            names:""
+            names:"",
+            plants:""
         };
     }
 
@@ -60,6 +61,9 @@ class App extends Component{
      getNames= (plantNames)=>{
              this.setState({names:plantNames});
     };
+     getPlants=(plantArray)=>{
+         this.setState({plants:plantArray});
+     };
     render() {
 
 
@@ -69,7 +73,9 @@ class App extends Component{
             handleLogout: this.handleLogout,
             callback: this.getNames,
             names:this.state.names,
-            pathname:this.props.location.pathname
+            pathname:this.props.location.pathname,
+            getPlants: this.getPlants,
+            plants: this.state.plants
         };
 
         return (
