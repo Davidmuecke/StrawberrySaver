@@ -4,6 +4,8 @@ import Routes from "./Routes";
 import {withRouter } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import NavigationBar from "./components/NavigationBar";
+import "./components/style_test.css";
+import MenuLeft from "./components/menu_test";
 
 
 class App extends Component{
@@ -52,12 +54,12 @@ class App extends Component{
         this.userHasAuthenticated(false);
         this.props.history.push("/login");
     };
-     getNames= (plantNames)=>{
-             this.setState({names:plantNames});
+    getNames= (plantNames)=>{
+        this.setState({names:plantNames});
     };
-     getPlants=(plantArray)=>{
-         this.setState({plants:plantArray});
-     };
+    getPlants=(plantArray)=>{
+        this.setState({plants:plantArray});
+    };
     render() {
 
 
@@ -76,7 +78,7 @@ class App extends Component{
             <div>
                 {!this.state.isAuthenticating&&
                 <div>
-                    <div style={{height:"100%"}}><NavigationBar childProps={childProps} /></div>
+                    <div style={{height:"100%"}}><MenuLeft childProps={childProps} /></div>
                     <Routes childProps={childProps}/>
                 </div>
                 }

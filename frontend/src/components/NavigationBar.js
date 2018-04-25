@@ -48,18 +48,18 @@ export default class NavigationBar extends  Component{
                     <Menu vertical style={{float:"left"}}>
                         <Menu.Item>
                             <div id="menu_header">
-                            <Menu.Header as={Menu.Item}><text class="font_menu">StrawBerrySaver</text></Menu.Header>
+                                <Menu.Header as={Menu.Item}><text class="font_menu">StrawBerrySaver</text></Menu.Header>
                             </div>
-                                <Menu.Item as={Link} to="/" name='uebersicht' active={activeItem === 'uebersicht'} onClick={this.handleItemClick}>
-                                    <text class="font_menu">Pflanzen</text>
-                                    {activeItem==="uebersicht"?
+                            <Menu.Item as={Link} to="/" name='uebersicht' active={activeItem === 'uebersicht'} onClick={this.handleItemClick}>
+                                <text class="font_menu">Pflanzen</text>
+                                {activeItem==="uebersicht"?
                                     <Menu.Menu>
                                         <Menu.Item as={Link} to={"/plantDetail?name="+0} name={this.props.childProps.names[0]} active={activeItem === this.props.childProps.names[0]} onClick={this.handleItemClick}/>
                                         <Menu.Item as={Link} to={"/plantDetail?name="+1} name={this.props.childProps.names[1]} active={activeItem === this.props.childProps.names[1]} onClick={this.handleItemClick}/>
                                         <Menu.Item as={Link} to={"/plantDetail?name="+2} name={this.props.childProps.names[2]} active={activeItem === this.props.childProps.names[2]} onClick={this.handleItemClick}/>
                                     </Menu.Menu>
-                                        :<div/> }
-                                </Menu.Item>
+                                    :<div/> }
+                            </Menu.Item>
                             <Menu.Item as={Link} to="/test" name='test' active={activeItem === 'test'} onClick={this.handleItemClick}>
                                 <text class="font_menu">Test</text>
                             </Menu.Item>
@@ -75,7 +75,7 @@ export default class NavigationBar extends  Component{
 
                         </Menu.Item>
                     </Menu>
-                : <Menu vertical style={{float:"left"}}>
+                    : <Menu horizontal style={{float:"left"}}>
                         <Menu.Item as={Link} to="/login" name='login' active={activeItem === 'login'} onClick={this.handleItemClick}>
                             <text class="font_menu">Login</text>
                         </Menu.Item>

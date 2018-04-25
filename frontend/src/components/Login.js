@@ -3,6 +3,7 @@ import "./Login.css";
 import { Button, Form,Container,Grid } from 'semantic-ui-react'
 import { Auth } from "aws-amplify";
 import {API} from "aws-amplify/lib/index";
+import "./style_test.css";
 
 export default class Login extends Component {
     constructor(props) {
@@ -56,6 +57,7 @@ export default class Login extends Component {
 
     render() {
         return (
+            <div id="seite">
             <div className="login">
                     <Grid>
                         <Grid.Column centered>
@@ -95,6 +97,7 @@ export default class Login extends Component {
                         </Grid.Row>
                         </Grid.Column>
                     </Grid>
+            </div>
             </div>
         );
     }

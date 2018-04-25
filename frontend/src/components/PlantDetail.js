@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import ThermometerChart from "./ThermometerChart";
 import ForecastMenu from "./ForecastMenu";
 import { Container,Grid,Segment,Header } from "semantic-ui-react";
-
+import "./style_test.css";
 
 
 

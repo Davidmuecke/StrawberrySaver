@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import "./PlantsOverview.css";
+import "./style_test.css";
+
 import {Grid,
         Segment,
         Button,
@@ -66,7 +68,7 @@ export default class PlantsOverview extends Component{
             rows.push(Plant(gurke,this.state.answer[i][0], i,this.state.answer[i][1],this.state.answer[i][2],this.state.answer[i][3],this.state.answer[i][3],1,"22°"));
         }
         return (
-
+            <div id="seite">
             <Container fluid={true}>
             <Grid>
                 <Grid.Column width={16} stretched>
@@ -77,6 +79,8 @@ export default class PlantsOverview extends Component{
                 <p>{console.log(this.state.answer)}</p>
             </Grid>
             </Container>
+            </div>
+
         )
     }
 
