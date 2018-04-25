@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./Login.css";
-import { Button, Form } from 'semantic-ui-react'
+import { Button, Form,Container,Grid } from 'semantic-ui-react'
 import { Auth } from "aws-amplify";
 
 export default class Login extends Component {
@@ -42,7 +42,12 @@ export default class Login extends Component {
     render() {
         return (
             <div className="login">
+                    <Grid>
+                        <Grid.Column centered>
+                        <Grid.Row>
                 <h1>Anmeldung</h1>
+                        </Grid.Row>
+                        <Grid.Row>
                 <Form onSubmit={this.handleSubmit}>
                     <Form.Field >
                         <label>Email</label>
@@ -72,6 +77,9 @@ export default class Login extends Component {
                         Login
                     </Button>
                 </Form>
+                        </Grid.Row>
+                        </Grid.Column>
+                    </Grid>
             </div>
         );
     }
