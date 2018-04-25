@@ -1,13 +1,13 @@
-/*CSS File um das Aussehen des Login zu gestalten*/
+/*CSS File um das Aussehen der Registrieren-Seite zu gestalten*/
 /*Autor: Rahel Illi*/
 /*Date: 23.04.2018*/
 
-/*******************************************/
-/*  CSS STYLE SHEET STRAWBEERY SAVER Login */
-/*******************************************/
+/**************************************************/
+/*  CSS STYLE SHEET STRAWBEERY SAVER Registration */
+/*************************************************/
 
 /*Äußers DIV, dessen Kinder auf "center" gesetzt sind*/
-.login{
+.registration{
     height:100%;
     padding-bottom: 3%;
     padding-left: 30px;
@@ -21,7 +21,7 @@
 
 
 /*Eingabeboxen Login, deren Breite hier auf maximal 500px gesetzt wird*/
-.login_box{
+.registration_box{
     height:100%;
     padding-bottom: 3%;
     padding-left: 30px;

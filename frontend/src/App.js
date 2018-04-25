@@ -6,9 +6,6 @@ import { Auth } from "aws-amplify";
 import NavigationBar from "./components/NavigationBar";
 
 
-
-
-
 class App extends Component{
     constructor(props) {
         super(props);
@@ -27,9 +24,6 @@ class App extends Component{
                 console.log(Auth.currentSession());
                 let user = await Auth.currentAuthenticatedUser();
                 let attributes = await  Auth.userAttributes(user);
-                console.log(attributes[2].Name);
-                console.log(attributes);
-                console.log(user);
                 this.userHasAuthenticated(true);
             }
         }
