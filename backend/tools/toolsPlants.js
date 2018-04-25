@@ -9,22 +9,19 @@ var api = new ApiBuilder(),
     // Erstellt dsa Dynamo-DB service Objekt für das erstellen neuer Tabellen.
     dataBase = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 
-/*---------------------------------------------------------------------------------------------------------------------*/
-/*                            Gibt alle Pflanzen eines User aus.                                                       */
-/*---------------------------------------------------------------------------------------------------------------------*/
-//Gibt bestimmte Daten für einen bestimmten Benutzer zurück.
-//usderID: ID des Benutzers
-//attribute: Datenbanktabelle, die ausgelesen werden soll: plants, sensors, oder locations
-//userAccessDataMethod: Methode mit der die Access-Daten ermittelt werden
-//computeMethod: Methode mit der die ermittelten Daten ausgewertet und bearbeitet werden.
-function requestDataForUser (userID, attribute, userAccessDataMethod) {
-    return dynamoDb.scan({ TableName: attribute }).promise()
+/*--------------------------------------------------------------------------------------------------------------------*/
+/*   Gibt alle Pflanzen eines User aus. Dabei werden die verfügbaren Daten der Sensoren in die Pflanzendaten gemerged */
+/*   und die Pflanzendaten in der Datenbank aktualisiert. Um den Gesamten Vorgang übersichtlicher zu gestalten, sind  */
+/*   hier die einzelnen Operationen in einzelne Funktionen unterteilt.                                                */
+/*--------------------------------------------------------------------------------------------------------------------*/
+//Liefert alle Pflanzendaten zurück.
+function getPlantsForUser (userID) {
+    return dynamoDb.scan({ TableName: "plants" }).promise()
         .then(function(value) {
-            var allItems = value.Items;
-            return userAccessDataMethod(userID, allItems, attribute, filterPlantData);
+            var items = value.Items;
+            return getUserAccessData(userID, items, "plants");
         });
 }
-
 
 //Ermittelt die IDS, auf die der User Zugriff hat.
 //Ruft anschließend die Berechnen-Methode auf, um die Daten
@@ -32,7 +29,7 @@ function requestDataForUser (userID, attribute, userAccessDataMethod) {
 //userID: ID des Benutzers
 //items: Gesamtmenge, aus der eine Teilmenge gefiltert werden soll.
 //computeMethod: Funktion, mit der die Teilmenge ermittelt werden soll.
-function getUserAccessData (userID,items, attribute, computeMethod) {
+function getUserAccessData (userID,items, attribute) {
     var params = {
         TableName : "userAccess",
         ExpressionAttributeNames:{
@@ -46,14 +43,9 @@ function getUserAccessData (userID,items, attribute, computeMethod) {
         }
     };
     var accessString = "value.Items[0]." + attribute;
-    return dynamoDb.query(params, function(err, data) {
-        if (err) {
-            console.log("Unable to query. Error:", JSON.stringify(err, null, 2));
-        } else {
-        }
-    }).promise().then(function(value) {
+    return dynamoDb.query(params).promise().then(function(value) {
         var result = eval(accessString);
-        return computeMethod(items,result,getCachedMeasurements);
+        return filterPlantData(items,result,getCachedMeasurements);
     });
 }
 
@@ -69,20 +61,20 @@ function filterPlantData(data, idsToFilter, callback) {
             resultData.push(item);
         }
     });
-    return callback(resultData, mergeCachedData);
+    return getCachedMeasurements(resultData);
 }
 
 //Liest die gecacheten Daten der Datenbank.
-function getCachedMeasurements (plantsData,nextFunction2) {
+function getCachedMeasurements (plantsData) {
     return dynamoDb.scan({ TableName: "cache" }).promise()
         .then(function(value) {
             var cachedData = value.Items;
-            return nextFunction2(plantsData,cachedData, deleteCacheEntries);
+            return mergeCachedData(plantsData,cachedData);
         });
 }
 
-function mergeCachedData(plantsData,cachedData, nextFunction) {
-    //sensor_IDs der "Verfügbaren" Pflanzen ermitteln
+//Merged die gecachten Daten mit denen in der Pflanzen-Datenbank.
+function mergeCachedData(plantsData,cachedData) {
     var sensorIDs = [];
     var cacheTimestamps = [];
     plantsData.forEach(function(item, index, array) {
@@ -101,12 +93,11 @@ function mergeCachedData(plantsData,cachedData, nextFunction) {
             });
         }
     });
-
-    return nextFunction(plantsData, cacheTimestamps, savePlantsData);
+    return deleteCacheEntries(plantsData, cacheTimestamps);
 }
 
-
-function deleteCacheEntries(plantsData,keyArray, nextFunction) {
+//Löscht die (gemergeten) gecachten Daten.
+function deleteCacheEntries(plantsData,keyArray) {
     var keyArraySplit = keyArray;
     var numberOfDeletions = keyArray.length;
     if(numberOfDeletions > 25) {
@@ -131,38 +122,29 @@ function deleteCacheEntries(plantsData,keyArray, nextFunction) {
                 'cache': itemsArray
             }
         };
-        return dynamoDb.batchWrite(params, function (err, data) {
-            if (err) {
-                console.log('Batch delete unsuccessful ...');
-                console.log(err, err.stack); // an error occurred
-            } else {
-                console.log('Batch delete successful ...');
-                console.log(data); // successful response
-            }
-        }).promise().then(function (value) {
-            deleteCacheEntries(plantsData, keyArray, nextFunction);
-            return nextFunction(plantsData, savePlantData);
+        return dynamoDb.batchWrite(params).promise().then(function (value) {
+            deleteCacheEntries(plantsData, keyArray);
+            return savePlantsData(plantsData);
         });
     } else {
-        return nextFunction(plantsData, savePlantData);
+        return savePlantsData(plantsData);
     }
 }
 
-
-function  savePlantsData(plantsData,callbackFunction) {
+//Aktualisiert die Daten der Pflanzen des Benutzers in der Datenbank.
+function  savePlantsData(plantsData) {
     var measurementsList = [];
     var plantIDs = [];
     plantsData.forEach(function (item, index, array) {
         plantIDs.push(item.plant_ID);
         measurementsList.push(item.measurements);
     });
-    return callbackFunction(plantsData, plantIDs, measurementsList, savePlantData)
+    return savePlantData(plantsData, plantIDs, measurementsList)
 }
 
-
-function savePlantData(plantsData, plantIDs, measurementsList, callbackFunction) {
-    var table = "plants";
+function savePlantData(plantsData, plantIDs, measurementsList) {
     if(plantIDs.length > 0) {
+        var table = "plants";
         var plant_ID = plantIDs[0];
         var measurements = measurementsList[0];
         plantIDs.splice(0, 1);
@@ -180,26 +162,15 @@ function savePlantData(plantsData, plantIDs, measurementsList, callbackFunction)
             ReturnValues: "UPDATED_NEW"
         };
 
-        return dynamoDb.update(params, function (err, data) {
-            if (err) {
-                console.error("Unable to update item. Error JSON:", JSON.stringify(err, null, 2));
-            } else {
-                console.log("UpdateItem succeeded:", JSON.stringify(data, null, 2));
-            }
-        }).promise().then(function (value) {
-            if (plantIDs.length > 0) {
-                return callbackFunction(plantsData, plantIDs, measurementsList, savePlantData);
-            } else {
-                return callbackFunction(plantsData, plantIDs, measurementsList, findLastMeasurement);
-            }
+        return dynamoDb.update(params).promise().then(function (value) {
+            return savePlantData(plantsData, plantIDs, measurementsList);
         });
     } else {
-        return callbackFunction(plantsData);
+        return findLastMeasurement(plantsData);
     }
 }
 
-
-//Ermittelt die letzte Messung für eine Pflanze und entfernt alle anderen.
+//Ermittelt die letzte Messung für eine Pflanze und entfernt alle anderen für die Rückgabe.
 function findLastMeasurement(plantsData) {
     plantsData.forEach(function (item, index, array) {
         var lastMeasurementTimestamp = -1;
@@ -211,37 +182,15 @@ function findLastMeasurement(plantsData) {
                 lastMeasurementTimestamp = item.timestamp;
             }
         });
-
         item.measurement = lastMeasurement;
         delete item.measurements;
     });
-
     return plantsData;
 }
 
-
-//funktioniert!!!
-function testDeletion() {
-    //var sensors= [1523381841294, 1];
-
-    var params = {
-        TableName:"icecreams",
-        Key:{
-            "icecreamid":"123"
-        }
-    };
-    return dynamoDb.delete(params, function(err, data) {
-        if (err) {
-            console.error("Unable to delete item. Error JSON:", JSON.stringify(err, null, 2));
-        } else {
-            console.log("DeleteItem succeeded:", JSON.stringify(data, null, 2));
-        }
-    }).promise().then(function (value) { return "Datenloeschen abgeschlossen." });
-}
-
-/*---------------------------------------------------------------------------------------------------------------------*/
-/*                            Gibt alle Daten einer Pflanze zurück.                                                    */
-/*---------------------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------------------*/
+/*                            Gibt alle Daten einer Pflanze zurück.                                                   */
+/*--------------------------------------------------------------------------------------------------------------------*/
 function getPlantData(plantID) {
     var params = {
         //Name der Tabelle
@@ -261,42 +210,95 @@ function getPlantData(plantID) {
             ":id":plantID
         }
     };
-    return dynamoDb.query(params, function(err, data) {
-        if (err) {
-            console.log("Unable to query. Error:", JSON.stringify(err, null, 2));
-        } else {
-            console.log("Query succeeded.");
-        }
-    }).promise()
-        .then(response => response.Items)
-};
-
-
-/*---------------------------------------------------------------------------------------------------------------------*/
-/*                            Neue Pflanze anlegen.                                                                    */
-/*---------------------------------------------------------------------------------------------------------------------*/
-//Item-Attribute müssen noch angepasst werden.
-function insertNewPlant (plant){
-    var params = {
-        //Tabellenname
-        TableName: 'plants',
-        //Elemente die gespeichert werden sollen
-        Item: {
-            //Attribut, wird aus dem Request-Header entnommen.
-            plantData: plant.plantData,
-            //Attribut, wird aus dem Request-Header entnommen.
-            measurements: "",
-            plant_ID: "plant_" + Date.now()
-        }
-    }
-    //Es wird in die Datenbank geschrieben, das Ergebnis der Operation wird zurück gegeben.
-    return dynamoDb.put(params).promise(); // returns dynamo result
+    return dynamoDb.query(params).promise().then(function (value) {
+            return value.Items;
+    })
 }
 
+/*--------------------------------------------------------------------------------------------------------------------*/
+/*                            Neue Pflanze anlegen und mit Sensor verknüpfen.                                         */
+/*--------------------------------------------------------------------------------------------------------------------*/
+function createPlant (userID, plantData){
+    var sensor_ID = plantData.sensor_ID;
+    var plant_ID = "plant_" + Date.now();
+    var params = {
+        TableName: 'plants',
+        Item: {
+            plantData: JSON.stringify(plantData),
+            measurements: "[]",
+            plant_ID: plant_ID
+        }
+    };
+    return dynamoDb.put(params).promise().then(function (value) {
 
-/*---------------------------------------------------------------------------------------------------------------------*/
-/*                            Daten einer Pflanze aktualisieren.                                                       */
-/*---------------------------------------------------------------------------------------------------------------------*/
+        var paramsQuery = {
+            TableName : 'sensors',
+            ExpressionAttributeNames:{
+                "#id": "sensor_ID"
+            },
+            KeyConditionExpression: "#id = :id",
+            ExpressionAttributeValues: {
+                ":id":sensor_ID
+            }
+        };
+        return dynamoDb.query(paramsQuery).promise().then(function(value) {
+
+            var configData = JSON.parse(value.Items[0].configData);
+            configData.plant_ID = plant_ID;
+            var paramsUpdate = {
+                TableName: "sensors",
+                Key: {
+                    "sensor_ID": sensor_ID
+                },
+                UpdateExpression: "set configData = :configData",
+                ExpressionAttributeValues: {
+                    ":configData": JSON.stringify(configData)
+                },
+                ReturnValues: "UPDATED_NEW"
+            };
+            return dynamoDb.update(paramsUpdate).promise().then(function (value) {
+
+                var userAccessParams = {
+                    TableName : "userAccess",
+                    ExpressionAttributeNames:{
+                        "#id": "user_ID",
+                        "#attribute": "plants"
+                    },
+                    ProjectionExpression:"#attribute",
+                    KeyConditionExpression: "#id = :id",
+                    ExpressionAttributeValues: {
+                        ":id":userID
+                    }
+                };
+                return dynamoDb.query(userAccessParams).promise().then(function(value) {
+
+                    var plantsIDList = value.Items[0].plants;
+                    plantsIDList = plantsIDList + "," + plant_ID;
+
+                    var updatePlantListParams = {
+                        TableName:"userAccess",
+                        Key:{
+                            "user_ID": userID
+                        },
+                        UpdateExpression: "set plants = :plants",
+                        ExpressionAttributeValues:{
+                            ":plants":plantsIDList
+                        },
+                        ReturnValues:"UPDATED_NEW"
+                    };
+                    return dynamoDb.update(updatePlantListParams).promise().then(function (value) {
+                        return "Die Pflanze" + plant_ID + " wurde angelegt und dem aktuellen User sowie dem Sensor " + sensor_ID +" hinzugefügt.";
+                    });
+                });
+
+            });
+        });
+    });
+}
+
+/*--------------------------------------------------------------------------------------------------------------------*/
+/*                            Daten einer Pflanze aktualisieren.                                                      */
+/*--------------------------------------------------------------------------------------------------------------------*/
 //Item-Attribute müssen noch angepasst werden.
 //Hier muss noch die passende Update Syntax verwendet werden --> siehe AWS-Doku
 function updatePlant (plantID, plantData){
@@ -316,38 +318,15 @@ function updatePlant (plantID, plantData){
         ReturnValues:"UPDATED_NEW"
     };
 
-    return dynamoDb.update(params, function(err, data) {
-        if (err) {
-            console.error("Unable to update item. Error JSON:", JSON.stringify(err, null, 2));
-        } else {
-            console.log("UpdateItem succeeded:", JSON.stringify(data, null, 2));
-        }
-    }).promise();
+    return dynamoDb.update(params).promise();
 }
 
-/*---------------------------------------------------------------------------------------------------------------------*/
-/*                                         Verknüpft Sensor mit Pflanze.                                               */
-/*---------------------------------------------------------------------------------------------------------------------*/
-function connectSensorWithPlant(sensorID, plantID, callback) {
-
-    /*
-    1. Sensor-Daten des zu bearbeitetenden Sensors abfragen
-    2. Sensor-Daten updaten (SensorID in "configData" einfügen).
-
-    Evtl. Diesen Prozess in das Anlegen einer Pflanze integrieren.
-     */
-}
-
-/*----------------------------------------------------------------------------------------------------------------------*/
-/*                 footer: zu exportierende Funktionen.                                                                 */
-/*----------------------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------------------*/
+/*                 footer: zu exportierende Funktionen.                                                               */
+/*--------------------------------------------------------------------------------------------------------------------*/
 module.exports = {
-    requestDataForUser: requestDataForUser,
-    getUserAccessData: getUserAccessData,
+    getPlantsForUser: getPlantsForUser,
     getPlantData: getPlantData,
-    insertNewPlant: insertNewPlant,
-    updatePlant: updatePlant,
-    getCachedMeasurements: getCachedMeasurements,
-    deleteCacheEntries:deleteCacheEntries,
-    connectSensorWithPlant: connectSensorWithPlant
+    createPlant: createPlant,
+    updatePlant: updatePlant
 };

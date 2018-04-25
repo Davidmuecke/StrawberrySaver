@@ -1,6 +1,6 @@
-/*---------------------------------------------------------------------------------------------------------------------*/
-/*                                        Allgemeiner Header                                                           */
-/*---------------------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------------------*/
+/*                                        Allgemeiner Header                                                          */
+/*--------------------------------------------------------------------------------------------------------------------*/
 var ApiBuilder = require('claudia-api-builder'),
     AWS = require('aws-sdk');
 //Setzt die Region
@@ -12,10 +12,10 @@ var api = new ApiBuilder(),
 // Erstellt dsa Dynamo-DB service Objekt für das erstellen neuer Tabellen.
 dataBase = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 
-/*---------------------------------------------------------------------------------------------------------------------*/
-/*                            Gibt alle Sensoren eines User aus.                                                       */
-/*---------------------------------------------------------------------------------------------------------------------*/
-function requestSensorsForUser (userID) {
+/*--------------------------------------------------------------------------------------------------------------------*/
+/*                            Gibt alle Sensoren eines User aus.                                                      */
+/*--------------------------------------------------------------------------------------------------------------------*/
+function getSensorsForUser (userID) {
     return dynamoDb.scan({ TableName: "sensors" }).promise()
         .then(function(value) {
             var items = value.Items;
@@ -31,12 +31,10 @@ function requestSensorsForUser (userID) {
                     ":id":userID
                 }
             };
-            var accessString = "value.Items[0]." + "sensors";
             return dynamoDb.query(params).promise().then(function(value) {
-                var idsToFilter = eval(accessString);
+                var idsToFilter = value.Items[0].sensors;
                 var sensorIDs = idsToFilter.split(",");
                 var resultData = [];
-
                 items.forEach(function(item, index, array) {
                     if(sensorIDs.includes(item.sensor_ID)) {
                         item.configData = JSON.parse(item.configData);
@@ -49,10 +47,10 @@ function requestSensorsForUser (userID) {
         });
 }
 
-/*---------------------------------------------------------------------------------------------------------------------*/
-/*                            Ermittelt alle freien Sensoren eines Benutzers                                           */
-/*---------------------------------------------------------------------------------------------------------------------*/
-function requestFreeSensorsForUser (userID) {
+/*--------------------------------------------------------------------------------------------------------------------*/
+/*                           Ermittelt alle freien Sensoren eines Benutzers                                           */
+/*--------------------------------------------------------------------------------------------------------------------*/
+function getFreeSensorsForUser (userID) {
     return dynamoDb.scan({ TableName: "sensors" }).promise()
         .then(function(value) {
             var allItems = value.Items;
@@ -68,9 +66,8 @@ function requestFreeSensorsForUser (userID) {
                     ":id":userID
                 }
             };
-            var accessString = "value.Items[0]." + "sensors";
             return dynamoDb.query(params).promise().then(function(value) {
-                var result = eval(accessString);
+                var result = value.Items[0].sensors;
                 var sensorIDs = result.split(",");
                 var resultData = [];
 
@@ -87,10 +84,10 @@ function requestFreeSensorsForUser (userID) {
         });
 }
 
-/*---------------------------------------------------------------------------------------------------------------------*/
-/*                          Gibt alle Werte eines Sensors zurück.                                                      */
-/*---------------------------------------------------------------------------------------------------------------------*/
-function requestSensorData (sensorID) {
+/*--------------------------------------------------------------------------------------------------------------------*/
+/*                          Gibt alle Werte eines Sensors zurück.                                                     */
+/*--------------------------------------------------------------------------------------------------------------------*/
+function getSensorData (sensorID) {
     var params = {
         TableName : 'sensors',
         ExpressionAttributeNames:{
@@ -106,9 +103,9 @@ function requestSensorData (sensorID) {
     });
 }
 
-/*---------------------------------------------------------------------------------------------------------------------*/
-/*                                         Aktualisiert die Konfiguration eines Sensors.                               */
-/*---------------------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------------------*/
+/*                                         Aktualisiert die Konfiguration eines Sensors.                              */
+/*--------------------------------------------------------------------------------------------------------------------*/
 function updateSensorConfig(sensor_ID, configData) {
     var params = {
         TableName: "sensors",
@@ -127,9 +124,9 @@ function updateSensorConfig(sensor_ID, configData) {
     });
 }
 
-/*---------------------------------------------------------------------------------------------------------------------*/
-/*                                         Neuen Sensor anlegen                                                        */
-/*---------------------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------------------*/
+/*                                         Neuen Sensor anlegen                                                       */
+/*--------------------------------------------------------------------------------------------------------------------*/
 /*
 Beispiel-body für einen Aufruf dieser Methode über die API:
 body: { "sensor_ID": "TEST_JOW",
@@ -149,7 +146,6 @@ body: { "sensor_ID": "TEST_JOW",
                   }
             }
  */
-
 function createSensor(userID, sensorData) {
     var configData = sensorData.configData;
     var systemData = sensorData.systemData;
@@ -201,13 +197,13 @@ function createSensor(userID, sensorData) {
     });
 }
 
-/*---------------------------------------------------------------------------------------------------------------------*/
-/*                            Footer: zu exportierende Funktionen                                                      */
-/*---------------------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------------------*/
+/*                            Footer: zu exportierende Funktionen                                                     */
+/*--------------------------------------------------------------------------------------------------------------------*/
 module.exports = {
-    requestSensorsForUser: requestSensorsForUser,
-    requestFreeSensorsForUser: requestFreeSensorsForUser,
-    requestSensorData: requestSensorData,
+    getSensorsForUser: getSensorsForUser,
+    getFreeSensorsForUser: getFreeSensorsForUser,
+    getSensorData: getSensorData,
     updateSensorConfig:updateSensorConfig,
     createSensor: createSensor
 };

@@ -9,74 +9,59 @@ var api = new ApiBuilder(),
 // Erstellt dsa Dynamo-DB service Objekt für das erstellen neuer Tabellen.
 dataBase = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 
-/*---------------------------------------------------------------------------------------------------------------------*/
-/*                            Neue Messung in den Cache schreiben.                                                     */
-/*---------------------------------------------------------------------------------------------------------------------*/
-//Muss der Sensor als Benutzer registriert sein?
-//Speichert die Messung eines Sensors in die Datenbank
-function sensorMeasurement(sensorData, callback) {
+/*--------------------------------------------------------------------------------------------------------------------*/
+/*                            Neue Messung in die Cache-Datenbank schreiben.                                          */
+/*--------------------------------------------------------------------------------------------------------------------*/
+function sensorMeasurement(sensorData) {
     var data = {
         wifiSSID : sensorData.wifi_SSID,
         humiditySensor : sensorData.humiditySensor,
         temperatureSensor : sensorData.temperatureSensor
     };
     var params = {
-        //Tabellenname
         TableName: 'cache',
         Item: {
             timestamp: Date.now(),
             sensor_ID: sensorData.sensor_ID,
-            measurement: JSON.stringify(data),
-            testvalue: sensorData
+            measurement: JSON.stringify(data)
         }
     };
-    //Es wird in die Datenbank geschrieben, das Ergebnis der Operation wird zurück gegeben.
     return dynamoDb.put(params).promise().then(function (value) {
-        return callback(sensorData.sensor_ID);
+        var sensor_ID = sensorData.sensor_ID;
+        var params = {
+            TableName : 'sensors',
+            ExpressionAttributeNames:{
+                "#id": "sensor_ID",
+                "#config": "configData"
+            },
+            ProjectionExpression:"#config",
+            KeyConditionExpression: "#id = :id",
+            ExpressionAttributeValues: {
+                ":id":sensor_ID
+            }
+        };
+
+        return dynamoDb.query(params).promise()
+            .then(function(value) {
+                var item = value.Items[0];
+                var configData = JSON.parse(item.configData);
+                return "true," + configData.measuringInterval + "," + configData.sendInterval + "," + configData.sendOnChange;
+            });
     });
 }
 
-function requestSensorData (sensorID) {
-    var params = {
-        TableName : 'sensors',
-        ExpressionAttributeNames:{
-            "#id": "sensor_ID",
-            "#config": "configData"
-        },
-        ProjectionExpression:"#config",
-        KeyConditionExpression: "#id = :id",
-        ExpressionAttributeValues: {
-            ":id":sensorID
-        }
-    };
-
-    return dynamoDb.query(params, function(err, data) {
-        if (err) {
-            console.log("Unable to query. Error:", JSON.stringify(err, null, 2));
-        } else {
-        }
-    }).promise()
-        .then(function(value) {
-            var item = value.Items[0];
-            var configData = JSON.parse(item.configData);
-
-            return "true," + configData.measuringInterval + "," + configData.sendInterval + "," + configData.sendOnChange;
-        });
-}
-
-/*---------------------------------------------------------------------------------------------------------------------*/
-/*                            Testen des Arduinos.                                                                     */
-/*---------------------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------------------*/
+/*                            Testen des Arduinos.                                                                    */
+/*--------------------------------------------------------------------------------------------------------------------*/
 //TEST: post-Request ohne Header um Arduino-Connection zu testen.
 function arduinoTest() {
     return request;
 }
 
-/*----------------------------------------------------------------------------------------------------------------------*/
-/*                 footer: zu exportierende Funktionen.                                                                 */
-/*----------------------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------------------*/
+/*                 footer: zu exportierende Funktionen.                                                               */
+/*--------------------------------------------------------------------------------------------------------------------*/
 module.exports = {
     sensorMeasurement: sensorMeasurement,
-    requestSensorData: requestSensorData,
     arduinoTest:arduinoTest
 };

@@ -114,4 +114,24 @@ api.post('/createTableTest', function (request) {
 
 });
 
+
+//funktioniert!!!
+function testDeletion() {
+    //var sensors= [1523381841294, 1];
+
+    var params = {
+        TableName:"icecreams",
+        Key:{
+            "icecreamid":"123"
+        }
+    };
+    return dynamoDb.delete(params, function(err, data) {
+        if (err) {
+            console.error("Unable to delete item. Error JSON:", JSON.stringify(err, null, 2));
+        } else {
+            console.log("DeleteItem succeeded:", JSON.stringify(data, null, 2));
+        }
+    }).promise().then(function (value) { return "Datenloeschen abgeschlossen." });
+}
+
 module.exports = api;
