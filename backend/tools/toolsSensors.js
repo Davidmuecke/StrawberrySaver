@@ -32,16 +32,19 @@ function getSensorsForUser (userID) {
                 }
             };
             return dynamoDb.query(params).promise().then(function(value) {
-                var idsToFilter = value.Items[0].sensors;
-                var sensorIDs = idsToFilter.split(",");
                 var resultData = [];
-                items.forEach(function(item, index, array) {
-                    if(sensorIDs.includes(item.sensor_ID)) {
-                        item.configData = JSON.parse(item.configData);
-                        item.systemData = JSON.parse(item.systemData);
-                        resultData.push(item);
-                    }
-                });
+                if (typeof value.Items[0] === 'undefined' || value.Items[0] === null) {
+                    var idsToFilter = value.Items[0].sensors;
+                    var sensorIDs = idsToFilter.split(",");
+
+                    items.forEach(function(item, index, array) {
+                        if(sensorIDs.includes(item.sensor_ID)) {
+                            item.configData = JSON.parse(item.configData);
+                            item.systemData = JSON.parse(item.systemData);
+                            resultData.push(item);
+                        }
+                    });
+                }
                 return resultData;
             });
         });
@@ -67,18 +70,20 @@ function getFreeSensorsForUser (userID) {
                 }
             };
             return dynamoDb.query(params).promise().then(function(value) {
-                var result = value.Items[0].sensors;
-                var sensorIDs = result.split(",");
                 var resultData = [];
+                if (typeof value.Items[0] === 'undefined' || value.Items[0] === null) {
+                    var result = value.Items[0].sensors;
+                    var sensorIDs = result.split(",");
 
-                allItems.forEach(function(item) {
-                    if(sensorIDs.includes(item.sensor_ID)) {
-                        item.configData = JSON.parse(item.configData);
-                        if(!item.configData.hasOwnProperty("plant_ID")) {
-                            resultData.push(item.sensor_ID);
+                    allItems.forEach(function (item) {
+                        if (sensorIDs.includes(item.sensor_ID)) {
+                            item.configData = JSON.parse(item.configData);
+                            if (!item.configData.hasOwnProperty("plant_ID")) {
+                                resultData.push(item.sensor_ID);
+                            }
                         }
-                    }
-                });
+                    });
+                }
                 return resultData;
             });
         });

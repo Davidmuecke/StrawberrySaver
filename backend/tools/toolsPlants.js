@@ -51,7 +51,10 @@ function getUserAccessData (userID,items, attribute) {
 
 //Filtert die für den User passenden Pflanzen heraus.
 function filterPlantData(data, idsToFilter, callback) {
-    var plantIDs = idsToFilter.split(",");
+    var plantIDs = []
+    if (typeof idsToFilter === 'undefined' || idsToFilter === null) {
+        plantIDs = idsToFilter.split(",");
+    }
     var resultData = [];
 
     data.forEach(function(item, index, array) {

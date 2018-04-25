@@ -15,7 +15,14 @@ var api = new ApiBuilder(),
 var toolsPlants = require("./tools/toolsPlants.js");
 var toolsSensors = require("./tools/toolsSensors.js");
 var toolsArduino = require("./tools/toolsArduino.js");
+var toolsUserManagement = require("./tools/toolsUserManagement");
 
+/*--------------------------------------------------------------------------------------------------------------------*/
+/*  Operationen für die Benutzerverwaltung.                                                                           */
+/*--------------------------------------------------------------------------------------------------------------------*/
+api.post('/checkUserData', function (request) {
+    return toolsUserManagement.checkUserData(request.context.cognitoIdentityId);
+}, {authorizationType: 'AWS_IAM'});
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 /*  Diese Operationen behandeln die Pflanzen.                                                                         */
