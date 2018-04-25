@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Form, Dropdown, Checkbox } from 'semantic-ui-react'
+import { Button, Form, Dropdown, Checkbox, Container, Grid } from 'semantic-ui-react'
 import {API} from "aws-amplify/lib/index";
 
 
@@ -128,8 +128,10 @@ export default class Login extends Component {
     render() {
 
         return (
-            <div className="Login">
+            <Container >
                 <h1>Neue Pflanze</h1>
+                <Grid>
+                <Grid.Column width={8} stretched>
                 <Form onSubmit={this.handleSubmit}>
                     <Form.Field >
                         <label>Name</label>
@@ -271,7 +273,9 @@ export default class Login extends Component {
                         Erstellen
                     </Button>
                 </Form>
-            </div>
+                </Grid.Column>
+                </Grid>
+            </Container>
         );
     }
 }
