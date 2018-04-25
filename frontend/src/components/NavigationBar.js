@@ -76,9 +76,15 @@ export default class NavigationBar extends  Component{
                         </Menu.Item>
                     </Menu>
                 : <Menu vertical style={{float:"left"}}>
-                        <Menu.Item as={Link} to="/login" name='login' active={activeItem === 'login'} onClick={this.handleItemClick} />
-                        <Menu.Item as={Link} to="/register" name='register' active={activeItem === 'register'} onClick={this.handleItemClick} />
-                        <Menu.Item as={Link} to="/impressum" name='impressum' active={activeItem === 'impressum'} onClick={this.handleItemClick} />
+                        <Menu.Item as={Link} to="/login" name='login' active={activeItem === 'login'} onClick={this.handleItemClick}>
+                            <text class="font_menu">Login</text>
+                        </Menu.Item>
+                        <Menu.Item as={Link} to="/register" name='register' active={activeItem === 'register'} onClick={this.handleItemClick}>
+                            <text class="font_menu">Registrieren</text>
+                        </Menu.Item>
+                        <Menu.Item as={Link} to="/impressum" name='impressum' active={activeItem === 'impressum'} onClick={this.handleItemClick}>
+                            <text class="font_menu">Impressum</text>
+                        </Menu.Item>
                     </Menu>
                 }
             </div>

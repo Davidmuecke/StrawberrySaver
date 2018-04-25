@@ -7,6 +7,12 @@
 /**************************************************/
 
 /**/
+.menu_vertical{
+    float: left;
+}
+/*ENDE - */
+
+/**/
 .font_menu{
     font-size: large;
 }
