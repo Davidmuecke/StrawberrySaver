@@ -4,9 +4,14 @@ import "./style_test.css";
 
 export default class Impressum extends Component{
     render(){
+        var seite;
+        if (window.innerWidth>="900"){
+            seite= "seite1"}
+        else{
+            seite="seite2"}
         return (
             <div>
-                <div  id="seite">
+                <div id={seite}>
                     <div className="impressum">
                         <h1> Impressum </h1>
                         <h3 id="impressum_name">Strawberry Saver</h3>

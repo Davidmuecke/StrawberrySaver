@@ -23,6 +23,9 @@ export default class MenuLeft extends  Component{
             case "/login":
                 this.state={ activeItem:"login"};
                 break;
+            case "/user":
+                this.state={ activeItem:"user"};
+                break;
             default:
                 this.state={ activeItem:"impressum"};
         }
@@ -44,11 +47,34 @@ export default class MenuLeft extends  Component{
         return (
             <div>
                 {this.props.childProps.isAuthenticated ?
+                    <div>
+                    <div class="topnav" id="myTopnav">
+                        <ul>
+                            <li>
+                                <a class="icon" onClick={function responsiveMenu2() {
+                                    var x = document.getElementById("myLeftnav");
+                                    if (x.style.display === "none") {
+                                        x.style.display = "block";
+                                    }
+                                    else{
+                                        x.style.display="none";
+                                    }
+                                    if (x.className === "leftnav") {
+                                        x.className = "leftnav responsive";
+                                    } else {
+                                        x.className = "leftnav";
+                                    }
+
+                                }}>&#9776;</a>
+                                <a id="menuheader_top" class="menuheader_top">Strawberry Saver</a>
+                            </li>
+                        </ul>
+                    </div>
+
                     <div class="leftnav" id="myLeftnav">
                         <ul>
                             <li>
-                                <a class="icon" onclick="responsiveMenu()">&#9776;</a>
-                                <a id="menuheader" class="menuheader" href="#" onclick="keinMenu(this)">Strawberry Saver</a>
+                                    <a class="menuheader">Strawberry Saver</a>
                             </li>
                             <li>
                                 <a href="/" name='uebersicht' active={activeItem === 'uebersicht'} onClick={this.handleItemClick}>Pflanze</a>
@@ -65,7 +91,7 @@ export default class MenuLeft extends  Component{
                                 <a href="/test" name='test' active={activeItem === 'test'} onClick={this.handleItemClick}>Test</a>
                             </li>
                             <li>
-                            <a>Nutzer Name</a>
+                            <a href="/user" name='user' active={activeItem === 'user'} onClick={this.handleItemClick}>Nutzer Name</a>
                             </li>
                             <li>
                                 <a href="/impressum" name='impressum' active={activeItem === 'impressum'} onClick={this.handleItemClick}>Impressung</a>
@@ -75,11 +101,11 @@ export default class MenuLeft extends  Component{
                             </li>
                         </ul>
                     </div>
+                    </div>
                     : <div class="leftnav" id="myLeftnav">
                         <ul>
                             <li>
-                                <a class="icon" onclick="responsiveMenu()">&#9776;</a>
-                                <a id="menuheader" class="menuheader" href="#" onclick="keinMenu(this)">Strawberry Saver</a>
+                                <a class="menuheader">Strawberry Saver</a>
                             </li>
                             <li>
                                 <a href="/login" name='login' active={activeItem === 'login'} onClick={this.handleItemClick}>Login</a>

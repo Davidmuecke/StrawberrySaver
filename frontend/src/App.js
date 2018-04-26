@@ -3,7 +3,6 @@ import './App.css';
 import Routes from "./Routes";
 import {withRouter } from "react-router-dom";
 import { Auth } from "aws-amplify";
-import NavigationBar from "./components/NavigationBar";
 import "./components/style_test.css";
 import MenuLeft from "./components/menu_test";
 

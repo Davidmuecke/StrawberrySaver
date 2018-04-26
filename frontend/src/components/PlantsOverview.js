@@ -67,20 +67,26 @@ export default class PlantsOverview extends Component{
         {
             rows.push(Plant(gurke,this.state.answer[i][0], i,this.state.answer[i][1],this.state.answer[i][2],this.state.answer[i][3],this.state.answer[i][3],1,"22°"));
         }
+        var seite;
+        if (window.innerWidth>="900"){
+            seite= "seite1"}
+        else{
+            seite="seite2"}
         return (
-            <div id="seite">
-            <Container fluid={true}>
-            <Grid>
-                <Grid.Column width={16} stretched>
-                    <Header><h1 id="headerUebersicht">Übersicht</h1></Header>
-                    <p>Hier können sie alle registrierten Pflanzen einsehen, klicken Sie auf Details umd die Detailseite der jeweiligen Pflanze aufzurufen</p>
-                </Grid.Column>
-                {rows}
-                <p>{console.log(this.state.answer)}</p>
-            </Grid>
-            </Container>
+            <div id={seite}>
+                <div id="seite">
+                <Container fluid={true}>
+                <Grid>
+                    <Grid.Column width={16} stretched>
+                        <Header><h1 id="headerUebersicht">Übersicht</h1></Header>
+                        <p>Hier können sie alle registrierten Pflanzen einsehen, klicken Sie auf Details umd die Detailseite der jeweiligen Pflanze aufzurufen</p>
+                    </Grid.Column>
+                    {rows}
+                    <p>{console.log(this.state.answer)}</p>
+                </Grid>
+                </Container>
+                </div>
             </div>
-
         )
     }
 

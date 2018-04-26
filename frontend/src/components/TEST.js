@@ -49,14 +49,21 @@ export default class TEST extends Component {
     }
 
     render() {
+        var seite;
+        if (window.innerWidth>="900"){
+            seite= "seite1"}
+        else{
+            seite="seite2"}
         return (
-            <div id="seite">
-            <div className="Test">
-                <h1>Test</h1>
-                <button onClick={this.handleSubmit}>Test API Call</button>
-                <p>Answer:</p>
-                <p>{this.state.answer}</p>
-            </div>
+            <div id={seite}>
+                <div id="seite">
+                    <div className="Test">
+                        <h1>Test</h1>
+                        <button onClick={this.handleSubmit}>Test API Call</button>
+                        <p>Answer:</p>
+                        <p>{this.state.answer}</p>
+                    </div>
+                </div>
             </div>
         );
     }
