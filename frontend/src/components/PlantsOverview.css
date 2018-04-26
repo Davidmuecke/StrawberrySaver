@@ -16,5 +16,7 @@
 /*Bild zu der jeweiligen Planze wird hier in der Pflanzenbox nach rechts gesetzt*/
 #plantImage{
     float: right;
+    hight: 50%;
+    width: 50%;
 }
 /*ENDE - Bild zu der Pflanze*/
