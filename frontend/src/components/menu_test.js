@@ -97,7 +97,7 @@ export default class MenuLeft extends  Component{
                                 <a href="/impressum" name='impressum' active={activeItem === 'impressum'} onClick={this.handleItemClick}>Impressung</a>
                             </li>
                             <li>
-                                <a name='logout' active={activeItem ==='logout'} onClick={this.handleItemClick}>Logout</a>
+                                <a href="/login" name='logout' active={activeItem ==='logout'} onClick={this.handleItemClick}>Logout</a>
                             </li>
                         </ul>
                     </div>

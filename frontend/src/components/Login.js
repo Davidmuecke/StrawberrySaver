@@ -56,48 +56,49 @@ export default class Login extends Component {
     }
 
     render() {
+        alert("login");
         return (
             <div id="seite">
-            <div className="login">
-                    <Grid>
-                        <Grid.Column centered>
-                        <Grid.Row>
-                <h1>Anmeldung</h1>
-                        </Grid.Row>
-                        <Grid.Row>
-                <Form onSubmit={this.handleSubmit}>
-                    <Form.Field >
-                        <label>Email</label>
-                        <input
-                            id={"email"}
-                            autoFocus
-                            type={"email"}
-                            value={this.state.email}
-                            onChange={this.handleChange}
-                            className="login_box"
-                        />
-                    </Form.Field>
-                    <Form.Field>
-                        <label>Password</label>
-                        <input
-                            id={"password"}
-                            value={this.state.password}
-                            onChange={this.handleChange}
-                            type={"password"}
-                            className="login_box"
-                        />
-                    </Form.Field>
-                    <Button
-                        disabled={!this.validateForm()}
-                        type="submit"
-                    >
-                        Login
-                    </Button>
-                </Form>
-                        </Grid.Row>
-                        </Grid.Column>
-                    </Grid>
-            </div>
+                <div className="login">
+                        <Grid>
+                            <Grid.Column centered>
+                            <Grid.Row>
+                    <h1>Anmeldung</h1>
+                            </Grid.Row>
+                            <Grid.Row>
+                    <Form onSubmit={this.handleSubmit}>
+                        <Form.Field >
+                            <label>Email</label>
+                            <input
+                                id={"email"}
+                                autoFocus
+                                type={"email"}
+                                value={this.state.email}
+                                onChange={this.handleChange}
+                                className="login_box"
+                            />
+                        </Form.Field>
+                        <Form.Field>
+                            <label>Password</label>
+                            <input
+                                id={"password"}
+                                value={this.state.password}
+                                onChange={this.handleChange}
+                                type={"password"}
+                                className="login_box"
+                            />
+                        </Form.Field>
+                        <Button
+                            disabled={!this.validateForm()}
+                            type="submit"
+                        >
+                            Login
+                        </Button>
+                    </Form>
+                            </Grid.Row>
+                            </Grid.Column>
+                        </Grid>
+                </div>
             </div>
         );
     }
