@@ -13,8 +13,13 @@
     .topnav{
         display: block;
     }
+
     .leftnav{
         display: none;
+    }
+
+    #myTopnav{
+        padding-bottom: 35px;
     }
 }
 /*Ende Responsive Design*/
@@ -29,15 +34,25 @@
 }
 
 /*Eigentliche Seite (Rest ohne Menu)*/
-#seite{
+#seite1{
     margin-left: 250px; /*Muss der gleiche Wert sein wie bei ul {width} - gibt das Verhältnis von Menu und Seite an*/
     height:100%;
     padding-bottom: 3%;
     padding-left: 1px;
     padding-right: 30px;
-    padding-top: 30px;
+    padding-top: 30px; /*Setzt den Abstand zum Menüband fest*/
+}
+
+#seite2{
+    height:100%;
+    padding-bottom: 3%;
+    padding-left: 50px;
+    padding-right: 30px;
+    padding-top: 30px; /*Setzt den Abstand zum Menüband fest*/
 }
 /*ENDE - Eigentliche Seite (Rest ohne Menu)*/
+
+
 
 
 
