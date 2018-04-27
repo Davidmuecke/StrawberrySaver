@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Menu } from "semantic-ui-react";
 import { Link } from "react-router-dom";
+import "./style_test.css";
 
 
 export default class NavigationBar extends  Component{
@@ -55,37 +56,59 @@ export default class NavigationBar extends  Component{
         return (
             <div>
                 {this.props.childProps.isAuthenticated ?
-                    <Menu vertical style={{float:"left"}}>
-                        <Menu.Item>
-                            <Menu.Header as={Menu.Item} ><strong>StrawBerrySaver</strong></Menu.Header>
-
+                    <div  className="leftnav" id="myLeftnav">
+                        <Menu vertical style={{float:"left"}}>
+                            <Menu.Item>
+                                <Menu.Header as={Menu.Item} className="menuheader">
+                                    <p>StrawBerrySaver</p>
+                                </Menu.Header>
                                 <Menu.Item as={Link} to="/" name='uebersicht' active={activeItem === 'uebersicht'} onClick={this.handleItemClick}>
                                     <strong>Pflanzen</strong>
                                     {activeItem==="uebersicht"?
-                                    <Menu.Menu >
-                                        {rows}
-                                    </Menu.Menu>
-                                        :<div/> }
+                                            <Menu.Menu >
+                                                {rows}
+                                            </Menu.Menu>
+                                    :<div/> }
                                 </Menu.Item>
-                                <Menu.Item as={Link} to="/test" name='test' active={activeItem === 'test'} onClick={this.handleItemClick} />
-                            <Menu.Item as={Link} to="/user" name='user' active={activeItem === 'user'} onClick={this.handleItemClick} />
-                            <Menu.Item name="Anlegen">
-                                <strong>Anlegen</strong>
-                                <Menu.Menu>
-                                    <Menu.Item as={Link} to="/plantAdd" name='pflanze_anlegen' active={activeItem === 'pflanze_anlegen'} onClick={this.handleItemClick} />
-                                    <Menu.Item as={Link} to="/sensorAdd" name='sensor_anlegen' active={activeItem === 'sensor_anlegen'} onClick={this.handleItemClick} />
-                                </Menu.Menu>
+                                <Menu.Item as={Link} to="/test" name='test' active={activeItem === 'test'} onClick={this.handleItemClick}>
+                                    <p>Test</p>
+                                </Menu.Item>
+                                <Menu.Item as={Link} to="/user" name='user' active={activeItem === 'user'} onClick={this.handleItemClick}>
+                                    <p>Nutzer</p>
+                                </Menu.Item>
+                                <Menu.Item name="Anlegen">
+                                    <p>Anlegen</p>
+                                    <Menu.Menu>
+                                        <Menu.Item as={Link} to="/plantAdd" name='pflanze_anlegen' active={activeItem === 'pflanze_anlegen'} onClick={this.handleItemClick}>
+                                            <p>Pflanze hinzufügen</p>
+                                        </Menu.Item>
+                                        <Menu.Item as={Link} to="/sensorAdd" name='sensor_anlegen' active={activeItem === 'sensor_anlegen'} onClick={this.handleItemClick}>
+                                            <p>Sensor hinzufügen</p>
+                                        </Menu.Item>
+                                    </Menu.Menu>
+                                </Menu.Item>
+                                    <Menu.Item as={Link} to="/impressum" name='impressum' active={activeItem === 'impressum'} onClick={this.handleItemClick}>
+                                        <p>Impressum</p>
+                                    </Menu.Item>
+                                    <Menu.Item name='logout' active={activeItem ==='logout'} onClick={this.handleItemClick}>
+                                        <p>Logout</p>
+                                </Menu.Item>
                             </Menu.Item>
-                                <Menu.Item as={Link} to="/impressum" name='impressum' active={activeItem === 'impressum'} onClick={this.handleItemClick} />
-                                <Menu.Item name='logout' active={activeItem ==='logout'} onClick={this.handleItemClick}/>
-
-                        </Menu.Item>
-                    </Menu>
-                : <Menu vertical style={{float:"left"}}>
-                        <Menu.Item as={Link} to="/login" name='login' active={activeItem === 'login'} onClick={this.handleItemClick} />
-                        <Menu.Item as={Link} to="/register" name='register' active={activeItem === 'register'} onClick={this.handleItemClick} />
-                        <Menu.Item as={Link} to="/impressum" name='impressum' active={activeItem === 'impressum'} onClick={this.handleItemClick} />
-                    </Menu>
+                        </Menu>
+                    </div>
+                :   <div  className="leftnav" id="myLeftnav">
+                        <Menu vertical style={{float:"left"}}>
+                            <Menu.Item as={Link} to="/login" name='login' active={activeItem === 'login'} onClick={this.handleItemClick}>
+                                <p>Login</p>
+                            </Menu.Item>
+                            <Menu.Item as={Link} to="/register" name='register' active={activeItem === 'register'} onClick={this.handleItemClick}>
+                                <p>Registrierung</p>
+                            </Menu.Item>
+                            <Menu.Item as={Link} to="/impressum" name='impressum' active={activeItem === 'impressum'} onClick={this.handleItemClick}>
+                                <p>Impressum</p>
+                            </Menu.Item>
+                        </Menu>
+                    </div>
                 }
             </div>
         )
