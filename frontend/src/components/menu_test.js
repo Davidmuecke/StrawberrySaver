@@ -33,7 +33,7 @@ export default class MenuLeft extends  Component{
     }
 
 
-    handleItemClick = (e, { name }) =>{
+    handleItemClick = ({ name }) =>{
         this.setState({ activeItem: name});
         if(name === "logout"){
             console.log(this.props.childProps.isAuthenticated);
@@ -101,7 +101,7 @@ export default class MenuLeft extends  Component{
                                 <a href="/impressum" name='impressum' active={activeItem === 'impressum'} onClick={this.handleItemClick}>Impressung</a>
                             </li>
                             <li>
-                                <a href="/login" name='logout' active={activeItem ==='logout'} onClick={this.handleItemClick}>Logout</a>
+                                <a name='logout' active={activeItem ==='logout'} onClick={() => this.handleItemClick({name:"logout"})}>Logout</a>
                             </li>
                         </ul>
                     </div>

@@ -107,7 +107,7 @@ li {
     border-color: black;
 }
 
-li a:focus :not(.topnav){
+li a:focus{
     background-color: #555;
     color: white;
     text-decoration: none;
@@ -131,7 +131,12 @@ li a:hover{
     color: black;
 }
 
-li a:hover:not(.menuheader){
+li a:hover:not(.menuheader) :not(#menuheader_top){
+    background-color: #555;
+    color: white;
+}
+
+.icon:hover{
     background-color: #555;
     color: white;
 }
