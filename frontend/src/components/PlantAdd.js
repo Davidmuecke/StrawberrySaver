@@ -11,8 +11,9 @@ export default class Login extends Component {
             name: "MeinePflanze",
             sorte: "Erdbeere",
             plantationTime: "",
-            initialPlantationTime: "",
+            initialPlantationTime: "2018-04-27",
             locationID:"Stuttgart",
+            pictureURL:"",
             sensorID:"",
             localPosition:"",
             perfectTemperature:20,
@@ -67,7 +68,8 @@ export default class Login extends Component {
      * @returns {boolean}
      */
     validateForm() {
-        return this.state.name.length > 0 && this.state.sorte.length > 0;
+        return this.state.name.length > 0 && this.state.sorte.length > 0 && this.state.sensorID.length > 0 && this.state.pictureURL.length > 0
+            && this.state.localPosition.length >0 && this.state.locationID > 0;
     }
 
     /**
@@ -104,6 +106,7 @@ export default class Login extends Component {
                     {
                     plantData: {
                         nickname: this.state.name,
+                        pictureURL: this.state.pictureURL,
                         sort: this.state.sorte,
                         plantationTime: this.state.plantationTime,
                         initialTimePlant: this.state.initialPlantationTime,
@@ -129,9 +132,9 @@ export default class Login extends Component {
 
         return (
             <Container >
-                <h1>Neue Pflanze</h1>
                 <Grid>
-                <Grid.Column width={8} stretched>
+                <Grid.Column width={10} stretched>
+                    <h1>Neue Pflanze</h1>
                 <Form onSubmit={this.handleSubmit}>
                     <Form.Field >
                         <label>Name</label>
@@ -162,12 +165,12 @@ export default class Login extends Component {
                         />
                     </Form.Field>
                     <Form.Field>
-                        <label>initialPlantationTime</label>
+                        <label>Bild URL</label>
                         <input
-                            id={"initialPlantationTime"}
-                            value={this.state.initialPlantationTime}
+                            id={"pictureURL"}
+                            value={this.state.pictureURL}
                             onChange={this.handleChange}
-                            type={"date"}
+                            type={"text"}
                         />
                     </Form.Field>
                     <Form.Field>
@@ -176,7 +179,7 @@ export default class Login extends Component {
                     </Form.Field>
                     <Form.Field>
                         <label>Standort</label>
-                        <Dropdown placeholder='Standort auswählen' fluid selection options={this.state.locationOptions} />
+                        <Dropdown placeholder='Standort auswählen' fluid selection options={this.state.locationOptions} onChange={this.handleChange}/>
                     </Form.Field>
                     <Form.Field>
                         <label>lokaler Standort</label>
