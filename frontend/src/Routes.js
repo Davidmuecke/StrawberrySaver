@@ -7,7 +7,8 @@ import PlantDetail from "./components/PlantDetail";
 import TEST from "./components/TEST";
 import PlantsOverview from "./components/PlantsOverview";
 import PlantAdd from "./components/PlantAdd";
-import SensorAdd from "./components/SensorAdd"
+import SensorAdd from "./components/SensorAdd";
+import SensorOverview from "./components/SensorOverview";
 import Impressum from "./components/Impressum";
 import User from "./components/User";
 
@@ -21,6 +22,7 @@ export default ({ childProps}) =>
         <AppliedRoute path="/plantDetail" exact component={PlantDetail} props={childProps}/>
         <AppliedRoute path="/plantAdd" exact component={PlantAdd} props={childProps}/>
         <AppliedRoute path="/sensorAdd" exact component={SensorAdd} props={childProps}/>
+        <AppliedRoute path="/sensorOverview" exact component={SensorOverview} props={childProps}/>
         <AppliedRoute path="/user" exact component={User} props={childProps} />
 
         { /* Finally, catch all unmatched routes */ }

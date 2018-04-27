@@ -69,7 +69,7 @@ export default class Login extends Component {
      */
     validateForm() {
         return this.state.name.length > 0 && this.state.sorte.length > 0 && this.state.sensorID.length > 0 && this.state.pictureURL.length > 0
-            && this.state.localPosition.length >0 && this.state.locationID > 0;
+            && this.state.locationID.length > 0;
     }
 
     /**
