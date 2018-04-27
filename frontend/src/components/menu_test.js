@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import "./NavigationBar.css";
 import "./style_test.css";
+import {Link} from "react-router-dom";
 
 
 export default class MenuLeft extends  Component{
@@ -42,7 +43,12 @@ export default class MenuLeft extends  Component{
     };
 
     render(){
-
+        var rows=[];
+        for(let i=0;i<this.props.childProps.plants.length;i++)
+        {
+            rows.push(<li><a href={"/plantDetail?name="+i} name={this.props.childProps.names[i][0]} active={activeItem === this.props.childProps.names[i][0]} onClick={this.handleItemClick}><text><script type="text/javascript">this.props.childProps.names[i][0]</script></text></a></li>
+            )
+        }
         const { activeItem } = this.state;
         return (
             <div>
@@ -82,10 +88,7 @@ export default class MenuLeft extends  Component{
                                     <div>
                                         {activeItem==="uebersicht"?
                                             <div>
-                                            <li><a href={"/plantDetail?name="+0} name={this.props.childProps.names[0]} active={activeItem === this.props.childProps.names[0]} onClick={this.handleItemClick}><text><script type="text/javascript">this.props.childProps.names[0]</script></text></a></li>
-                                            <li><a href={"/plantDetail?name="+1} name={this.props.childProps.names[1]} active={activeItem === this.props.childProps.names[1]} onClick={this.handleItemClick}><script type="text/javascript">this.props.childProps.names[1]</script></a></li>
-                                            <li><a href={"/plantDetail?name="+2} name={this.props.childProps.names[2]} active={activeItem === this.props.childProps.names[2]} onClick={this.handleItemClick}><script type="text/javascript">this.props.childProps.names[2]</script></a></li>
-                                            <li><a href={"/plantDetail?name="+3} name={this.props.childProps.names[3]} active={activeItem === this.props.childProps.names[3]} onClick={this.handleItemClick}><script type="text/javascript">this.props.childProps.names[3]</script></a></li>
+                                                {rows}
                                             </div>
                                         :<div/>}
                                     </div>
