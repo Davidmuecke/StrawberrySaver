@@ -106,21 +106,45 @@ export default class MenuLeft extends  Component{
                         </ul>
                     </div>
                     </div>
-                    : <div className="leftnav" id="myLeftnav">
-                        <ul>
-                            <li>
-                                <a className="menuheader">Strawberry Saver</a>
-                            </li>
-                            <li>
-                                <a href="/login" name='login' active={activeItem === 'login'} onClick={this.handleItemClick}>Login</a>
-                            </li>
-                            <li>
-                                <a href="/register" name='register' active={activeItem === 'register'} onClick={this.handleItemClick}>Registrierung</a>
-                            </li>
-                            <li>
-                                <a href="/impressum" name='impressum' active={activeItem === 'impressum'} onClick={this.handleItemClick}>Impressum</a>
-                            </li>
-                        </ul>
+                    :<div>
+                        <div className="topnav" id="myTopnav">
+                            <ul>
+                                <li>
+                                    <a className="icon" onClick={function responsiveMenu2() {
+                                        var x = document.getElementById("myLeftnav");
+                                        if (x.style.display === "none") {
+                                            x.style.display = "block";
+                                        }
+                                        else{
+                                            x.style.display="none";
+                                        }
+                                        if (x.className === "leftnav") {
+                                            x.className = "leftnav responsive";
+                                        } else {
+                                            x.className = "leftnav";
+                                        }
+
+                                    }}>&#9776;</a>
+                                    <a id="menuheader_top" className="menuheader_top">Strawberry Saver</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div className="leftnav" id="myLeftnav">
+                            <ul>
+                                <li>
+                                    <a className="menuheader">Strawberry Saver</a>
+                                </li>
+                                <li>
+                                    <a href="/login" name='login' active={activeItem === 'login'} onClick={this.handleItemClick}>Login</a>
+                                </li>
+                                <li>
+                                    <a href="/register" name='register' active={activeItem === 'register'} onClick={this.handleItemClick}>Registrierung</a>
+                                </li>
+                                <li>
+                                    <a href="/impressum" name='impressum' active={activeItem === 'impressum'} onClick={this.handleItemClick}>Impressum</a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 }
             </div>

@@ -56,9 +56,13 @@ export default class Login extends Component {
     }
 
     render() {
-        alert("login");
+        var seite;
+        if (window.innerWidth>="900"){
+            seite= "seite1"}
+        else{
+            seite="seite2"}
         return (
-            <div id="seite">
+                <div id={seite}>
                 <div className="login">
                         <Grid>
                             <Grid.Column centered>
