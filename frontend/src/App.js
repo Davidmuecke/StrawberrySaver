@@ -3,6 +3,8 @@ import './App.css';
 import Routes from "./Routes";
 import {withRouter } from "react-router-dom";
 import { Auth } from "aws-amplify";
+import NavigationBar from "./components/NavigationBar";
+import {API} from "aws-amplify/lib/index";
 import "./components/style_test.css";
 import MenuLeft from "./components/menu_test";
 
@@ -15,13 +17,14 @@ class App extends Component{
             isAuthenticated: false,
             isAuthenticating: true,
             names:"",
-            plants:""
+            plants:[["Test1","Test2"],["Test3","Test4"],["Test5","Test6"]]
         };
     }
 
     async componentDidMount() {
         try {
             if (await Auth.currentSession()) {
+                this.handleSubmit();
                 console.log(Auth.currentSession());
                 let user = await Auth.currentAuthenticatedUser();
                 let attributes = await  Auth.userAttributes(user);
@@ -53,6 +56,39 @@ class App extends Component{
         this.userHasAuthenticated(false);
         this.props.history.push("/login");
     };
+    arduinoTest(note) {
+        /* let myInit = { // OPTIONAL
+             headers: {}, // OPTIONAL
+             response: true // OPTIONAL (return entire response object instead of response.data)
+         }
+         return API.get("strawberry","/hello-world",myInit ) */
+        return API.post("strawberry", "/getPlantsForUser", {
+            headers:{} ,
+            body: {}
+        });
+    }
+    async handleSubmit() {
+
+        try {
+            let reply = await this.arduinoTest({});
+            console.log(reply);
+            //bearbeitung zu Array
+            let outputArray =[];
+            let nameArray=[];
+            for(let i=0;i<reply.length; i++)
+            {
+                outputArray.push([reply[i].plantData.sort,reply[i].plantData.plantationTime,reply[i].plantData.initialTimePlant,reply[i].plantData.location_ID,
+                    reply[i].measurement.temperatureSensor,reply[i].plantData.perfectTemperature,reply[i].plantData.temperatureScopeGreen,reply[i].plantData.temperatureScopeYellow]);
+                nameArray.push(reply[i].plantData.sort);
+            }
+            this.setState({plants:outputArray});
+
+            //[[reply[0].plantData.sortreply[0].plantData.plantationTime,reply[0].plantData.initialTimePlant,reply[0].plantData.local_position_ID,reply[0].plantData.location_ID],reply[1],reply[2]]});
+            //this.setState({answer: reply});
+            // Plant(strawberry,reply[0].plantData.sort,0,reply[0].plantData.plantationTime,reply[0].plantData.initialTimePlant,reply[0].plantData.local_position_ID,reply[0].plantData.location_ID)
+        } catch (e) {
+            alert(e);
+        }
     getNames= (plantNames)=>{
         this.setState({names:plantNames});
     };
@@ -66,10 +102,7 @@ class App extends Component{
             isAuthenticated: this.state.isAuthenticated,
             userHasAuthenticated: this.userHasAuthenticated,
             handleLogout: this.handleLogout,
-            callback: this.getNames,
-            names:this.state.names,
             pathname:this.props.location.pathname,
-            getPlants: this.getPlants,
             plants: this.state.plants
         };
 

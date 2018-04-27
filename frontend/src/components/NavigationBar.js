@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Menu } from "semantic-ui-react";
 import { Link } from "react-router-dom";
+import "./NavigationBar.css";
 
 
 export default class NavigationBar extends  Component{
@@ -9,7 +10,7 @@ export default class NavigationBar extends  Component{
 
         switch(this.props.childProps.pathname){
             case "/plantDetail":
-                this.state = { activeItem: this.props.childProps.plants[0][0] };
+                this.state = { activeItem: this.props.childProps.names[0] };
                 break;
             case "/":
                 this.state = { activeItem: "uebersicht" };
@@ -59,15 +60,15 @@ export default class NavigationBar extends  Component{
                         <Menu.Item>
                             <Menu.Header as={Menu.Item} ><strong>StrawBerrySaver</strong></Menu.Header>
 
-                            <Menu.Item as={Link} to="/" name='uebersicht' active={activeItem === 'uebersicht'} onClick={this.handleItemClick}>
-                                <strong>Pflanzen</strong>
-                                {activeItem==="uebersicht"?
+                                <Menu.Item as={Link} to="/" name='uebersicht' active={activeItem === 'uebersicht'} onClick={this.handleItemClick}>
+                                    <strong>Pflanzen</strong>
+                                    {activeItem==="uebersicht"?
                                     <Menu.Menu >
                                         {rows}
                                     </Menu.Menu>
-                                    :<div/> }
-                            </Menu.Item>
-                            <Menu.Item as={Link} to="/test" name='test' active={activeItem === 'test'} onClick={this.handleItemClick} />
+                                        :<div/> }
+                                </Menu.Item>
+                                <Menu.Item as={Link} to="/test" name='test' active={activeItem === 'test'} onClick={this.handleItemClick} />
                             <Menu.Item as={Link} to="/user" name='user' active={activeItem === 'user'} onClick={this.handleItemClick} />
                             <Menu.Item name="Anlegen">
                                 <strong>Anlegen</strong>
@@ -76,12 +77,12 @@ export default class NavigationBar extends  Component{
                                     <Menu.Item as={Link} to="/sensorAdd" name='sensor_anlegen' active={activeItem === 'sensor_anlegen'} onClick={this.handleItemClick} />
                                 </Menu.Menu>
                             </Menu.Item>
-                            <Menu.Item as={Link} to="/impressum" name='impressum' active={activeItem === 'impressum'} onClick={this.handleItemClick} />
-                            <Menu.Item name='logout' active={activeItem ==='logout'} onClick={this.handleItemClick}/>
+                                <Menu.Item as={Link} to="/impressum" name='impressum' active={activeItem === 'impressum'} onClick={this.handleItemClick} />
+                                <Menu.Item name='logout' active={activeItem ==='logout'} onClick={this.handleItemClick}/>
 
                         </Menu.Item>
                     </Menu>
-                    : <Menu vertical style={{float:"left"}}>
+                : <Menu vertical style={{float:"left"}}>
                         <Menu.Item as={Link} to="/login" name='login' active={activeItem === 'login'} onClick={this.handleItemClick} />
                         <Menu.Item as={Link} to="/register" name='register' active={activeItem === 'register'} onClick={this.handleItemClick} />
                         <Menu.Item as={Link} to="/impressum" name='impressum' active={activeItem === 'impressum'} onClick={this.handleItemClick} />

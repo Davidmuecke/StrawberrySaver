@@ -14,58 +14,13 @@ import { Link } from "react-router-dom";
 export default class PlantsOverview extends Component{
     constructor(props) {
         super(props);
-        this.state = {
-            isLoading: false,
-            content: "Hallo",
-            answer: [["test"],["Test2"]]
-        };
-
-        this.handleSubmit();
-
     }
-
-   async handleSubmit() {
-
-        try {
-            let reply = await this.arduinoTest({});
-            console.log(reply);
-            //bearbeitung zu Array
-            let outputArray =[];
-            let nameArray=[];
-            for(let i=0;i<reply.length; i++)
-            {
-                   outputArray.push([reply[i].plantData.sort,reply[i].plantData.plantationTime,reply[i].plantData.initialTimePlant,reply[i].plantData.location_ID,
-                       reply[i].measurement.temperatureSensor,reply[i].plantData.perfectTemperature,reply[i].plantData.temperatureScopeGreen,reply[i].plantData.temperatureScopeYellow]);
-                nameArray.push(reply[i].plantData.sort);
-            }
-            this.setState({answer:outputArray});
-            this.props.callback(nameArray);
-            this.props.getPlants(outputArray);
-            //[[reply[0].plantData.sortreply[0].plantData.plantationTime,reply[0].plantData.initialTimePlant,reply[0].plantData.local_position_ID,reply[0].plantData.location_ID],reply[1],reply[2]]});
-            //this.setState({answer: reply});
-           // Plant(strawberry,reply[0].plantData.sort,0,reply[0].plantData.plantationTime,reply[0].plantData.initialTimePlant,reply[0].plantData.local_position_ID,reply[0].plantData.location_ID)
-        } catch (e) {
-            alert(e);
-        }
-    };
-    arduinoTest(note) {
-        /* let myInit = { // OPTIONAL
-             headers: {}, // OPTIONAL
-             response: true // OPTIONAL (return entire response object instead of response.data)
-         }
-         return API.get("strawberry","/hello-world",myInit ) */
-        return API.post("strawberry", "/getPlantsForUser", {
-            headers:{} ,
-            body: {}
-        });
-    }
-
     render(){
 
         var rows=[];
-        for(let i=0;i<this.state.answer.length;i++)
+        for(let i=0;i<this.props.plants.length;i++)
         {
-            rows.push(Plant(gurke,this.state.answer[i][0], i,this.state.answer[i][1],this.state.answer[i][2],this.state.answer[i][3],this.state.answer[i][3],1,"22°"));
+            rows.push(Plant(gurke,this.props.plants[i][0], i,this.props.plants[i][1],this.props.plants[i][2],this.props.plants[i][3],this.props.plants[i][3],1,"22°"));
         }
         var seite;
         if (window.innerWidth>="900"){
@@ -74,18 +29,15 @@ export default class PlantsOverview extends Component{
             seite="seite2"}
         return (
             <div id={seite}>
-                <div id="seite">
                 <Container fluid={true}>
-                <Grid>
-                    <Grid.Column width={16} stretched>
-                        <Header><h1 id="headerUebersicht">Übersicht</h1></Header>
-                        <p>Hier können sie alle registrierten Pflanzen einsehen, klicken Sie auf Details umd die Detailseite der jeweiligen Pflanze aufzurufen</p>
-                    </Grid.Column>
-                    {rows}
-                    <p>{console.log(this.state.answer)}</p>
-                </Grid>
+                    <Grid>
+                        <Grid.Column width={16} stretched>
+                            <Header><h1 id="headerUebersicht">Übersicht</h1></Header>
+                            <p>Hier können sie alle registrierten Pflanzen einsehen, klicken Sie auf Details umd die Detailseite der jeweiligen Pflanze aufzurufen</p>
+                        </Grid.Column>
+                        {rows}
+                    </Grid>
                 </Container>
-                </div>
             </div>
         )
     }
