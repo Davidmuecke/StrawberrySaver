@@ -107,7 +107,7 @@ li {
     border-color: black;
 }
 
-li a:focus{
+li a:focus :not(.topnav){
     background-color: #555;
     color: white;
     text-decoration: none;
