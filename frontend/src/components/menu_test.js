@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import "./NavigationBar.css";
-import "./style_test.css";
+import "./style_menu_and_seite.css";
 import {Link} from "react-router-dom";
 
 

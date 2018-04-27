@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Button} from 'semantic-ui-react';
 import {Auth} from "aws-amplify/lib/index";
-import "./style_test.css";
+import "./style_menu_and_seite.css";
 
 export default class User extends Component {
     constructor(props) {

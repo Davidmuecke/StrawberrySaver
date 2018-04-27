@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Menu } from "semantic-ui-react";
 import { Link } from "react-router-dom";
-import "./style_test.css";
+import "./style_menu_and_seite.css";
 
 
 export default class NavigationBar extends  Component{
