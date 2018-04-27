@@ -56,6 +56,28 @@ export default class NavigationBar extends  Component{
         return (
             <div>
                 {this.props.childProps.isAuthenticated ?
+                    <div>
+                        <div className="topnav" id="myTopnav">
+                            <Menu horizontal>
+                                    <Menu.Header as={Menu.Item} id="menuheader_top" className="menuheader_top">
+                                        <p>StrawBerrySaver</p>
+                                    </Menu.Header>
+                                    <Menu.Item>
+                                    <Menu.Item className="icon" onClick={function responsiveMenu2() {
+                                        var x = document.getElementById("myLeftnav");
+                                        if (x.style.display === "none") {
+                                            x.style.display = "block";
+                                        }
+                                        else{
+                                            x.style.display="none";
+                                        }
+                                    }}>
+                                        <p>&#9776;</p>
+                                    </Menu.Item>
+                                </Menu.Item>
+                            </Menu>
+                        </div>
+
                     <div  className="leftnav" id="myLeftnav">
                         <Menu vertical style={{float:"left"}}>
                             <Menu.Item>
@@ -96,20 +118,51 @@ export default class NavigationBar extends  Component{
                             </Menu.Item>
                         </Menu>
                     </div>
-                :   <div  className="leftnav" id="myLeftnav">
-                        <Menu vertical style={{float:"left"}}>
-                            <Menu.Item as={Link} to="/login" name='login' active={activeItem === 'login'} onClick={this.handleItemClick}>
-                                <p>Login</p>
-                            </Menu.Item>
-                            <Menu.Item as={Link} to="/register" name='register' active={activeItem === 'register'} onClick={this.handleItemClick}>
-                                <p>Registrierung</p>
-                            </Menu.Item>
-                            <Menu.Item as={Link} to="/impressum" name='impressum' active={activeItem === 'impressum'} onClick={this.handleItemClick}>
-                                <p>Impressum</p>
-                            </Menu.Item>
-                        </Menu>
+                    </div>
+                :   <div>
+                        <div className="topnav" id="myTopnav">
+                            <Menu horizontal style={{float:"left"}}>
+                                <Menu.Item>
+                                    <Menu.Header as={Menu.Item} id="menuheader_top" className="menuheader_top">
+                                        <p>StrawBerrySaver</p>
+                                    </Menu.Header>
+                                    <Menu.Item className="icon" onClick={function responsiveMenu2() {
+                                        var x = document.getElementById("myLeftnav");
+                                        if (x.style.display === "none") {
+                                            x.style.display = "block";
+                                        }
+                                        else{
+                                            x.style.display="none";
+                                        }
+                                        if (x.className === "leftnav") {
+                                            x.className = "leftnav responsive";
+                                        } else {
+                                            x.className = "leftnav";
+                                        }
+
+                                    }}>
+                                        <p>&#9776;</p>
+                                    </Menu.Item>
+                                </Menu.Item>
+                            </Menu>
+                        </div>
+
+                        <div  className="leftnav" id="myLeftnav">
+                            <Menu vertical style={{float:"left"}}>
+                                <Menu.Item as={Link} to="/login" name='login' active={activeItem === 'login'} onClick={this.handleItemClick}>
+                                    <p>Login</p>
+                                </Menu.Item>
+                                <Menu.Item as={Link} to="/register" name='register' active={activeItem === 'register'} onClick={this.handleItemClick}>
+                                    <p>Registrierung</p>
+                                </Menu.Item>
+                                <Menu.Item as={Link} to="/impressum" name='impressum' active={activeItem === 'impressum'} onClick={this.handleItemClick}>
+                                    <p>Impressum</p>
+                                </Menu.Item>
+                            </Menu>
+                        </div>
                     </div>
                 }
+
             </div>
         )
     }

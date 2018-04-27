@@ -66,7 +66,8 @@ export default class User extends Component {
     render() {
 
         return (
-            <div>
+            <div id="seite">
+                <h1>Nutzerdaten</h1>
                 <p>Vorname: {this.state.given_name}</p>
                 <p>Nachname: {this.state.family_name}</p>
                 <p>E-Mail: {this.state.email}</p>
