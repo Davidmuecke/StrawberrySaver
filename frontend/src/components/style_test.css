@@ -30,9 +30,9 @@
 }
 
 /*Eigentliche Seite (Rest ohne Menu)*/
-#seite1{
+#seite1 {
     margin-left: 250px; /*Muss der gleiche Wert sein wie bei ul {width} - gibt das Verhältnis von Menu und Seite an*/
-    height:100%;
+    height: 100%;
     padding-bottom: 3%;
     padding-left: 1px;
     padding-right: 30px;

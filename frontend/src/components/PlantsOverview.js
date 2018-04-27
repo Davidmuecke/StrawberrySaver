@@ -20,17 +20,24 @@ export default class PlantsOverview extends Component{
         {
             rows.push(Plant(gurke,this.props.plants[i][0], i,this.props.plants[i][1],this.props.plants[i][2],this.props.plants[i][3],this.props.plants[i][3],1,"22°"));
         }
-        return (
 
-            <Container fluid={true}>
-            <Grid>
-                <Grid.Column width={16} stretched>
-                    <Header><h1 id="headerUebersicht">Übersicht</h1></Header>
-                    <p>Hier können sie alle registrierten Pflanzen einsehen, klicken Sie auf Details umd die Detailseite der jeweiligen Pflanze aufzurufen</p>
-                </Grid.Column>
-                {rows}
-            </Grid>
-            </Container>
+        var seite;
+        if (window.innerWidth>="900"){
+            seite= "seite1"}
+        else{
+            seite="seite2"}
+        return (
+            <div id={seite}>
+                <Container fluid={true}>
+                <Grid>
+                    <Grid.Column width={16} stretched>
+                        <Header><h1 id="headerUebersicht">Übersicht</h1></Header>
+                        <p>Hier können sie alle registrierten Pflanzen einsehen, klicken Sie auf Details umd die Detailseite der jeweiligen Pflanze aufzurufen</p>
+                    </Grid.Column>
+                    {rows}
+                </Grid>
+                </Container>
+            </div>
         )
     }
 
@@ -40,13 +47,7 @@ export default class PlantsOverview extends Component{
 const Plant = (image,sorte, id, einpflanzungszeitpunkt,erstellungszeitpunkt,geographischerOrt,lokaleposition,sensorid,temperaturwert) =>
 {
     Component.handleClick = (e) => {};
-    var seite;
-    if (window.innerWidth>="900"){
-        seite= "seite1"}
-    else{
-        seite="seite2"}
     return (
-        <div id={seite}>
             <Grid.Column width={8} stretched >
                 <Segment>
                     <img id="plantImage"  src={image} alt={""}/>
@@ -58,6 +59,5 @@ const Plant = (image,sorte, id, einpflanzungszeitpunkt,erstellungszeitpunkt,geog
                     <Button as={Link} to={"/plantDetail?name="+id} color="blue" onClick={this.handleClick}> Details </Button>
                 </Segment>
             </Grid.Column>
-        </div>
     );
 };
