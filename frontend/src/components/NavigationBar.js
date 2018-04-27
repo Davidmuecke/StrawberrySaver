@@ -48,10 +48,10 @@ export default class NavigationBar extends  Component{
                     <Menu vertical style={{float:"left"}}>
                         <Menu.Item>
                             <div id="menu_header">
-                                <Menu.Header as={Menu.Item}><text class="font_menu">StrawBerrySaver</text></Menu.Header>
+                                <Menu.Header as={Menu.Item}><text className="font_menu">StrawBerrySaver</text></Menu.Header>
                             </div>
                             <Menu.Item as={Link} to="/" name='uebersicht' active={activeItem === 'uebersicht'} onClick={this.handleItemClick}>
-                                <text class="font_menu">Pflanzen</text>
+                                <text className="font_menu">Pflanzen</text>
                                 {activeItem==="uebersicht"?
                                     <Menu.Menu>
                                         <Menu.Item as={Link} to={"/plantDetail?name="+0} name={this.props.childProps.names[0]} active={activeItem === this.props.childProps.names[0]} onClick={this.handleItemClick}/>
@@ -61,29 +61,29 @@ export default class NavigationBar extends  Component{
                                     :<div/> }
                             </Menu.Item>
                             <Menu.Item as={Link} to="/test" name='test' active={activeItem === 'test'} onClick={this.handleItemClick}>
-                                <text class="font_menu">Test</text>
+                                <text className="font_menu">Test</text>
                             </Menu.Item>
                             <Menu.Item as={Link} to="/user" name='user' active={activeItem === 'user'} onClick={this.handleItemClick}>
-                                <text class="font_menu">Nutzer</text>
+                                <text className="font_menu">Nutzer</text>
                             </Menu.Item>
                             <Menu.Item as={Link} to="/impressum" name='impressum' active={activeItem === 'impressum'} onClick={this.handleItemClick}>
-                                <text class="font_menu">Impressum</text>
+                                <text className="font_menu">Impressum</text>
                             </Menu.Item>
                             <Menu.Item name='logout' active={activeItem ==='logout'} onClick={this.handleItemClick}>
-                                <text class="font_menu">Logout</text>
+                                <text className="font_menu">Logout</text>
                             </Menu.Item>
 
                         </Menu.Item>
                     </Menu>
                     : <Menu horizontal style={{float:"left"}}>
                         <Menu.Item as={Link} to="/login" name='login' active={activeItem === 'login'} onClick={this.handleItemClick}>
-                            <text class="font_menu">Login</text>
+                            <text className="font_menu">Login</text>
                         </Menu.Item>
                         <Menu.Item as={Link} to="/register" name='register' active={activeItem === 'register'} onClick={this.handleItemClick}>
-                            <text class="font_menu">Registrieren</text>
+                            <text className="font_menu">Registrieren</text>
                         </Menu.Item>
                         <Menu.Item as={Link} to="/impressum" name='impressum' active={activeItem === 'impressum'} onClick={this.handleItemClick}>
-                            <text class="font_menu">Impressum</text>
+                            <text className="font_menu">Impressum</text>
                         </Menu.Item>
                     </Menu>
                 }

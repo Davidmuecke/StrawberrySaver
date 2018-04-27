@@ -48,10 +48,10 @@ export default class MenuLeft extends  Component{
             <div>
                 {this.props.childProps.isAuthenticated ?
                     <div>
-                    <div class="topnav" id="myTopnav">
+                    <div className="topnav" id="myTopnav">
                         <ul>
                             <li>
-                                <a class="icon" onClick={function responsiveMenu2() {
+                                <a className="icon" onClick={function responsiveMenu2() {
                                     var x = document.getElementById("myLeftnav");
                                     if (x.style.display === "none") {
                                         x.style.display = "block";
@@ -66,25 +66,29 @@ export default class MenuLeft extends  Component{
                                     }
 
                                 }}>&#9776;</a>
-                                <a id="menuheader_top" class="menuheader_top">Strawberry Saver</a>
+                                <a id="menuheader_top" className="menuheader_top">Strawberry Saver</a>
                             </li>
                         </ul>
                     </div>
 
-                    <div class="leftnav" id="myLeftnav">
+                    <div className="leftnav" id="myLeftnav">
                         <ul>
                             <li>
-                                    <a class="menuheader">Strawberry Saver</a>
+                                    <a className="menuheader">Strawberry Saver</a>
                             </li>
                             <li>
                                 <a href="/" name='uebersicht' active={activeItem === 'uebersicht'} onClick={this.handleItemClick}>Pflanze</a>
                                 {activeItem==="uebersicht"?
-                                <div>
-                                <li><a href={"/plantDetail?name="+0} name={this.props.childProps.names[0]} active={activeItem === this.props.childProps.names[0]} onClick={this.handleItemClick}><text><script type="text/javascript">this.props.childProps.names[0]</script></text></a></li>
-                                <li><a href={"/plantDetail?name="+1} name={this.props.childProps.names[1]} active={activeItem === this.props.childProps.names[1]} onClick={this.handleItemClick}><script type="text/javascript">this.props.childProps.names[1]</script></a></li>
-                                <li><a href={"/plantDetail?name="+2} name={this.props.childProps.names[2]} active={activeItem === this.props.childProps.names[2]} onClick={this.handleItemClick}><script type="text/javascript">this.props.childProps.names[2]</script></a></li>
-                                <li><a href={"/plantDetail?name="+3} name={this.props.childProps.names[3]} active={activeItem === this.props.childProps.names[3]} onClick={this.handleItemClick}><script type="text/javascript">this.props.childProps.names[3]</script></a></li>
-                                </div>
+                                    <div>
+                                        {activeItem==="uebersicht"?
+                                            <div>
+                                            <li><a href={"/plantDetail?name="+0} name={this.props.childProps.names[0]} active={activeItem === this.props.childProps.names[0]} onClick={this.handleItemClick}><text><script type="text/javascript">this.props.childProps.names[0]</script></text></a></li>
+                                            <li><a href={"/plantDetail?name="+1} name={this.props.childProps.names[1]} active={activeItem === this.props.childProps.names[1]} onClick={this.handleItemClick}><script type="text/javascript">this.props.childProps.names[1]</script></a></li>
+                                            <li><a href={"/plantDetail?name="+2} name={this.props.childProps.names[2]} active={activeItem === this.props.childProps.names[2]} onClick={this.handleItemClick}><script type="text/javascript">this.props.childProps.names[2]</script></a></li>
+                                            <li><a href={"/plantDetail?name="+3} name={this.props.childProps.names[3]} active={activeItem === this.props.childProps.names[3]} onClick={this.handleItemClick}><script type="text/javascript">this.props.childProps.names[3]</script></a></li>
+                                            </div>
+                                        :<div/>}
+                                    </div>
                                 : <div/> }
                             </li>
                             <li>
@@ -102,10 +106,10 @@ export default class MenuLeft extends  Component{
                         </ul>
                     </div>
                     </div>
-                    : <div class="leftnav" id="myLeftnav">
+                    : <div className="leftnav" id="myLeftnav">
                         <ul>
                             <li>
-                                <a class="menuheader">Strawberry Saver</a>
+                                <a className="menuheader">Strawberry Saver</a>
                             </li>
                             <li>
                                 <a href="/login" name='login' active={activeItem === 'login'} onClick={this.handleItemClick}>Login</a>
