@@ -2,6 +2,7 @@ import React, { Component} from "react";
 import { Button, Form } from 'semantic-ui-react';
 import { Auth } from "aws-amplify";
 import "./Register.css";
+import "./style_test.css";
 
 export default class Register extends Component {
     constructor(props) {

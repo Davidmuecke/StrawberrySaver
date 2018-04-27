@@ -74,7 +74,7 @@ export default class MenuLeft extends  Component{
                     <div className="leftnav" id="myLeftnav">
                         <ul>
                             <li>
-                                    <a className="menuheader">Strawberry Saver</a>
+                                <a className="menuheader">Strawberry Saver</a>
                             </li>
                             <li>
                                 <a href="/" name='uebersicht' active={activeItem === 'uebersicht'} onClick={this.handleItemClick}>Pflanze</a>
@@ -141,7 +141,7 @@ export default class MenuLeft extends  Component{
                                     <a href="/register" name='register' active={activeItem === 'register'} onClick={this.handleItemClick}>Registrierung</a>
                                 </li>
                                 <li>
-                                    <a href="/impressum" name='impressum' active={activeItem === 'impressum'} onClick={this.handleItemClick}>Impressum</a>
+                                    <a href="/impressum" name='impressum' active={activeItem === 'impressum'} onClick={this.handleItemClick}>Impressung</a>
                                 </li>
                             </ul>
                         </div>
