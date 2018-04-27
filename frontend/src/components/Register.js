@@ -86,91 +86,105 @@ export default class Register extends Component {
     }
 
     renderConfirmationForm() {
+        var seite;
+        if (window.innerWidth>="900"){
+            seite= "seite1"}
+        else{
+            seite="seite2"}
         return (
-            <div className="registration">
-                <h1>Registrierung bestätigen</h1>
-                <Form onSubmit={this.handleConfirmationSubmit}>
-                    <Form.Field >
-                        <label>Confirmation Code</label>
-                        <input
-                            autoFocus
-                            id="confirmationCode"
-                            type="tel"
-                            value={this.state.confirmationCode}
-                            onChange={this.handleChange}
-                            className="registration_box"
-                        />
-                    </Form.Field>
-                    <Button
-                        disabled={!this.validateConfirmationForm()}
-                        type="submit"
-                    >Verify</Button>
-                </Form>
+            <div id={seite}>
+                <div className="registration">
+                    <h1>Registrierung bestätigen</h1>
+                    <Form onSubmit={this.handleConfirmationSubmit}>
+                        <Form.Field >
+                            <label>Confirmation Code</label>
+                            <input
+                                autoFocus
+                                id="confirmationCode"
+                                type="tel"
+                                value={this.state.confirmationCode}
+                                onChange={this.handleChange}
+                                className="registration_box"
+                            />
+                        </Form.Field>
+                        <Button
+                            disabled={!this.validateConfirmationForm()}
+                            type="submit"
+                        >Verify</Button>
+                    </Form>
+                </div>
             </div>
         );
     }
 
     renderForm() {
+        var seite;
+        if (window.innerWidth>="900"){
+            seite= "seite1"}
+        else{
+            seite="seite2"}
         return (
-            <div className="registration">
-                <h1>Registrierung</h1>
-                <Form onSubmit={this.handleSubmit}>
-                    <Form.Field  >
-                        <label>Email</label>
-                        <input
-                            autoFocus
-                            id="email"
-                            type="email"
-                            value={this.state.email}
-                            onChange={this.handleChange}
-                            className="registration_box"
-                        />
-                    </Form.Field>
-                    <Form.Field  >
-                        <label>Vorname</label>
-                        <input
-                            id="given_name"
-                            type="text"
-                            value={this.state.given_name}
-                            onChange={this.handleChange}
-                            className="registration_box"
-                        />
-                    </Form.Field>
-                    <Form.Field  >
-                        <label>Nachname</label>
-                        <input
-                            id="family_name"
-                            type="text"
-                            value={this.state.family_name}
-                            onChange={this.handleChange}
-                            className="registration_box"
-                        />
-                    </Form.Field>
-                    <Form.Field>
-                        <label>Password</label>
-                        <input
-                            id="password"
-                            value={this.state.password}
-                            onChange={this.handleChange}
-                            type="password"
-                            className="registration_box"
-                        />
-                    </Form.Field>
-                    <Form.Field >
-                        <label>Confirm Password</label>
-                        <input
-                            id="confirmPassword"
-                            value={this.state.confirmPassword}
-                            onChange={this.handleChange}
-                            type="password"
-                            className="registration_box"
-                        />
-                    </Form.Field>
-                    <Button
-                        disabled={!this.validateForm()}
-                        type="submit"
-                    >Signup </Button>
-                </Form>
+            <div id={seite}>
+                <div className="registration">
+                    <h1>Registrierung</h1>
+                    <Form onSubmit={this.handleSubmit}>
+                        <Form.Field  >
+                            <label>Email</label>
+                            <input
+                                autoFocus
+                                id="email"
+                                type="email"
+                                value={this.state.email}
+                                onChange={this.handleChange}
+                                className="registration_box"
+                            />
+                        </Form.Field>
+                        <Form.Field  >
+                            <label>Vorname</label>
+                            <input
+                                id="given_name"
+                                type="text"
+                                value={this.state.given_name}
+                                onChange={this.handleChange}
+                                className="registration_box"
+                            />
+                        </Form.Field>
+                        <Form.Field  >
+                            <label>Nachname</label>
+                            <input
+                                id="family_name"
+                                type="text"
+                                value={this.state.family_name}
+                                onChange={this.handleChange}
+                                className="registration_box"
+                            />
+                        </Form.Field>
+                        <Form.Field>
+                            <label>Password</label>
+                            <input
+                                id="password"
+                                value={this.state.password}
+                                onChange={this.handleChange}
+                                type="password"
+                                className="registration_box"
+                            />
+                        </Form.Field>
+                        <Form.Field >
+                            <label>Confirm Password</label>
+                            <input
+                                id="confirmPassword"
+                                value={this.state.confirmPassword}
+                                onChange={this.handleChange}
+                                type="password"
+                                className="registration_box"
+                            />
+                        </Form.Field>
+                        <Button
+                            disabled={!this.validateForm()}
+                            type="submit"
+                        >Signup </Button>
+                    </Form>
+                </div>
             </div>
         );
     }

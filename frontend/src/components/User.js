@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Button} from 'semantic-ui-react';
 import {Auth} from "aws-amplify/lib/index";
+import "./style_test.css";
 
 export default class User extends Component {
     constructor(props) {
@@ -64,9 +65,13 @@ export default class User extends Component {
     }
 
     render() {
-
+        var seite;
+        if (window.innerWidth>="900"){
+            seite= "seite1"}
+        else{
+            seite="seite2"}
         return (
-            <div id="seite">
+            <div id={seite}>
                 <h1>Nutzerdaten</h1>
                 <p>Vorname: {this.state.given_name}</p>
                 <p>Nachname: {this.state.family_name}</p>

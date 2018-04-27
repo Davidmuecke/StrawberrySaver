@@ -121,7 +121,7 @@ export default class NavigationBar extends  Component{
                     </div>
                 :   <div>
                         <div className="topnav" id="myTopnav">
-                            <Menu horizontal style={{float:"left"}}>
+                            <Menu horizontal>
                                 <Menu.Item>
                                     <Menu.Header as={Menu.Item} id="menuheader_top" className="menuheader_top">
                                         <p>StrawBerrySaver</p>

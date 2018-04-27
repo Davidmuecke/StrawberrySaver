@@ -20,8 +20,13 @@ export default class PlantDetail extends Component{
         return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
     render(){
+        var seite;
+        if (window.innerWidth>="900"){
+            seite= "seite1"}
+        else{
+            seite="seite2"}
         return (
-            <div>
+            <div id={seite}>
                 <Container fluid={true}>
                     <Grid>
                         <Grid.Row >

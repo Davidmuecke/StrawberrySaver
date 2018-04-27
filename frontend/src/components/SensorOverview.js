@@ -40,11 +40,18 @@ export default class User extends Component {
 
 
     render() {
-
+        var seite;
+        if (window.innerWidth>="900"){
+            seite= "seite1"}
+        else{
+            seite="seite2"}
         return (
-            <div>
-                <h1>Sensor Übersicht</h1>
-                <p>{this.state.sensors}</p>
-            </div>);
+            <div id={seite}>
+                <div>
+                    <h1>Sensor Übersicht</h1>
+                    <p>{this.state.sensors}</p>
+                </div>
+            </div>
+        );
     }
 }

@@ -40,18 +40,24 @@ export default class PlantsOverview extends Component{
 const Plant = (image,sorte, id, einpflanzungszeitpunkt,erstellungszeitpunkt,geographischerOrt,lokaleposition,sensorid,temperaturwert) =>
 {
     Component.handleClick = (e) => {};
+    var seite;
+    if (window.innerWidth>="900"){
+        seite= "seite1"}
+    else{
+        seite="seite2"}
     return (
-        <Grid.Column width={8} stretched >
-            <Segment>
-                <img id="plantImage"  src={image} alt={""}/>
-                <h2> Art: {sorte}</h2>
-                <h4> Einpflanzungszeitpunkt: {einpflanzungszeitpunkt}</h4>
-                <h4>Ort: {geographischerOrt}</h4>
-                <h4>Temperatur: {temperaturwert}</h4>
-
-                <br />
-                <Button as={Link} to={"/plantDetail?name="+id} color="blue" onClick={this.handleClick}> Details </Button>
-            </Segment>
-        </Grid.Column>
+        <div id={seite}>
+            <Grid.Column width={8} stretched >
+                <Segment>
+                    <img id="plantImage"  src={image} alt={""}/>
+                    <h2> Art: {sorte}</h2>
+                    <h4> Einpflanzungszeitpunkt: {einpflanzungszeitpunkt}</h4>
+                    <h4>Ort: {geographischerOrt}</h4>
+                    <h4>Temperatur: {temperaturwert}</h4>
+                    <br />
+                    <Button as={Link} to={"/plantDetail?name="+id} color="blue" onClick={this.handleClick}> Details </Button>
+                </Segment>
+            </Grid.Column>
+        </div>
     );
 };

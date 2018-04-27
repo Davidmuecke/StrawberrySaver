@@ -3,13 +3,20 @@ import "./Impressum.css";
 
 export default class Impressum extends Component{
     render(){
+        var seite;
+        if (window.innerWidth>="900"){
+            seite= "seite1"}
+        else{
+            seite="seite2"}
         return (
-            <div className="impressum">
-                <h1> Impressum </h1>
-                <h3 id="impressum_name">Strawberry Saver</h3>
-                <text>Web Engineering Projekt<br/></text>
-                <text>TINF16B Enrico Keil 4.Semester<br/></text>
-                <text>Copyright by David, Niklas, Jonathan und Rahel<br/></text>
+            <div id={seite}>
+                <div className="impressum">
+                    <h1> Impressum </h1>
+                    <h3 id="impressum_name">Strawberry Saver</h3>
+                    <text>Web Engineering Projekt<br/></text>
+                    <text>TINF16B Enrico Keil 4.Semester<br/></text>
+                    <text>Copyright by David, Niklas, Jonathan und Rahel<br/></text>
+                </div>
             </div>
 
         )

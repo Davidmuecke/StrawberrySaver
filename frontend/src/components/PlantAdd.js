@@ -129,156 +129,162 @@ export default class Login extends Component {
     }
 
     render() {
-
+        var seite;
+        if (window.innerWidth>="900"){
+            seite= "seite1"}
+        else{
+            seite="seite2"}
         return (
-            <Container >
-                <Grid>
-                <Grid.Column width={10} stretched>
-                    <h1>Neue Pflanze</h1>
-                <Form onSubmit={this.handleSubmit}>
-                    <Form.Field >
-                        <label>Name</label>
-                        <input
-                            id={"name"}
-                            autoFocus
-                            type={"text"}
-                            value={this.state.name}
-                            onChange={this.handleChange}
-                        />
-                    </Form.Field>
-                    <Form.Field>
-                        <label>Sorte</label>
-                        <input
-                            id={"sorte"}
-                            value={this.state.sorte}
-                            onChange={this.handleChange}
-                            type={"text"}
-                        />
-                    </Form.Field>
-                    <Form.Field>
-                        <label>Pflanzzeitpunkt</label>
-                        <input
-                            id={"plantationTime"}
-                            value={this.state.plantationTime}
-                            onChange={this.handleChange}
-                            type={"date"}
-                        />
-                    </Form.Field>
-                    <Form.Field>
-                        <label>Bild URL</label>
-                        <input
-                            id={"pictureURL"}
-                            value={this.state.pictureURL}
-                            onChange={this.handleChange}
-                            type={"text"}
-                        />
-                    </Form.Field>
-                    <Form.Field>
-                        <label>Senor</label>
-                        <Dropdown placeholder='Select Sensor' fluid selection options={this.state.sensorOptions} onChange={this.handleChange}/>
-                    </Form.Field>
-                    <Form.Field>
-                        <label>Standort</label>
-                        <Dropdown placeholder='Standort auswählen' fluid selection options={this.state.locationOptions} onChange={this.handleChange}/>
-                    </Form.Field>
-                    <Form.Field>
-                        <label>lokaler Standort</label>
-                        <Checkbox
-                            radio
-                            label='draußen'
-                            id='localPosition'
-                            name='checkboxRadioGroup'
-                            value='0'
-                            checked={this.state.localPosition === '0'}
-                            onChange={this.handleChange}
-                        />
-                    </Form.Field>
-                    <Form.Field>
-                        <Checkbox
-                            radio
-                            label='überdacht'
-                            id='localPosition2'
-                            name='checkboxRadioGroup'
-                            value='1'
-                            checked={this.state.localPosition === '1'}
-                            onChange={this.handleChange}
-                        />
-                    </Form.Field>
-                    <Form.Field>
-                        <Checkbox
-                            radio
-                            label='drinnen'
-                            id='localPosition3'
-                            name='checkboxRadioGroup'
-                            value='2'
-                            checked={this.state.localPosition === '2'}
-                            onChange={this.handleChange}
-                        />
-                    </Form.Field>
-                    <Form.Field>
-                        <label>optimale Temperatur</label>
-                        <input
-                            id={"perfectTemperature"}
-                            value={this.state.perfectTemperature}
-                            onChange={this.handleChange}
-                            type={"number"}
-                        />
-                    </Form.Field>
-                    <Form.Field>
-                        <label>Abweichung Temperatur Grün</label>
-                        <input
-                            id={"temperatureScopeGreen"}
-                            value={this.state.temperatureScopeGreen}
-                            onChange={this.handleChange}
-                            type={"number"}
-                        />
-                    </Form.Field>
-                    <Form.Field>
-                        <label>Abweichung Temperatur Gelb</label>
-                        <input
-                            id={"temperatureScopeYellow"}
-                            value={this.state.temperatureScopeYellow}
-                            onChange={this.handleChange}
-                            type={"number"}
-                        />
-                    </Form.Field>
-                    <Form.Field>
-                        <label>optimale Feuchtigkeit</label>
-                        <input
-                            id={"perfectWater"}
-                            value={this.state.perfectWater}
-                            onChange={this.handleChange}
-                            type={"number"}
-                        />
-                    </Form.Field>
-                    <Form.Field>
-                        <label>Abweichung Feuchtigkeit Grün</label>
-                        <input
-                            id={"waterScopeGreen"}
-                            value={this.state.waterScopeGreen}
-                            onChange={this.handleChange}
-                            type={"number"}
-                        />
-                    </Form.Field>
-                    <Form.Field>
-                        <label>Abweichung Feuchtigkeit Gelb</label>
-                        <input
-                            id={"waterScopeYellow"}
-                            value={this.state.waterScopeYellow}
-                            onChange={this.handleChange}
-                            type={"number"}
-                        />
-                    </Form.Field>
-                    <Button
-                        disabled={!this.validateForm()}
-                        type="submit"
-                    >
-                        Erstellen
-                    </Button>
-                </Form>
-                </Grid.Column>
-                </Grid>
-            </Container>
+            <div id={seite}>
+                <Container >
+                    <Grid>
+                    <Grid.Column width={10} stretched>
+                        <h1>Neue Pflanze</h1>
+                    <Form onSubmit={this.handleSubmit}>
+                        <Form.Field >
+                            <label>Name</label>
+                            <input
+                                id={"name"}
+                                autoFocus
+                                type={"text"}
+                                value={this.state.name}
+                                onChange={this.handleChange}
+                            />
+                        </Form.Field>
+                        <Form.Field>
+                            <label>Sorte</label>
+                            <input
+                                id={"sorte"}
+                                value={this.state.sorte}
+                                onChange={this.handleChange}
+                                type={"text"}
+                            />
+                        </Form.Field>
+                        <Form.Field>
+                            <label>Pflanzzeitpunkt</label>
+                            <input
+                                id={"plantationTime"}
+                                value={this.state.plantationTime}
+                                onChange={this.handleChange}
+                                type={"date"}
+                            />
+                        </Form.Field>
+                        <Form.Field>
+                            <label>Bild URL</label>
+                            <input
+                                id={"pictureURL"}
+                                value={this.state.pictureURL}
+                                onChange={this.handleChange}
+                                type={"text"}
+                            />
+                        </Form.Field>
+                        <Form.Field>
+                            <label>Senor</label>
+                            <Dropdown placeholder='Select Sensor' fluid selection options={this.state.sensorOptions} onChange={this.handleChange}/>
+                        </Form.Field>
+                        <Form.Field>
+                            <label>Standort</label>
+                            <Dropdown placeholder='Standort auswählen' fluid selection options={this.state.locationOptions} onChange={this.handleChange}/>
+                        </Form.Field>
+                        <Form.Field>
+                            <label>lokaler Standort</label>
+                            <Checkbox
+                                radio
+                                label='draußen'
+                                id='localPosition'
+                                name='checkboxRadioGroup'
+                                value='0'
+                                checked={this.state.localPosition === '0'}
+                                onChange={this.handleChange}
+                            />
+                        </Form.Field>
+                        <Form.Field>
+                            <Checkbox
+                                radio
+                                label='überdacht'
+                                id='localPosition2'
+                                name='checkboxRadioGroup'
+                                value='1'
+                                checked={this.state.localPosition === '1'}
+                                onChange={this.handleChange}
+                            />
+                        </Form.Field>
+                        <Form.Field>
+                            <Checkbox
+                                radio
+                                label='drinnen'
+                                id='localPosition3'
+                                name='checkboxRadioGroup'
+                                value='2'
+                                checked={this.state.localPosition === '2'}
+                                onChange={this.handleChange}
+                            />
+                        </Form.Field>
+                        <Form.Field>
+                            <label>optimale Temperatur</label>
+                            <input
+                                id={"perfectTemperature"}
+                                value={this.state.perfectTemperature}
+                                onChange={this.handleChange}
+                                type={"number"}
+                            />
+                        </Form.Field>
+                        <Form.Field>
+                            <label>Abweichung Temperatur Grün</label>
+                            <input
+                                id={"temperatureScopeGreen"}
+                                value={this.state.temperatureScopeGreen}
+                                onChange={this.handleChange}
+                                type={"number"}
+                            />
+                        </Form.Field>
+                        <Form.Field>
+                            <label>Abweichung Temperatur Gelb</label>
+                            <input
+                                id={"temperatureScopeYellow"}
+                                value={this.state.temperatureScopeYellow}
+                                onChange={this.handleChange}
+                                type={"number"}
+                            />
+                        </Form.Field>
+                        <Form.Field>
+                            <label>optimale Feuchtigkeit</label>
+                            <input
+                                id={"perfectWater"}
+                                value={this.state.perfectWater}
+                                onChange={this.handleChange}
+                                type={"number"}
+                            />
+                        </Form.Field>
+                        <Form.Field>
+                            <label>Abweichung Feuchtigkeit Grün</label>
+                            <input
+                                id={"waterScopeGreen"}
+                                value={this.state.waterScopeGreen}
+                                onChange={this.handleChange}
+                                type={"number"}
+                            />
+                        </Form.Field>
+                        <Form.Field>
+                            <label>Abweichung Feuchtigkeit Gelb</label>
+                            <input
+                                id={"waterScopeYellow"}
+                                value={this.state.waterScopeYellow}
+                                onChange={this.handleChange}
+                                type={"number"}
+                            />
+                        </Form.Field>
+                        <Button
+                            disabled={!this.validateForm()}
+                            type="submit"
+                        >
+                            Erstellen
+                        </Button>
+                    </Form>
+                    </Grid.Column>
+                    </Grid>
+                </Container>
+            </div>
         );
     }
 }

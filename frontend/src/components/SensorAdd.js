@@ -90,83 +90,89 @@ export default class SensorAdd extends Component {
 
         render()
         {
-
+            var seite;
+            if (window.innerWidth>="900"){
+                seite= "seite1"}
+            else{
+                seite="seite2"}
             return (
-                <Container>
-                    <Grid>
-                        <Grid.Column width={10} stretched>
-                            <h1>Neuer Sensor</h1>
-                            <Form onSubmit={this.handleSubmit}>
-                                <Form.Field>
-                                    <label>SensorID</label>
-                                    <input
-                                        id={"sensor_ID"}
-                                        autoFocus
-                                        type={"text"}
-                                        value={this.state.sensor_ID}
-                                        onChange={this.handleChange}
-                                    />
-                                </Form.Field>
-                                <Form.Field>
-                                    <label>Seriennummer</label>
-                                    <input
-                                        id={"serialNumber"}
-                                        value={this.state.serialNumber}
-                                        onChange={this.handleChange}
-                                        type={"text"}
-                                    />
-                                </Form.Field>
-                                <Form.Field>
-                                    <label>Messinterval</label>
-                                    <input
-                                        id={"measuringInterval"}
-                                        value={this.state.measuringInterval}
-                                        onChange={this.handleChange}
-                                        type={"number"}
-                                    />
-                                </Form.Field>
-                                <Form.Field>
-                                    <label>SenderTimeout</label>
-                                    <input
-                                        id={"sendInterval"}
-                                        value={this.state.sendInterval}
-                                        onChange={this.handleChange}
-                                        type={"number"}
-                                    />
-                                </Form.Field>
-                                <Form.Field>
-                                    <label>Bei Änderung sofort senden</label>
-                                    <Checkbox
-                                        radio
-                                        label='ja'
-                                        id='sendOnChange'
-                                        name='checkboxRadioGroup'
-                                        value='true'
-                                        checked={this.state.sendOnChange === 'true'}
-                                        onChange={this.handleChange}
-                                    />
-                                </Form.Field>
-                                <Form.Field>
-                                    <Checkbox
-                                        radio
-                                        label='nein'
-                                        id='sendOnChange2'
-                                        name='checkboxRadioGroup'
-                                        value='false'
-                                        checked={this.state.sendOnChange === 'false'}
-                                        onChange={this.handleChange}
-                                    />
-                                </Form.Field>
-                                <Button
-                                    disabled={!this.validateForm()}
-                                    type="submit"
-                                >
-                                    Erstellen
-                                </Button>
-                            </Form>
-                        </Grid.Column>
-                    </Grid>
-                </Container>
+                <div id={seite}>
+                    <Container>
+                        <Grid>
+                            <Grid.Column width={10} stretched>
+                                <h1>Neuer Sensor</h1>
+                                <Form onSubmit={this.handleSubmit}>
+                                    <Form.Field>
+                                        <label>SensorID</label>
+                                        <input
+                                            id={"sensor_ID"}
+                                            autoFocus
+                                            type={"text"}
+                                            value={this.state.sensor_ID}
+                                            onChange={this.handleChange}
+                                        />
+                                    </Form.Field>
+                                    <Form.Field>
+                                        <label>Seriennummer</label>
+                                        <input
+                                            id={"serialNumber"}
+                                            value={this.state.serialNumber}
+                                            onChange={this.handleChange}
+                                            type={"text"}
+                                        />
+                                    </Form.Field>
+                                    <Form.Field>
+                                        <label>Messinterval</label>
+                                        <input
+                                            id={"measuringInterval"}
+                                            value={this.state.measuringInterval}
+                                            onChange={this.handleChange}
+                                            type={"number"}
+                                        />
+                                    </Form.Field>
+                                    <Form.Field>
+                                        <label>SenderTimeout</label>
+                                        <input
+                                            id={"sendInterval"}
+                                            value={this.state.sendInterval}
+                                            onChange={this.handleChange}
+                                            type={"number"}
+                                        />
+                                    </Form.Field>
+                                    <Form.Field>
+                                        <label>Bei Änderung sofort senden</label>
+                                        <Checkbox
+                                            radio
+                                            label='ja'
+                                            id='sendOnChange'
+                                            name='checkboxRadioGroup'
+                                            value='true'
+                                            checked={this.state.sendOnChange === 'true'}
+                                            onChange={this.handleChange}
+                                        />
+                                    </Form.Field>
+                                    <Form.Field>
+                                        <Checkbox
+                                            radio
+                                            label='nein'
+                                            id='sendOnChange2'
+                                            name='checkboxRadioGroup'
+                                            value='false'
+                                            checked={this.state.sendOnChange === 'false'}
+                                            onChange={this.handleChange}
+                                        />
+                                    </Form.Field>
+                                    <Button
+                                        disabled={!this.validateForm()}
+                                        type="submit"
+                                    >
+                                        Erstellen
+                                    </Button>
+                                </Form>
+                            </Grid.Column>
+                        </Grid>
+                    </Container>
+                </div>
             );
         }
 
