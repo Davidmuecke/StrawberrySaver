@@ -88,7 +88,7 @@ export default class Register extends Component {
     renderConfirmationForm() {
         var seite;
         if (window.innerWidth>="900"){
-            seite= "seite1"}
+            seite= "seite2"}
         else{
             seite="seite2"}
         return (
@@ -120,7 +120,7 @@ export default class Register extends Component {
     renderForm() {
         var seite;
         if (window.innerWidth>="900"){
-            seite= "seite1"}
+            seite= "seite2"}
         else{
             seite="seite2"}
         return (

@@ -57,7 +57,7 @@ export default class Login extends Component {
     render() {
         var seite;
         if (window.innerWidth>="900"){
-            seite= "seite1"}
+            seite= "seite2"}
         else{
             seite="seite2"}
         return (

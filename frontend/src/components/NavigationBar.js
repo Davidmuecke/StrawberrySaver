@@ -148,7 +148,7 @@ export default class NavigationBar extends  Component{
                         </div>
 
                         <div  className="leftnav" id="myLeftnav">
-                            <Menu vertical style={{float:"left"}}>
+                            <Menu horizontal>
                                 <Menu.Item as={Link} to="/login" name='login' active={activeItem === 'login'} onClick={this.handleItemClick}>
                                     <p>Login</p>
                                 </Menu.Item>
