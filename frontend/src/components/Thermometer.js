@@ -26,8 +26,13 @@ constructor(props){
 
 
     render(){
+    console.log(this.state.temp);
+    console.log(this.state.greenBorderDown);
+    console.log(this.state.greenBorderUp);
+    console.log(this.state.yellowBorderDown);
+    console.log(this.state.yellowBorderUp);
         return (
-            <div style={{backgroundColor:(this.state.current+5 <=this.state.greenBorderDown || this.state.current+5 >=this.state.greenBorderUp)?"red":(this.state.current+5 >=this.state.yellowBorderDown || this.state.current+5 <= this.state.yellowBorderUp)?"green":"#EEC900",width:"100%",height:"100%",position:"relative"}}>
+            <div style={{backgroundColor:(this.state.temp <this.state.yellowBorderDown || this.state.temp >this.state.yellowBorderUp)?this.props.barColor:(this.state.temp >=this.state.greenBorderDown && this.state.temp <= this.state.greenBorderUp)?"green":"#EEC900",width:"100%",height:"100%",position:"relative"}}>
                 <div style={{zIndex:"1",backgroundColor:"gray",width: "100%", height: this.state.current+"%" ,position:"absolute"}}/>
                 <div style={{zIndex:"3",display:"table",width:"100%",height:"30%",bottom: "0px", position:"absolute"}}>
                     <p style={{display: "table-cell",color:"white",fontSize:"20px",textAlign:"center",fontWeight:"bold",verticalAlign:"middle",paddingLeft:"25%",paddingTop:"50%"}}>{this.state.temp+"°C"}</p>

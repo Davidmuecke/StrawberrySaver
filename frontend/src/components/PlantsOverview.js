@@ -16,7 +16,7 @@ export default class PlantsOverview extends Component{
         var rows=[];
         for(let i=0;i<this.props.plants.length;i++)
         {
-            rows.push(Plant(this.props.plants[i][8],this.props.plants[i][0], i,this.props.plants[i][1],this.props.plants[i][2],this.props.plants[i][3],this.props.plants[i][3],1,this.props.plants[i][4]+"°"));
+            rows.push(Plant(this.props.plants[i][8],this.props.plants[i][0], i,this.props.plants[i][16],this.props.plants[i][2],this.props.plants[i][3],this.props.plants[i][3],1,this.props.plants[i][4]+"°"));
         }
 
         var seite;
@@ -42,16 +42,16 @@ export default class PlantsOverview extends Component{
 }
 //lokale position(draussen,drinnen
 //fehlen noch ,temperaturabweichunggrün,temperaturabweichunggelb,wasserabweichunggrün,wasserabweichunggelb
-const Plant = (image,sorte, id, einpflanzungszeitpunkt,erstellungszeitpunkt,geographischerOrt,lokaleposition,sensorid,temperaturwert) =>
+const Plant = (image,sorte, id, wasserstand,erstellungszeitpunkt,geographischerOrt,lokaleposition,sensorid,temperaturwert) =>
 {
     Component.handleClick = (e) => {};
     return (
             <Grid.Column width={8} stretched >
                 <Segment>
                     <h2> Art: {sorte}</h2>
-                    <h4> Einpflanzungszeitpunkt: {einpflanzungszeitpunkt}</h4>
-                    <img src={image} style={{float:"right",width:"30%",height:"100%"}}/>
                     <h4>Ort: {geographischerOrt}</h4>
+                    <img src={image} style={{float:"right",width:"30%",height:"100%"}}/>
+                    <h4> Wasserstand: {wasserstand +" mm"}</h4>
                     <h4>Temperatur: {temperaturwert}</h4>
                     <br />
                     <Button as={Link} to={"/plantDetail?name="+id} color="blue" onClick={this.handleClick}> Details </Button>

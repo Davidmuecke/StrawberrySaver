@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Thermometer from "./Thermometer";
+import WaterLevel from "./WaterLevel";
 
 function getURL(url) {
     let httpreq = new XMLHttpRequest();
@@ -8,37 +8,40 @@ function getURL(url) {
     return JSON.parse(httpreq.responseText);
 }
 
-export default class ThermometerChart extends Component {
+export default class WaterLevelChart extends Component {
     constructor(props){
         super(props);
 
-        let perfectTemp= Math.round(Number(this.props.temp)/2.5 +2 );
-        let greenScopeArray= Math.floor(Number(this.props.scopeGreen)/2.5 );
-        let yellowScopeArray =Math.floor(Number(this.props.scopeYellow/2.5 ));
-        this.styleType[perfectTemp]="green";
-        for(let j=1;j<=yellowScopeArray;j++){
-            this.styleType[perfectTemp +greenScopeArray+j]= "#EEC900";
-            this.styleType[perfectTemp -greenScopeArray-j]="#EEC900";
-        }
+        let perfectTemp= Math.round(Number((this.props.temp+10))/2.3 );
+        let greenScopeArray= Math.round(Number(this.props.scopeGreen/2.3));
+        let yellowScopeArray =Math.round(Number(this.props.scopeYellow/2.3));
+        this.styleType[Math.round((this.props.temp+5)/2.3)-1]="green";
         for(let i=1; i<=greenScopeArray;i++){
-                this.styleType[perfectTemp+i]= "green";
-                this.styleType[perfectTemp -i]="green";
+            this.styleType[perfectTemp+i-1]= "green";
+            this.styleType[perfectTemp -i-1]="green";
 
         }
+        for(let j=1;j<=yellowScopeArray;j++){
+            this.styleType[perfectTemp+(greenScopeArray +j)-1]= "#EEC900";
+            this.styleType[perfectTemp -greenScopeArray -j-1]="#EEC900";
+            console.log(perfectTemp -greenScopeArray -j);
+        }
+
 
     }
-   // current=  getURL("http://api.openweathermap.org/data/2.5/weather?id="+this.props.cityID+"&appid="+this.props.appid)['main']['temp']-273.15;
-    styleType= ["red","red","red","red","red",
-        "red","red","red","red","red",
-        "red","red","red","red","red"];
+//aktuelle Temperatur, die -268,15 entstehen aus der Umrechnung von Kelvin in Celsius sowie die Transformation in das Thermometer(Das geht intern von 0 bis 35
+    // current=  getURL("http://api.openweathermap.org/data/2.5/weather?id="+this.props.cityID+"&appid="+this.props.appid)['main']['temp']-273.15;
+    styleType= ["blue","blue","blue","blue","blue",
+        "blue","blue","blue","blue","blue",
+        "blue","blue","blue","blue","blue"];
     render(){
         return (
             <div className="Thermometerchart" >
-                <h2>Aktuelle Temperatur der Pflanze</h2>
+                <h2>Aktueller Wasserstand der Pflanze</h2>
 
                 <div style={{float:"left",width:"100px",height:"305px"}}>
-                <Thermometer current= {parseInt(this.props.liveTemp)} greenBorderUp={Number((this.props.temp))+this.props.scopeGreen} greenBorderDown={Number((this.props.temp))-this.props.scopeGreen}
-                            yellowBorderUp={(Number(this.props.temp))+this.props.scopeGreen + this.props.scopeYellow} yellowBorderDown={Number(this.props.temp)-this.props.scopeGreen - this.props.scopeYellow} barColor={this.props.barColor}/>
+                    <WaterLevel current={parseInt(this.props.liveWater)} greenBorderUp={Number((this.props.temp+5))+this.props.scopeGreen} greenBorderDown={Number((this.props.water+5))-this.props.scopeGreen}
+                                 yellowBorderUp={(Number(this.props.temp+5))+this.props.scopeGreen + this.props.scopeYellow} yellowBorderDown={Number((this.props.temp+5))-this.props.scopeGreen - this.props.scopeYellow} barColor={this.props.barColor}/>
                 </div>
                 <div>
                     <ul style={{padding:"0px,0px,0px,0px",margin:"0px,0px,0px,0px",listStyle:"none"}}>
