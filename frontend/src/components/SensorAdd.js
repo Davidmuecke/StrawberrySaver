@@ -72,7 +72,7 @@ export default class SensorAdd extends Component {
                                 modelDesignation: this.state.modelDesignation,
                                 firmwareVersion: this.state.firmwareVersion,
                                 initialCommisioning: this.state.initialCommisioning,
-                                serialNumer: this.state.SerialNumber
+                                serialNumber: this.state.serialNumber
                             },
                             configData:{
                                 measuringInterval: this.state.measuringInterval,
@@ -81,8 +81,15 @@ export default class SensorAdd extends Component {
                                 batteryLevel: this.state.batteryLevel
                             }
                         }
+                }).then(response => {
+                    //console.log("success: "+ response);
+                    this.props.renewGlobalPlantData();
+
+                    this.props.history.push("/sensorOverview");
+                }).catch(error => {
+                    console.log(error.response);
                 });
-                this.props.history.push("/");
+
             } catch (e) {
                 alert(e.message);
             }
@@ -118,7 +125,7 @@ export default class SensorAdd extends Component {
                                             id={"serialNumber"}
                                             value={this.state.serialNumber}
                                             onChange={this.handleChange}
-                                            type={"text"}
+                                            type={"number"}
                                         />
                                     </Form.Field>
                                     <Form.Field>
