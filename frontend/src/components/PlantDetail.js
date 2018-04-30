@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import ThermometerChart from "./ThermometerChart";
 import ForecastMenu from "./ForecastMenu";
-import { Container,Grid,Segment,Header } from "semantic-ui-react";
+import { Divider,Container,Grid,Segment,Header } from "semantic-ui-react";
 
 
 
@@ -9,6 +9,16 @@ import { Container,Grid,Segment,Header } from "semantic-ui-react";
 export default class PlantDetail extends Component{
     constructor(props){
         super(props);
+      var sensorID = this.props.plants[this.getParameterByName(("name"))][9];
+      console.log(sensorID);
+
+      this.state={sensor:""};
+      for(let i=0; i<this.props.sensors.length;i++){
+          if(this.props.sensors[i][3]===sensorID)this.state={sensor:this.props.sensors[i]}
+
+        }
+        if(this.state.sensor==="")alert("No Sensor defined for this plant");
+      console.log(this.state.sensor);
     }
      getParameterByName(name) {
         var url = window.location.href;
@@ -33,12 +43,20 @@ export default class PlantDetail extends Component{
                             <Segment style={{margin:"0px",width:"70%"}}>
                         <Grid.Column>
 
-                                    <h2>Daten</h2>
+                                    <h2>Pflanzendaten</h2>
                                     <h3> Art: {this.props.plants[this.getParameterByName(("name"))][0]}</h3>
                                     <h4> Einpflanzungszeitpunkt: {this.props.plants[this.getParameterByName(("name"))][1]}</h4>
                                     <h4>Ort: {this.props.plants[this.getParameterByName(("name"))][3]}</h4>
                                     <h4>Temperatur: {this.props.plants[this.getParameterByName(("name"))][4]}</h4>
-                                    <br />
+                                    <Divider/>
+                            {this.state.sensor!==""?
+                                <div>
+                                    <h2>Sensordaten</h2>
+                                    <h4>Messintervall: {this.state.sensor[0] +" Sekunden"}</h4>
+                                    <h4>Batterieladezustand: {this.state.sensor[4] + " %"}</h4>
+                                </div>
+                                :<div> No sensorData found </div>
+                                }
                         </Grid.Column>
                             </Segment>
                             <Segment style={{margin:"0px",width:"30%"}}>

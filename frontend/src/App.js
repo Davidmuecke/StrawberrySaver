@@ -5,6 +5,7 @@ import {withRouter } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import NavigationBar from "./components/NavigationBar";
 import {API} from "aws-amplify/lib/index";
+import {Loader} from "semantic-ui-react";
 
 
 class App extends Component{
@@ -14,8 +15,6 @@ class App extends Component{
         this.state = {
             isAuthenticated: false,
             isAuthenticating: true,
-            names:"",
-            plants:[["Test1","Test2"],["Test3","Test4"],["Test5","Test6"]]
         };
 
     }
@@ -66,22 +65,36 @@ class App extends Component{
             body: {}
         });
     }
+    getSensorsFromAPI(note) {
+
+        return API.post("strawberry", "/getSensorsForUser", {
+            headers:{} ,
+            body: {}
+        });
+    }
     async handleSubmit() {
 
         try {
             let reply = await this.arduinoTest({});
-            console.log(reply);
+            let sensors = await this.getSensorsFromAPI({});
             //bearbeitung zu Array
             let outputArray =[];
             let nameArray=[];
+            let sensorArray=[];
             for(let i=0;i<reply.length; i++)
             {
                 outputArray.push([reply[i].plantData.sort,reply[i].plantData.plantationTime,reply[i].plantData.initialTimePlant,reply[i].plantData.location_ID,
-                    reply[i].measurement.temperatureSensor,reply[i].plantData.perfectTemperature,reply[i].plantData.temperatureScopeGreen,reply[i].plantData.temperatureScopeYellow]);
+                    reply[i].measurement.temperatureSensor,reply[i].plantData.perfectTemperature,reply[i].plantData.temperatureScopeGreen,reply[i].plantData.temperatureScopeYellow,reply[i].plantData.pictureURL,reply[i].plantData.sensor_ID]);
                 nameArray.push(reply[i].plantData.sort);
-            }
-            this.setState({plants:outputArray});
 
+            }
+            for(let j=0; j< sensors.length;j++){
+                sensorArray.push([sensors[j].configData.measuringInterval,sensors[j].configData.sendInterval,sensors[j].configData.plant_ID,sensors[j].sensor_ID,sensors[j].configData.batteryLevel]);
+            }
+            this.setState({
+                plants:outputArray,
+                sensors:sensorArray
+            });
             //[[reply[0].plantData.sortreply[0].plantData.plantationTime,reply[0].plantData.initialTimePlant,reply[0].plantData.local_position_ID,reply[0].plantData.location_ID],reply[1],reply[2]]});
             //this.setState({answer: reply});
             // Plant(strawberry,reply[0].plantData.sort,0,reply[0].plantData.plantationTime,reply[0].plantData.initialTimePlant,reply[0].plantData.local_position_ID,reply[0].plantData.location_ID)
@@ -97,17 +110,18 @@ class App extends Component{
             userHasAuthenticated: this.userHasAuthenticated,
             handleLogout: this.handleLogout,
             pathname:this.props.location.pathname,
-            plants: this.state.plants
+            plants: this.state.plants,
+            sensors: this.state.sensors
         };
 
 
         return (
             <div>
-                {!this.state.isAuthenticating&&
+                {(!this.state.isAuthenticating && this.state.sensors && this.state.plants)?
                 <div>
                     <div style={{height:"100%"}}><NavigationBar childProps={childProps} /></div>
                     <Routes childProps={childProps}/>
-                </div>
+                </div>:<Loader inverted>Loading</Loader>
                 }
             </div>
         );

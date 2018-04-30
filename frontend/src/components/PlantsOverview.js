@@ -6,8 +6,6 @@ import {Grid,
         Header,
         Container
         } from "semantic-ui-react";
-import gurke from '../img/gurke.png';
-import {API} from "aws-amplify/lib/index";
 import { Link } from "react-router-dom";
 export default class PlantsOverview extends Component{
     constructor(props) {
@@ -18,7 +16,7 @@ export default class PlantsOverview extends Component{
         var rows=[];
         for(let i=0;i<this.props.plants.length;i++)
         {
-            rows.push(Plant(gurke,this.props.plants[i][0], i,this.props.plants[i][1],this.props.plants[i][2],this.props.plants[i][3],this.props.plants[i][3],1,"22°"));
+            rows.push(Plant(this.props.plants[i][8],this.props.plants[i][0], i,this.props.plants[i][1],this.props.plants[i][2],this.props.plants[i][3],this.props.plants[i][3],1,"22°"));
         }
 
         var seite;
@@ -50,9 +48,9 @@ const Plant = (image,sorte, id, einpflanzungszeitpunkt,erstellungszeitpunkt,geog
     return (
             <Grid.Column width={8} stretched >
                 <Segment>
-                    <img id="plantImage"  src={image} alt={""}/>
                     <h2> Art: {sorte}</h2>
                     <h4> Einpflanzungszeitpunkt: {einpflanzungszeitpunkt}</h4>
+                    <img src={image} style={{float:"right",width:"30%",height:"100%"}}/>
                     <h4>Ort: {geographischerOrt}</h4>
                     <h4>Temperatur: {temperaturwert}</h4>
                     <br />

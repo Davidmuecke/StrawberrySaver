@@ -41,7 +41,7 @@ export default class TEST extends Component {
             response: true // OPTIONAL (return entire response object instead of response.data)
         }
         return API.get("strawberry","/hello-world",myInit ) */
-        return API.post("strawberry", "/getPlantsForUser", {
+        return API.post("strawberry", "/getSensorsForUser", {
             headers:{} ,
             body: {}
         });
