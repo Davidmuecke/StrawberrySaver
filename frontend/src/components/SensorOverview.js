@@ -1,20 +1,27 @@
 import React, {Component} from 'react';
-import {Button} from 'semantic-ui-react';
+import {Table, Button} from 'semantic-ui-react';
+import {Link} from "react-router-dom";
 import {API} from "aws-amplify/lib/index";
 
 export default class User extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            sensors: []
+            sensors: this.props.sensors.sort()
         }
 
 
     }
 
+    componentWillReceiveProps(nextProps){
+        this.setState({
+            sensors: nextProps.sensors,
+        });
+    }
 
-    componentDidMount() {
-        this.accessSensors();
+
+  /*componentDidMount() {
+        //this.accessSensors();
     }
 
     async accessSensors() {
@@ -30,17 +37,28 @@ export default class User extends Component {
              headers: {}, // OPTIONAL
              response: true // OPTIONAL (return entire response object instead of response.data)
          }
-         return API.get("strawberry","/hello-world",myInit ) */
-        return API.post("strawberry", "/getSensorsForUser", {
+         return API.get("strawberry","/hello-world",myInit )*/
+        /* return API.post("strawberry", "/getSensorsForUser", {
             headers:{} ,
             body: {}
         });
     }
-
+*/
 
 
     render() {
-        var seite;
+        let rows =[];
+        for(let i=0; i< this.state.sensors.length; i++){
+            rows.push(
+                <Table.Row>
+                    <Table.Cell>{this.state.sensors[i][5]}</Table.Cell>
+                    <Table.Cell>{this.state.sensors[i][6]}</Table.Cell>
+                    <Table.Cell>{this.state.sensors[i][10]}</Table.Cell>
+                    <Table.Cell>{this.state.sensors[i][2] === null? "JA" : "NEIN"}</Table.Cell>
+                    <Table.Cell><Button as={Link} to={"/sensorEdit?id="+this.state.sensors[i][5]} color="blue" onClick={this.handleClick} >Bearbeiten</Button></Table.Cell>
+                </Table.Row>);
+        }
+        let seite;
         if (window.innerWidth>="900"){
             seite= "seite1"}
         else{
@@ -50,6 +68,21 @@ export default class User extends Component {
                 <div>
                     <h1>Sensor Übersicht</h1>
                     <p>{this.state.sensors}</p>
+                    <Table celled>
+                        <Table.Header>
+                            <Table.Row>
+                                <Table.HeaderCell>SensorID</Table.HeaderCell>
+                                <Table.HeaderCell>Modell</Table.HeaderCell>
+                                <Table.HeaderCell>Seriennummer</Table.HeaderCell>
+                                <Table.HeaderCell>Verfügbar</Table.HeaderCell>
+                                <Table.HeaderCell>Bearbeiten</Table.HeaderCell>
+                            </Table.Row>
+                        </Table.Header>
+
+                        <Table.Body>
+                            {rows}
+                        </Table.Body>
+                    </Table>
                 </div>
             </div>
         );
