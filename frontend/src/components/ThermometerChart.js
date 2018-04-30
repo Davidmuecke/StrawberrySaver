@@ -30,7 +30,7 @@ export default class ThermometerChart extends Component {
 
     }
 //aktuelle Temperatur, die -268,15 entstehen aus der Umrechnung von Kelvin in Celsius sowie die Transformation in das Thermometer(Das geht intern von 0 bis 35
-    current=  getURL("http://api.openweathermap.org/data/2.5/weather?id="+this.props.cityID+"&appid="+this.props.appid)['main']['temp']-273.15;
+   // current=  getURL("http://api.openweathermap.org/data/2.5/weather?id="+this.props.cityID+"&appid="+this.props.appid)['main']['temp']-273.15;
     styleType= ["red","red","red","red","red",
         "red","red","red","red","red",
         "red","red","red","red","red"];

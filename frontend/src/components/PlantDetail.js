@@ -33,6 +33,7 @@ export default class PlantDetail extends Component{
     }
 
     render(){
+        let date = new Date(this.props.plants[this.getParameterByName(("name"))][1]);
         let seite;
         if (window.innerWidth>="900"){
             seite= "seite1"}
@@ -45,10 +46,9 @@ export default class PlantDetail extends Component{
                         <Grid.Row >
                             <Segment style={{margin:"0px",width:"70%"}}>
                         <Grid.Column>
-
-                                    <h2>Pflanzendaten</h2>
+                                    <h2>{this.props.plants[this.getParameterByName(("name"))][10]}</h2>
                                     <h3> Art: {this.props.plants[this.getParameterByName(("name"))][0]}</h3>
-                                    <h4> Einpflanzungszeitpunkt: {this.props.plants[this.getParameterByName(("name"))][1]}</h4>
+                                    <h4> Einpflanzungszeitpunkt: {date.toDateString() }</h4>
                                     <h4>Ort: {this.props.plants[this.getParameterByName(("name"))][3]}</h4>
                                     <h4>Temperatur: {this.props.plants[this.getParameterByName(("name"))][4]}</h4>
                                     <Divider/>
@@ -56,9 +56,10 @@ export default class PlantDetail extends Component{
                                 <div>
                                     <h2>Sensordaten</h2>
                                     <h4>Messintervall: {this.state.sensor[0] +" Sekunden"}</h4>
+                                    <h4>Sendeintervall: {this.state.sensor[1] +" Sekunden"}</h4>
                                     <h4>Batterieladezustand: {this.state.sensor[4] + " %"}</h4>
                                 </div>
-                                :<div> No sensorData found </div>
+                                :<div> Keine Sensordaten gefunden </div>
                                 }
                         </Grid.Column>
                             </Segment>

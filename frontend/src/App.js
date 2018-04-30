@@ -86,11 +86,11 @@ class App extends Component{
             let sensorArray=[];
             for(let i=0;i<reply.length; i++)
             {
-                outputArray.push([reply[i].plantData.sort, reply[i].plantData.plantationTime, reply[i].plantData.initialTimePlant, reply[i].plantData.location_ID,
-                    reply[i].measurement.temperatureSensor, reply[i].plantData.perfectTemperature, reply[i].plantData.temperatureScopeGreen,
-                    reply[i].plantData.temperatureScopeYellow, reply[i].plantData.pictureURL, reply[i].plantData.sensor_ID,
-                    reply[i].plantData.nickname, reply[i].plantData.local_position_ID, reply[i].plantData.perfectWater, reply[i].plantData.waterScopeGreen,
-                    reply[i].plantData.waterScopeYellow, reply[i].plant_ID, reply[i].measurement.humiditySensor] );
+                /*0*/  outputArray.push([reply[i].plantData.sort, reply[i].plantData.plantationTime, reply[i].plantData.initialTimePlant, reply[i].plantData.location_ID,
+                /*4*/    reply[i].measurement.temperatureSensor, reply[i].plantData.perfectTemperature, reply[i].plantData.temperatureScopeGreen,
+                /*7*/   reply[i].plantData.temperatureScopeYellow, reply[i].plantData.pictureURL, reply[i].plantData.sensor_ID,
+                /*10*/   reply[i].plantData.nickname, reply[i].plantData.local_position_ID, reply[i].plantData.perfectWater, reply[i].plantData.waterScopeGreen,
+                /*14*/    reply[i].plantData.waterScopeYellow, reply[i].plant_ID, reply[i].measurement.humiditySensor] );
                 nameArray.push(reply[i].plantData.sort);
 
             }

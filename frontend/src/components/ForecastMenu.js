@@ -11,7 +11,7 @@ export default class ForecastMenu extends Component{
     render(){
         return(
             <div className="forecast" >
-                <h3>Vorbericht</h3>
+                <h3>Vorbericht Wetter</h3>
                 <Tab menu={{ fluid: true, vertical: true, tabular: 'right' }} panes={panes} />
             </div>
         );

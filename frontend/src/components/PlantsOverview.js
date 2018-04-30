@@ -16,7 +16,7 @@ export default class PlantsOverview extends Component{
         var rows=[];
         for(let i=0;i<this.props.plants.length;i++)
         {
-            rows.push(Plant(this.props.plants[i][8],this.props.plants[i][0], i,this.props.plants[i][1],this.props.plants[i][2],this.props.plants[i][3],this.props.plants[i][3],1,"22°"));
+            rows.push(Plant(this.props.plants[i][8],this.props.plants[i][0], i,this.props.plants[i][1],this.props.plants[i][2],this.props.plants[i][3],this.props.plants[i][3],1,this.props.plants[i][4]+"°"));
         }
 
         var seite;
