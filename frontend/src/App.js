@@ -54,7 +54,8 @@ class App extends Component{
         this.userHasAuthenticated(false);
         this.props.history.push("/login");
     };
-    arduinoTest(note) {
+
+    getPlantsFromAPI(note) {
         /* let myInit = { // OPTIONAL
              headers: {}, // OPTIONAL
              response: true // OPTIONAL (return entire response object instead of response.data)
@@ -64,18 +65,20 @@ class App extends Component{
             headers:{} ,
             body: {}
         });
-    }
+    };
+
     getSensorsFromAPI(note) {
 
         return API.post("strawberry", "/getSensorsForUser", {
             headers:{} ,
             body: {}
         });
-    }
-    async handleSubmit() {
+    };
+
+    handleSubmit = async () => {
 
         try {
-            let reply = await this.arduinoTest({});
+            let reply = await this.getPlantsFromAPI({});
             let sensors = await this.getSensorsFromAPI({});
             //bearbeitung zu Array
             let outputArray =[];
@@ -83,8 +86,11 @@ class App extends Component{
             let sensorArray=[];
             for(let i=0;i<reply.length; i++)
             {
-                outputArray.push([reply[i].plantData.sort,reply[i].plantData.plantationTime,reply[i].plantData.initialTimePlant,reply[i].plantData.location_ID,
-                    reply[i].measurement.temperatureSensor,reply[i].plantData.perfectTemperature,reply[i].plantData.temperatureScopeGreen,reply[i].plantData.temperatureScopeYellow,reply[i].plantData.pictureURL,reply[i].plantData.sensor_ID]);
+                outputArray.push([reply[i].plantData.sort, reply[i].plantData.plantationTime, reply[i].plantData.initialTimePlant, reply[i].plantData.location_ID,
+                    reply[i].measurement.temperatureSensor, reply[i].plantData.perfectTemperature, reply[i].plantData.temperatureScopeGreen,
+                    reply[i].plantData.temperatureScopeYellow, reply[i].plantData.pictureURL, reply[i].plantData.sensor_ID,
+                    reply[i].plantData.nickname, reply[i].plantData.local_position_ID, reply[i].plantData.perfectWater, reply[i].plantData.waterScopeGreen,
+                    reply[i].plantData.waterScopeYellow, reply[i].plant_ID, reply[i].measurement.humiditySensor] );
                 nameArray.push(reply[i].plantData.sort);
 
             }
@@ -102,6 +108,8 @@ class App extends Component{
             alert(e);
         }
     };
+
+
     render() {
 
 
@@ -109,6 +117,7 @@ class App extends Component{
             isAuthenticated: this.state.isAuthenticated,
             userHasAuthenticated: this.userHasAuthenticated,
             handleLogout: this.handleLogout,
+            renewGlobalPlantData: this.handleSubmit,
             pathname:this.props.location.pathname,
             plants: this.state.plants,
             sensors: this.state.sensors

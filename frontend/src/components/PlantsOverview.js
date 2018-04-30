@@ -30,7 +30,7 @@ export default class PlantsOverview extends Component{
                 <Grid>
                     <Grid.Column width={16} stretched>
                         <Header><h1 id="headerUebersicht">Übersicht</h1></Header>
-                        <p>Hier können sie alle registrierten Pflanzen einsehen, klicken Sie auf Details umd die Detailseite der jeweiligen Pflanze aufzurufen</p>
+                        <p>Hier können sie alle registrierten Pflanzen einsehen, klicken Sie auf Details um die Detailseite der jeweiligen Pflanze aufzurufen</p>
                     </Grid.Column>
                     {rows}
                 </Grid>

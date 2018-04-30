@@ -12,7 +12,7 @@ export default class ThermometerChart extends Component {
     constructor(props){
         super(props);
 
-        let perfectTemp= Math.round(Number((this.props.temp+5))/2.3 );
+        let perfectTemp= Math.round(Number((this.props.temp+10))/2.3 );
         let greenScopeArray= Math.round(Number(this.props.scopeGreen/2.3));
         let yellowScopeArray =Math.round(Number(this.props.scopeYellow/2.3));
         this.styleType[Math.round((this.props.temp+5)/2.3)-1]="green";
@@ -40,8 +40,9 @@ export default class ThermometerChart extends Component {
         return (
             <div className="Thermometerchart" >
                 <h2>Aktuelle Wetterdaten:</h2>
+
                 <div style={{float:"left",width:"100px",height:"295px"}}>
-                <Thermometer current={this.current} greenBorderUp={Number((this.props.temp+5))+this.props.scopeGreen} greenBorderDown={Number((this.props.temp+5))-this.props.scopeGreen}
+                <Thermometer current={parseInt(this.props.liveTemp)} greenBorderUp={Number((this.props.temp+5))+this.props.scopeGreen} greenBorderDown={Number((this.props.temp+5))-this.props.scopeGreen}
                             yellowBorderUp={(Number(this.props.temp+5))+this.props.scopeGreen + this.props.scopeYellow} yellowBorderDown={Number((this.props.temp+5))-this.props.scopeGreen - this.props.scopeYellow}/>
                 </div>
                 <div>

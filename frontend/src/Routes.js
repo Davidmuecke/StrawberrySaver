@@ -21,6 +21,7 @@ export default ({ childProps}) =>
         <AppliedRoute path="/impressum" exact component={Impressum} props={childProps} />
         <AppliedRoute path="/plantDetail" exact component={PlantDetail} props={childProps}/>
         <AppliedRoute path="/plantAdd" exact component={PlantAdd} props={childProps}/>
+        <AppliedRoute path="/plantEdit" exact component={PlantAdd} props={childProps}/>
         <AppliedRoute path="/sensorAdd" exact component={SensorAdd} props={childProps}/>
         <AppliedRoute path="/sensorOverview" exact component={SensorOverview} props={childProps}/>
         <AppliedRoute path="/user" exact component={User} props={childProps} />

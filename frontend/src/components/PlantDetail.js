@@ -1,16 +1,17 @@
 import React, {Component} from 'react';
 import ThermometerChart from "./ThermometerChart";
 import ForecastMenu from "./ForecastMenu";
-import { Divider,Container,Grid,Segment,Header } from "semantic-ui-react";
+import { Button,Divider,Container,Grid,Segment,Header } from "semantic-ui-react";
+import {Link} from "react-router-dom";
 
 
 
 
 export default class PlantDetail extends Component{
     constructor(props){
-        super(props);
-      var sensorID = this.props.plants[this.getParameterByName(("name"))][9];
-      console.log(sensorID);
+      super(props);
+      let sensorID = this.props.plants[this.getParameterByName(("name"))][9];
+      //console.log(sensorID);
 
       this.state={sensor:""};
       for(let i=0; i<this.props.sensors.length;i++){
@@ -20,17 +21,19 @@ export default class PlantDetail extends Component{
         if(this.state.sensor==="")alert("No Sensor defined for this plant");
       console.log(this.state.sensor);
     }
+
      getParameterByName(name) {
-        var url = window.location.href;
+        let url = window.location.href;
         name = name.replace(/[\[\]]/g, "\\$&");
-        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        let regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
             results = regex.exec(url);
         if (!results) return null;
         if (!results[2]) return '';
         return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
+
     render(){
-        var seite;
+        let seite;
         if (window.innerWidth>="900"){
             seite= "seite1"}
         else{
@@ -61,7 +64,11 @@ export default class PlantDetail extends Component{
                             </Segment>
                             <Segment style={{margin:"0px",width:"30%"}}>
                             <Grid.Column width={4} >
-                                <ThermometerChart appid="9e875e006011c294e09b4ee38bec12bf" cityID="2825297" temp={this.props.plants[this.getParameterByName(("name"))][5]} scopeGreen={this.props.plants[this.getParameterByName(("name"))][6]} scopeYellow={this.props.plants[this.getParameterByName(("name"))][7]}/>
+                                <ThermometerChart appid="9e875e006011c294e09b4ee38bec12bf" cityID="2825297"
+                                                  liveTemp={this.props.plants[this.getParameterByName(("name"))][4]}
+                                                  temp={this.props.plants[this.getParameterByName(("name"))][5]}
+                                                  scopeGreen={this.props.plants[this.getParameterByName(("name"))][6]}
+                                                  scopeYellow={this.props.plants[this.getParameterByName(("name"))][7]}/>
                             </Grid.Column>
                             </Segment>
                         </Grid.Row>
@@ -69,6 +76,11 @@ export default class PlantDetail extends Component{
                                 <Segment style={{width:"100%"}}>
                                 <ForecastMenu/>
                                 </Segment>
+                        </Grid.Row>
+                        <Grid.Row>
+                            <Segment style={{width:"100%"}}>
+                                <Button as={Link} to={"/plantEdit?id="+this.getParameterByName(("name"))} color="blue" onClick={this.handleClick}>Ändern</Button>
+                            </Segment>
                         </Grid.Row>
                     </Grid>
                 </Container>

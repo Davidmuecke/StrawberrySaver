@@ -3,6 +3,9 @@ import thermometermaske from './../img/thermometermaske.png';
 export default class Thermometer extends Component{
 constructor(props){
     super(props);
+    this.state= {
+        temp: this.props.current
+    }
 
 }
     current = 100-(100/36*(this.props.current+5));

@@ -6,46 +6,85 @@ import {API} from "aws-amplify/lib/index";
 export default class Login extends Component {
     constructor(props) {
         super(props);
+        if(this.getURLParameterByName(("id"))=== null)
+        {
+            this.state = {
+                edit: null,
+                dbID: null,
+                name: "MeinePflanze",
+                sorte: "Erdbeere",
+                plantationTime: "",
+                initialPlantationTime: "2018-04-27",
+                locationID: "Stuttgart",
+                pictureURL: "",
+                sensorID: "",
+                localPosition: "",
+                perfectTemperature: 20,
+                temperatureScopeGreen: 4,
+                temperatureScopeYellow: 4,
+                perfectWater: 500,
+                waterScopeGreen: 200,
+                waterScopeYellow: 150,
+                sensorOptions: "",
+                locationOptions: [{
+                    text: 'Stuttgart',
+                    value: '2637829',
+                    active: true
+                }]
+            };
+        } else {
+            let id = this.getURLParameterByName(("id"));
+            this.state = {
+                edit: id,
+                dbID: this.props.plants[id][15],
+                name: this.props.plants[id][10],
+                sorte: this.props.plants[id][0],
+                plantationTime: this.props.plants[id][1],
+                initialPlantationTime:  this.props.plants[id][2],
+                locationID:  this.props.plants[id][3],
+                pictureURL:  this.props.plants[id][8],
+                sensorID:  this.props.plants[id][9],
+                localPosition: this.props.plants[id][11],
+                perfectTemperature: this.props.plants[id][5],
+                temperatureScopeGreen: this.props.plants[id][6],
+                temperatureScopeYellow: this.props.plants[id][7],
+                perfectWater: this.props.plants[id][12],
+                waterScopeGreen: this.props.plants[id][13],
+                waterScopeYellow: this.props.plants[id][14],
+                sensorOptions: "",
+                locationOptions: [{
+                    text: 'Stuttgart',
+                    value: '2637829'
+                }]
+            };
+        }
+    }
 
-        this.state = {
-            name: "MeinePflanze",
-            sorte: "Erdbeere",
-            plantationTime: "",
-            initialPlantationTime: "2018-04-27",
-            locationID:"Stuttgart",
-            pictureURL:"",
-            sensorID:"",
-            localPosition:"",
-            perfectTemperature:20,
-            temperatureScopeGreen:4,
-            temperatureScopeYellow:4,
-            perfectWater:500,
-            waterScopeGreen:200,
-            waterScopeYellow:150,
-            sensorOptions:"",
-            locationOptions:[{
-                text: 'Stuttgart',
-                value: '2637829'
-            },{
-                text: 'Frankfurt',
-                value: '1222999'
-            }]
-        };
-
+    getURLParameterByName(name) {
+        let url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        let regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
 
     componentDidMount(){
-        this.getFormOptionsFromServer();
+        this.getFormOptionsFromServer(this.state.edit);
     }
 
-    async getFormOptionsFromServer(){
+    async getFormOptionsFromServer(plantID){
         let sensorRaw = await  this.getSensors();
         let sensorEdited = [];
-        console.log(sensorRaw);
+        //console.log(sensorRaw);
         for(let i=0; i<sensorRaw.length; i++){
             sensorEdited[i] = {text:sensorRaw[i], value: sensorRaw[i], id: 'Sensor:'+sensorRaw[i]};
         }
-        console.log(sensorEdited);
+        if(plantID !== null){
+            sensorEdited.push({text: this.props.plants[plantID][9], value: this.props.plants[plantID][9], id: 'Sensor:'+this.props.plants[plantID][9]});
+        }
+        //console.log(sensorEdited);
         this.setState({
             sensorOptions:sensorEdited
         });
@@ -80,11 +119,11 @@ export default class Login extends Component {
        // console.log(event.target.id+" : "+event.target.value+" : "+event.target.name);
         if(event.target.id === "localPosition2" ||event.target.id === "localPosition3"){
             this.setState({
-                ["localPosition"]: event.target.value
+                localPosition: event.target.value
             });
         } else if(event.target.id.startsWith('Sensor:')){
             this.setState({
-                ["sensorID"]: event.target.id.substr(7)
+                sensorID: event.target.id.substr(7)
             });
         } else {
             this.setState({
@@ -98,35 +137,78 @@ export default class Login extends Component {
      */
     handleSubmit = async event => {
         event.preventDefault();
+        if(this.state.edit === null)
+        {
+            try {
+                API.post("strawberry", "/createPlant", {
+                    headers: {},
+                    body:
+                        {
+                            plantData: {
+                                nickname: this.state.name,
+                                pictureURL: this.state.pictureURL,
+                                sort: this.state.sorte,
+                                plantationTime: this.state.plantationTime,
+                                initialTimePlant: this.state.initialPlantationTime,
+                                location_ID: this.state.locationID,
+                                local_position_ID: this.state.localPosition,
+                                sensor_ID: this.state.sensorID,
+                                perfectTemperature: this.state.perfectTemperature,
+                                temperatureScopeGreen: this.state.temperatureScopeGreen,
+                                temperatureScopeYellow: this.state.temperatureScopeYellow,
+                                perfectWater: this.state.perfectWater,
+                                waterScopeGreen: this.state.waterScopeGreen,
+                                waterScopeYellow: this.state.waterScopeYellow
+                            }
+                        }
+                }).then(response => {
+                    console.log("success: "+ response);
+                    this.props.renewGlobalPlantData();
+                    this.props.history.push("/");
+                }).catch(error => {
+                    console.log(error.response);
+                });
 
-        try {
-            API.post("strawberry", "/createPlant", {
-                headers:{} ,
-                body:
-                    {
-                    plantData: {
-                        nickname: this.state.name,
-                        pictureURL: this.state.pictureURL,
-                        sort: this.state.sorte,
-                        plantationTime: this.state.plantationTime,
-                        initialTimePlant: this.state.initialPlantationTime,
-                        location_ID: this.state.locationID,
-                        local_position_ID: this.state.localPosition,
-                        sensor_ID: this.state.sensorID,
-                        perfectTemperature: this.state.perfectTemperature,
-                        temperatureScopeGreen: this.state.temperatureScopeGreen,
-                        temperatureScopeYellow: this.state.temperatureScopeYellow,
-                        perfectWater: this.state.perfectWater,
-                        waterScopeGreen: this.state.waterScopeGreen,
-                        waterScopeYellow: this.state.waterScopeYellow
-                    }
-                }
-            });
-            this.props.history.push("/");
-        } catch (e) {
-            alert(e.message);
+            } catch (e) {
+                alert(e.message);
+            }
+        } else {
+            try {
+                API.post("strawberry", "/updatePlantData", {
+                    headers: {},
+                    body:
+                        {
+                            plant_ID: this.state.dbID,
+                            plantData: {
+                                nickname: this.state.name,
+                                pictureURL: this.state.pictureURL,
+                                sort: this.state.sorte,
+                                plantationTime: this.state.plantationTime,
+                                initialTimePlant: this.state.initialPlantationTime,
+                                location_ID: this.state.locationID,
+                                local_position_ID: this.state.localPosition,
+                                sensor_ID: this.state.sensorID,
+                                perfectTemperature: this.state.perfectTemperature,
+                                temperatureScopeGreen: this.state.temperatureScopeGreen,
+                                temperatureScopeYellow: this.state.temperatureScopeYellow,
+                                perfectWater: this.state.perfectWater,
+                                waterScopeGreen: this.state.waterScopeGreen,
+                                waterScopeYellow: this.state.waterScopeYellow
+                            }
+                        }
+                }).then(response => {
+                    console.log("success: "+ response);
+                    this.props.renewGlobalPlantData();
+                    this.props.history.push("/");
+                }).catch(error => {
+                    console.log(error.response);
+                });
+
+            } catch (e) {
+                alert(e.message);
+            }
         }
-    }
+    };
 
     render() {
         var seite;
@@ -139,7 +221,7 @@ export default class Login extends Component {
                 <Container >
                     <Grid>
                     <Grid.Column width={10} stretched>
-                        <h1>Neue Pflanze</h1>
+                        {this.props.edit === null ? <h1>Neue Pflanze</h1> : <h1>Pflanze Bearbeiten</h1>}
                     <Form onSubmit={this.handleSubmit}>
                         <Form.Field >
                             <label>Name</label>
@@ -278,7 +360,7 @@ export default class Login extends Component {
                             disabled={!this.validateForm()}
                             type="submit"
                         >
-                            Erstellen
+                            {this.state.edit === null ? "Erstellen" : "Änderung speichern" }
                         </Button>
                     </Form>
                     </Grid.Column>
