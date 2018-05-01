@@ -64,12 +64,12 @@ export default class NavigationBar extends  Component{
                                     </Menu.Header>
                                     <Menu.Item>
                                     <Menu.Item className="icon" onClick={function responsiveMenu2() {
-                                        var x = document.getElementById("myLeftnav");
-                                        if (x.style.display === "none") {
-                                            x.style.display = "block";
+                                        let x = document.getElementById("myLeftnav");
+                                        if (x.style.display === "block") {
+                                            x.style.display = "none";
                                         }
                                         else{
-                                            x.style.display="none";
+                                            x.style.display="block";
                                         }
                                     }}>
                                         <p>&#9776;</p>
@@ -127,15 +127,17 @@ export default class NavigationBar extends  Component{
                                         <p>StrawBerrySaver</p>
                                     </Menu.Header>
                                     <Menu.Item className="icon" onClick={function responsiveMenu2() {
-                                        var x = document.getElementById("myLeftnav");
-                                        if (x.style.display === "none") {
-                                            x.style.display = "block";
+                                        let x = document.getElementById("myLeftnav");
+
+                                        if (x.style.display === "block") {
+                                            x.style.display = "none";
                                         }
                                         else{
-                                            x.style.display="none";
+                                            x.style.display="block";
                                         }
+
                                         if (x.className === "leftnav") {
-                                            x.className = "leftnav responsive";
+                                            x.className = "responsive leftnav ";
                                         } else {
                                             x.className = "leftnav";
                                         }

@@ -12,10 +12,32 @@
 @media screen and (max-width: 900px) {
     .topnav{
         display: block;
+        width: 100%;
+    }
+    .topnav .item {
+        margin-left:auto;
+    }
+    .topnav .ui.menu .item:before {
+       background: none;
+    }
+    .topnav #menuheader_top{
+        margin-left: auto;
     }
 
-    .leftnav{
+    #myLeftnav{
         display: none;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    #myLeftnav{
+        display: none;
+
+    }
+    .leftnav .ui.vertical.menu {
+        width: 100%;
+        position: absolute;
+        z-index: 1;
     }
 }
 /*Ende Responsive Design*/
@@ -29,6 +51,9 @@
     }
 }
 
+.active {
+    display:block;
+}
 /*Eigentliche Seite (Rest ohne Menu)*/
 #seite1 {
     margin-left: 250px; /*Muss der gleiche Wert sein wie bei ul {width} - gibt das Verhältnis von Menu und Seite an*/
