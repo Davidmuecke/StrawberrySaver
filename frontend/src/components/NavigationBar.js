@@ -7,6 +7,13 @@ import "./style_menu_and_seite.css";
 export default class NavigationBar extends  Component{
     constructor(props) {
         super(props);
+        window.addEventListener('resize', function () {
+            let x = document.getElementById("myLeftnav");
+            if(window.innerWidth >899) {
+                x.style.display = "block";
+            }
+        }, true);
+
 
         switch(this.props.childProps.pathname){
             case "/plantDetail":
@@ -47,7 +54,7 @@ export default class NavigationBar extends  Component{
     };
 
     render(){
-        var rows=[];
+        let rows=[];
         for(let i=0;i<this.props.childProps.plants.length;i++)
         {
             rows.push(<Menu.Item as={Link} to={"/plantDetail?name="+i} name={this.props.childProps.plants[i][0]} active={activeItem === this.props.childProps.plants[i][0]} onClick={this.handleItemClick}/>);

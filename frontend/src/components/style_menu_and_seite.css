@@ -39,6 +39,14 @@
         position: absolute;
         z-index: 1;
     }
+    #seite1 {
+        margin-left: 0; /*Muss der gleiche Wert sein wie bei ul {width} - gibt das Verhältnis von Menu und Seite an*/
+        height: 100%;
+        padding-bottom: 3%;
+        padding-left: 1px;
+        padding-right: 30px;
+        padding-top: 30px; /*Setzt den Abstand zum Menüband fest*/
+    }
 }
 /*Ende Responsive Design*/
 
