@@ -38,7 +38,11 @@ class App extends Component{
                 this.props.history.push("/login");
             }
         }
-        this.setState({ isAuthenticating: false });
+        this.setState({ isAuthenticating: false,
+                        plants:[],
+                        sensors: []
+                        });
+
 
     }
 

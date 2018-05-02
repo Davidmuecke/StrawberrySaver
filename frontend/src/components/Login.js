@@ -47,7 +47,7 @@ export default class Login extends Component {
             console.log(Auth.currentSession());
             this.props.userHasAuthenticated(true);
             let x = await this.integrateUser();
-            console.log(x);
+            this.props.renewGlobalPlantData();
             this.props.history.push("/");
         } catch (e) {
             alert(e.message);
