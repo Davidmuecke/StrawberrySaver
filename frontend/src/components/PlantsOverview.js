@@ -16,7 +16,7 @@ export default class PlantsOverview extends Component{
         var rows=[];
         for(let i=0;i<this.props.plants.length;i++)
         {
-            rows.push(Plant(this.props.plants[i][8],this.props.plants[i][0], i,this.props.plants[i][16],this.props.plants[i][2],this.props.plants[i][3],this.props.plants[i][3],1,this.props.plants[i][4]+"°"));
+            rows.push(Plant(this.props.plants[i][8],this.props.plants[i][0], i,Math.round(this.props.plants[i][16]/10.24*100)/100,this.props.plants[i][2],this.props.plants[i][3],this.props.plants[i][3],1,this.props.plants[i][4]+"°"));
         }
 
         var seite;
@@ -51,7 +51,7 @@ const Plant = (image,sorte, id, wasserstand,erstellungszeitpunkt,geographischerO
                     <h2> Art: {sorte}</h2>
                     <h4>Ort: {geographischerOrt}</h4>
                     <img src={image} style={{float:"right",width:"30%",height:"100%"}}/>
-                    <h4> Wasserstand: {wasserstand +" mm"}</h4>
+                    <h4> Wasserstand: {wasserstand +" %"}</h4>
                     <h4>Temperatur: {temperaturwert}</h4>
                     <br />
                     <Button as={Link} to={"/plantDetail?name="+id} color="blue" onClick={this.handleClick}> Details </Button>
