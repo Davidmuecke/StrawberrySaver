@@ -13,37 +13,39 @@ export default class NavigationBar extends  Component{
                 x.style.display = "block";
             }
         }, true);
+        this.state={activeItem:""};
+    }
+    componentWillReceiveProps(nextProps){
 
+            switch(nextProps.childProps.pathname){
 
-        switch(this.props.childProps.pathname){
-            case "/plantDetail":
-                this.state = { activeItem: this.props.childProps.plants[0][0] };
-                break;
-            case "/":
-                this.state = { activeItem: "uebersicht" };
-                break;
-            case "/test":
-                this.state = { activeItem:"test"};
-                break;
-            case "/impressum":
-                this.state={ activeItem:"impressum"};
-                break;
-            case "/plantAdd":
-                this.state={activeItem:"pflanze_anlegen"};
-                break;
-            case "/sensorAdd":
-                this.state={activeItem:"sensor_anlegen"};
-                break;
-            case "/login":
-                this.state={ activeItem:"login"};
-                break;
-            default:
-                this.state={ activeItem:"impressum"};
-        }
-        console.log(this.props.childProps.plants);
+                case "/plantDetail":
+                    if(nextProps.childProps.plants!="")this.setState({ activeItem: nextProps.childProps.plants[0][0] });
+                    else this.setState({ activeItem: "uebersicht" });
+                    break;
+                case "/":
+                    this.setState({activeItem: "uebersicht"});
+                    break;
+                case "/test":
+                    this.setState({activeItem: "test"});
+                    break;
+                case "/impressum":
+                    this.setState({activeItem: "impressum"});
+                    break;
+                case "/plantAdd":
+                    this.setState({activeItem:"pflanze_anlegen"});
+                    break;
+                case "/sensorAdd":
+                    this.setState({activeItem:"sensor_anlegen"});
+                    break;
+                case "/login":
+                    this.setState({ activeItem:"login"});
+                    break;
+                default:
+                    this.setState({ activeItem:"impressum"});
+            }
 
     }
-
 
     handleItemClick = (e, { name }) =>{
         this.setState({ activeItem: name});
