@@ -108,7 +108,7 @@ export default class NavigationBar extends  Component{
                     <div  className="leftnav" id="myLeftnav">
                         <Menu vertical>
                             <Menu.Item>
-                                <Menu.Header as={Menu.Item} className="menuheader">
+                                <Menu.Header as={Menu.Item} className="menuheader" id="menuHeader">
                                     <p>StrawBerrySaver</p>
                                 </Menu.Header>
                                 <Menu.Item as={Link} to="/" name='uebersicht' active={activeItem === 'uebersicht'} onClick={this.handleItemClick}>

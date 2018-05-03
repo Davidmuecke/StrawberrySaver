@@ -6,6 +6,11 @@
 /*  CSS STYLE SHEET STRAWBEERY SAVER  */
 /**************************************/
 
+:root {
+    --header-farbe: green;
+}
+
+
 /*Responsive Design*/
 /* When the screen is less than 900 pixels wide, hide all links, except for the first one ("Home"). Show the link that contains should open and close the leftnav (.icon) */
 /* The "responsive" class is added to the leftnav with JavaScript when the user clicks on the icon. This class makes the leftnav look good on small screens (display the links vertically instead of horizontally) */
@@ -15,6 +20,11 @@
         display: block;
         width: 100%;
     }
+
+    #menuHeader{
+        background-color: var(--header-farbe);
+    }
+
     .topnav .item {
         margin-left:auto;
     }
@@ -36,11 +46,15 @@
 /*Responsive Design für Handy*/
 @media screen and (max-width: 600px) {
 
+    #menuHeader{
+        background-color: var(--header-farbe);
+    }
+
     #myLeftnav{
         display: none;
         width: 100%;
-
     }
+
     .leftnav .ui.vertical.menu {
         width: 100%;
     }
@@ -61,9 +75,20 @@
     .topnav {
         display: none;
     }
+
+    #menuHeader{
+        background-color: var(--header-farbe);
+    }
+
+
     #myLeftnav{
         display: block;
         float: left;
+        height: 100%;
+    }
+
+    .leftnav .ui.vertical.menu {
+        height: 100%;
     }
 }
 /*ENDE - "ganz normales Menü"*/
