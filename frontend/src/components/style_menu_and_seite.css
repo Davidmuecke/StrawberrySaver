@@ -26,6 +26,9 @@
 
     #myLeftnav{
         display: none;
+        float: left;
+        position: absolute;
+        z-index: 1;
     }
 }
 
@@ -58,8 +61,6 @@
     }
     .leftnav{
         display: block;
-        position: absolute;
-        z-index: 1;
     }
 }
 /*ENDE - "ganz normales Menü"*/

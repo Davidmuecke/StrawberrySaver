@@ -106,7 +106,7 @@ export default class NavigationBar extends  Component{
                         </div>
 
                     <div  className="leftnav" id="myLeftnav">
-                        <Menu vertical style={{float:"left"}}>
+                        <Menu vertical>
                             <Menu.Item>
                                 <Menu.Header as={Menu.Item} className="menuheader">
                                     <p>StrawBerrySaver</p>
