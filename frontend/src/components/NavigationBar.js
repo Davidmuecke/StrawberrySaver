@@ -154,9 +154,9 @@ export default class NavigationBar extends  Component{
                         <div className="topnav" id="myTopnav">
                             <Menu horizontal>
                                 <Menu.Item>
-                                    <Menu.Item>
-                                        <img src={logo} className="logo"/>
-                                    </Menu.Item>
+                                    <Menu.Header as={Menu.Item} id="menuheader_top" className="menuheader_top">
+                                        <p>StrawBerrySaver</p>
+                                    </Menu.Header>
                                     <Menu.Item className="icon" onClick={function responsiveMenu2() {
                                         let x = document.getElementById("myLeftnav");
 
