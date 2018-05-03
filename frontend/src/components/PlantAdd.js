@@ -210,6 +210,22 @@ export default class Login extends Component {
         }
     };
 
+    handleDeletePlant = async event => {
+        API.post("strawberry", "/deletePlant", {
+            headers: {},
+            body:
+                {
+                    plant_ID: this.state.dbID
+                }
+        }).then(response => {
+            //console.log("success: "+ response);
+            this.props.renewGlobalPlantData();
+            this.props.history.push("/");
+        }).catch(error => {
+            console.log(error.response);
+        });
+    };
+
     render() {
         var seite;
         if (window.innerWidth>="900"){
@@ -362,6 +378,11 @@ export default class Login extends Component {
                         >
                             {this.state.edit === null ? "Erstellen" : "Änderung speichern" }
                         </Button>
+                        {this.state.edit !== null?<Button
+                            onClick={this.handleDeletePlant}
+                            color={"red"}
+                        >Löschen
+                        </Button>:""}
                     </Form>
                     </Grid.Column>
                     </Grid>
