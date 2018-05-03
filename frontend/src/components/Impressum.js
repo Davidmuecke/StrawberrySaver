@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import "./Impressum.css";
 
 export default class Impressum extends Component{
+    constructor(props) {
+        super(props);
+    }
+
     render(){
         let seite;
         if (window.innerWidth>="900"){
@@ -10,8 +14,8 @@ export default class Impressum extends Component{
             seite="seite2"}
 
         let impressumStyle;
-        /*this.props.childProps.isAuthenticated*/ /*tut damit leider nicht*/
-        if (true){
+
+        if (this.props.isAuthenticated){
             if(window.innerWidth<="900"){
                 impressumStyle = "center";
             }
