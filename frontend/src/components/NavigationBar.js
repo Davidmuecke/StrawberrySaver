@@ -72,6 +72,9 @@ export default class NavigationBar extends  Component{
                 case "/register":
                     this.setState({ activeItem:"register"});
                     break;
+                case "/plantEdit":
+                    this.setState({ activeItem:"uebersicht"});
+                    break;
                 default:
                     this.setState({ activeItem:"impressum"});
             }
@@ -105,7 +108,7 @@ export default class NavigationBar extends  Component{
         let rows=[];
         for(let i=0;i<this.props.childProps.plants.length;i++)
         {
-            rows.push(<Menu.Item as={Link} to={"/plantDetail?name="+i} name={this.props.childProps.plants[i][0]} active={activeItem === this.props.childProps.plants[i][0]} onClick={this.handleItemClick}/>);
+            rows.push(<Menu.Item as={Link} to={"/plantDetail?name="+i} name={this.props.childProps.plants[i][10]} active={activeItem === this.props.childProps.plants[i][0]} onClick={this.handleItemClick}/>);
         }
         const { activeItem } = this.state;
         return (
