@@ -10,13 +10,17 @@ import { Link } from "react-router-dom";
 export default class PlantsOverview extends Component{
     constructor(props) {
         super(props);
+        this.state={plants:this.props.plants};
+    }
+    componentWillReceiveProps(nextProps){
+        this.setState({plants:nextProps.plants});
     }
     render(){
 
         var rows=[];
         for(let i=0;i<this.props.plants.length;i++)
         {
-            rows.push(Plant(this.props.plants[i][8],this.props.plants[i][0], i,Math.round(this.props.plants[i][16]/10.24*100)/100,this.props.plants[i][2],this.props.plants[i][3],this.props.plants[i][3],1,this.props.plants[i][4]+"°"));
+            rows.push(Plant(this.state.plants[i][8],this.state.plants[i][0], i,Math.round(this.state.plants[i][16]/10.24*100)/100,this.state.plants[i][2],this.state.plants[i][3],this.state.plants[i][3],1,this.state.plants[i][4]+"°"));
         }
 
         var seite;

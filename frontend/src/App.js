@@ -6,20 +6,17 @@ import { Auth } from "aws-amplify";
 import NavigationBar from "./components/NavigationBar";
 import {API} from "aws-amplify/lib/index";
 import {Loader} from "semantic-ui-react";
-import CircularProgressbar from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 class App extends Component{
     constructor(props) {
         super(props);
-
         this.state = {
             isAuthenticated: false,
             isAuthenticating: true,
-            loaded:false
+            loaded:false,
         };
 
     }
-
     async componentDidMount() {
         try {
             if (await Auth.currentSession()) {
@@ -40,6 +37,7 @@ class App extends Component{
                 this.props.history.push("/login");
             }
         }
+
         this.setState({ isAuthenticating: false,
                         plants:[],
                         sensors: []
@@ -122,7 +120,6 @@ class App extends Component{
         }
     };
 
-
     render() {
 
 
@@ -142,9 +139,9 @@ class App extends Component{
                 {(!this.state.isAuthenticating && this.state.loaded)?
                 <div>
                     <div style={{height:"100%"}}><NavigationBar childProps={childProps} /></div>
-                    <div style={{float:"right",marginBottom:"70%",height:"5%",width:"5%"}}><CircularProgressbar percentage={60} /></div>
                     <Routes childProps={childProps}/>
-                </div>:<div><Loader inverted>Loading</Loader></div>
+                </div>:
+                    <div><Loader inverted>Loading</Loader></div>
                 }
             </div>
         );

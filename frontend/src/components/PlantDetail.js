@@ -12,20 +12,38 @@ export default class PlantDetail extends Component{
     constructor(props){
       super(props);
 
-      //console.log(sensorID);
 
-      this.state={sensor:[],date:"",plants:[]};
+        let pos= this.props.plants[this.getParameterByName(("name"))][11];
+        let posString;
+        switch(pos){
+            case "0":
+                posString="draussen";
+                break;
+            case "1":
+                posString="überdacht";
+                break;
+            case "2":
+                posString= "drinnen";
+                break;
+            default:
+                posString ="nicht definiert";
+                break;
+        }
+
+
+      this.state={sensor:[],date:"",plants:[],localposition:posString};
 
         if(this.props.plants.length >0){
             let sensorID = this.props.plants[this.getParameterByName(("name"))][9];
             for(let i=0; i<this.props.sensors.length;i++){
                 if(this.props.sensors[i][3]===sensorID){
-                    this.state ={sensor:this.props.sensors[i],plants:this.props.plants,date:new Date(this.props.plants[this.getParameterByName(("name"))][1])};
+                    this.state ={sensor:this.props.sensors[i],plants:this.props.plants,date:new Date(this.props.plants[this.getParameterByName(("name"))][1]),localposition:posString};
                 }
 
             }
         }
 
+        console.log(this.state.localposition);
     }
     componentWillReceiveProps(nextProps){
         let sensorID = nextProps.plants[this.getParameterByName(("name"))][9];
@@ -34,7 +52,7 @@ export default class PlantDetail extends Component{
                 this.setState({sensor:nextProps.sensors[i],plants:nextProps.plants});
             }
         }
-        this.setState({date:new Date(nextProps.plants[this.getParameterByName(("name"))][1]),plants:nextProps.plants});
+        this.setState({date:new Date(nextProps.plants[this.getParameterByName("name")][1]),plants:nextProps.plants});
     }
      getParameterByName(name) {
         let url = window.location.href;
@@ -61,11 +79,12 @@ export default class PlantDetail extends Component{
                         <Grid.Row >
                             <Segment style={{margin:"0px",width:"50%"}}>
                                 <Grid.Column>
-                                    <img src={this.state.plants[this.getParameterByName(("name"))][8]} style={{float:"right",width:"30%",height:"100%"}}/>
                                     <h2>{this.state.plants[this.getParameterByName(("name"))][10]}</h2>
-                                    <h3> Art: {this.state.plants[this.getParameterByName(("name"))][0]}</h3>
+                                    <h4> Art: {this.state.plants[this.getParameterByName(("name"))][0]}</h4>
+                                    <img src={this.state.plants[this.getParameterByName(("name"))][8]} style={{float:"right",width:"30%",height:"100%"}}/>
                                     <h4> Einpflanzungszeitpunkt: {this.state.date.toDateString() }</h4>
                                     <h4>Ort: {this.state.plants[this.getParameterByName(("name"))][3]}</h4>
+                                    <h4>Lokale Position: {this.state.localposition}</h4>
                                 </Grid.Column>
                             </Segment>
                             <Segment style={{margin:"0px",width:"50%"}}>
@@ -73,6 +92,7 @@ export default class PlantDetail extends Component{
                                     {this.state.sensor!==""?
                                         <div>
                                             <h2>Sensordaten</h2>
+                                            <h4>Name: {this.state.sensor[3]}</h4>
                                             <h4>Messintervall: {this.state.sensor[0] +" Sekunden"}</h4>
                                             <h4>Sendeintervall: {this.state.sensor[1] +" Sekunden"}</h4>
                                             <h4>Batterieladezustand: {this.state.sensor[4] + " %"}</h4>
@@ -104,11 +124,13 @@ export default class PlantDetail extends Component{
                                 </Grid.Column>
                             </Segment>
                         </Grid.Row>
+                        {this.state.localposition !== "drinnen" &&
                         <Grid.Row>
-                                <Segment style={{width:"100%"}}>
+                            <Segment style={{width: "100%"}}>
                                 <ForecastMenu/>
-                                </Segment>
+                            </Segment>
                         </Grid.Row>
+                        }
                         <Grid.Row>
                             <Segment style={{width:"100%"}}>
                                 <Button as={Link} to={"/plantEdit?id="+this.getParameterByName(("name"))} color="blue" onClick={this.handleClick}>Ändern</Button>

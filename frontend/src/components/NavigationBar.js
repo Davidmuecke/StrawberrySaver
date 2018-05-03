@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Menu } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import "./style_menu_and_seite.css";
-
+import CircularProgressbar from 'react-circular-progressbar';
 
 export default class NavigationBar extends  Component{
     constructor(props) {
@@ -13,8 +13,16 @@ export default class NavigationBar extends  Component{
                 x.style.display = "block";
             }
         }, true);
-        this.state={activeItem:""};
+        this.state={activeItem:"",timeToRefresh:20, timePassed:0};
+        this.interval = setInterval(this.tick, 1000);
     }
+    tick=()=> {
+        if(this.state.timePassed===this.state.timeToRefresh-1){
+            this.setState({timePassed:0});
+            this.props.childProps.renewGlobalPlantData();
+        }
+        else this.setState({timePassed: this.state.timePassed + 1});
+    };
     getParameterByName(name) {
         let url = window.location.href;
         name = name.replace(/[\[\]]/g, "\\$&");
@@ -50,6 +58,10 @@ export default class NavigationBar extends  Component{
                     break;
                 case "/login":
                     this.setState({ activeItem:"login"});
+                    break;
+
+                case "/register":
+                    this.setState({ activeItem:"register"});
                     break;
                 default:
                     this.setState({ activeItem:"impressum"});
@@ -137,6 +149,7 @@ export default class NavigationBar extends  Component{
                             </Menu.Item>
                         </Menu>
                     </div>
+                        <div style={{position:"fixed",zIndex:"2",right:"2%",bottom:"8%",height:"5%",width:"5%"}}><CircularProgressbar percentage={this.state.timePassed*5} textForPercentage={(pct) => `${pct/5}`} /></div>
                     </div>
                 :   <div>
                         <div className="topnav" id="myTopnav">
@@ -181,8 +194,11 @@ export default class NavigationBar extends  Component{
                                 </Menu.Item>
                             </Menu>
                         </div>
+
                     </div>
+
                 }
+
 
             </div>
         )

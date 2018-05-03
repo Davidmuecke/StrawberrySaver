@@ -58,7 +58,7 @@ export default class ThermometerChart extends Component {
     render(){
         return (
             <div className="Thermometerchart" >
-                <h2>Aktuelle Temperatur der Pflanze</h2>
+                <h2>Temperatur Pflanze</h2>
 
                 <div style={{float:"left",width:"100px",height:"305px"}}>
                 <Thermometer current= {parseInt(this.state.liveTemp)} greenBorderUp={parseInt(this.state.temp)+parseInt(this.state.scopeGreen)} greenBorderDown={parseInt(this.state.temp)-this.state.scopeGreen}
