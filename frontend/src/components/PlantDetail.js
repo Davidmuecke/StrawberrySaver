@@ -93,8 +93,8 @@ export default class PlantDetail extends Component{
                 <Container fluid={true}>
                     <Grid>
                         <Grid.Row >
-                            <Segment style={{margin:"0px",width:"50%"}}>
-                                <Grid.Column>
+                            <Segment style={{margin:"0",marginRight:"2.5%",width:"47.5%"}}>
+                                <Grid.Column >
                                     <h2>{this.state.plants[this.getParameterByName(("name"))][10]}</h2>
                                     <h4> Art: {this.state.plants[this.getParameterByName(("name"))][0]}</h4>
                                     <img src={this.state.plants[this.getParameterByName(("name"))][8]} style={{float:"right",width:"30%",height:"100%"}}/>
@@ -103,8 +103,8 @@ export default class PlantDetail extends Component{
                                     <h4>Lokale Position: {this.state.localposition}</h4>
                                 </Grid.Column>
                             </Segment>
-                            <Segment style={{margin:"0px",width:"50%"}}>
-                                <Grid.Column>
+                            <Segment style={{margin:"0",marginLeft:"2.5%",width:"47.5%"}}>
+                                <Grid.Column >
                                     {this.state.sensor!==""?
                                         <div>
                                             <h2>Sensordaten</h2>
@@ -119,7 +119,7 @@ export default class PlantDetail extends Component{
                             </Segment>
                         </Grid.Row>
                         <Grid.Row>
-                            <Segment style={{margin:"0px",width:"50%"}}>
+                            <Segment style={{margin:"0px",marginRight:"2.5%",width:"47.5%"}}>
                                 <Grid.Column >
                                     <ThermometerChart appid="9e875e006011c294e09b4ee38bec12bf" cityID="2825297"
                                                       liveTemp={this.state.plants[this.getParameterByName(("name"))][4]}
@@ -129,7 +129,7 @@ export default class PlantDetail extends Component{
                                                       barColor="red"/>
                                 </Grid.Column>
                             </Segment>
-                            <Segment style={{margin:"0px",width:"50%"}}>
+                            <Segment style={{margin:"0px",marginLeft:"2.5%",width:"47.5%"}}>
                                 <Grid.Column>
                                     <WaterLevelChart appid="9e875e006011c294e09b4ee38bec12bf" cityID="2825297"
                                                       liveWater={this.state.plants[this.getParameterByName(("name"))][16]}
