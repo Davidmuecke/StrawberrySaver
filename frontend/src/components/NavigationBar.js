@@ -46,6 +46,9 @@ export default class NavigationBar extends  Component{
                 case "/user":
                     this.setState({ activeItem:"user"});
                     break;
+                case "sensoroverview":
+                    this.setState({activeItem:"sensoroverview"});
+                    break;
                 default:
                     this.setState({ activeItem:"impressum"});
             }
@@ -121,8 +124,8 @@ export default class NavigationBar extends  Component{
                                             </Menu.Menu>
                                     :<div/> }
                                 </Menu.Item>
-                                <Menu.Item as={Link} to="/test" name='test' active={activeItem === 'test'} onClick={this.handleItemClick}>
-                                    <p>Test</p>
+                                <Menu.Item as={Link} to="/sensoroverview" name='sensoroverview' active={activeItem === 'sensoroverview'} onClick={this.handleItemClick}>
+                                    <p>Sensors</p>
                                 </Menu.Item>
                                 <Menu.Item as={Link} to="/user" name='user' active={activeItem === 'user'} onClick={this.handleItemClick}>
                                     <p>Nutzer</p>
