@@ -17,6 +17,9 @@
 }
 /*ENDE - Äußeres DIV*/
 
+.align_impressum{
+    text-align: center;
+}
 
 /*Eingabeboxen Login, deren Breite hier auf maximal 500px gesetzt wird*/
 #impressum_name{
