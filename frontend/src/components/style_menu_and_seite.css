@@ -46,6 +46,12 @@
 /*Responsive Design für Handy*/
 @media screen and (max-width: 600px) {
 
+    .logo{
+        height: 200px;
+        width: 200px;
+        /*müsste man noch zentrieren*/
+    }
+
     #menuHeader{
         background-color: var(--header-farbe);
     }
@@ -115,6 +121,8 @@
     padding-right: 30px;
     padding-top: 30px; /*Setzt den Abstand zum Menüband fest*/
 }
+
+
 /*ENDE - Eigentliche Seite (Rest ohne Menu)*/
 
 

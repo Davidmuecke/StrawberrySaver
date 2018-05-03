@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Menu } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import "./style_menu_and_seite.css";
+import logo from "../img/Strawberry_Saver.svg";
+
 
 
 export default class NavigationBar extends  Component{
@@ -87,7 +89,7 @@ export default class NavigationBar extends  Component{
                         <div className="topnav" id="myTopnav">
                             <Menu horizontal>
                                     <Menu.Header as={Menu.Item} id="menuheader_top" className="menuheader_top">
-                                        <p>StrawBerrySaver</p>
+                                        <p>StrawberrySaver</p>
                                     </Menu.Header>
                                     <Menu.Item>
                                     <Menu.Item className="icon" onClick={function responsiveMenu() {
@@ -108,9 +110,9 @@ export default class NavigationBar extends  Component{
                     <div  className="leftnav" id="myLeftnav">
                         <Menu vertical>
                             <Menu.Item>
-                                <Menu.Header as={Menu.Item} className="menuheader" id="menuHeader">
-                                    <p>StrawBerrySaver</p>
-                                </Menu.Header>
+                                <Menu.Item>
+                                    <img src={logo} className="logo"/>
+                                </Menu.Item>
                                 <Menu.Item as={Link} to="/" name='uebersicht' active={activeItem === 'uebersicht'} onClick={this.handleItemClick}>
                                     <strong>Pflanzen</strong>
                                     {activeItem==="uebersicht"?
@@ -152,9 +154,9 @@ export default class NavigationBar extends  Component{
                         <div className="topnav" id="myTopnav">
                             <Menu horizontal>
                                 <Menu.Item>
-                                    <Menu.Header as={Menu.Item} id="menuheader_top" className="menuheader_top">
-                                        <p>StrawBerrySaver</p>
-                                    </Menu.Header>
+                                    <Menu.Item>
+                                        <img src={logo} className="logo"/>
+                                    </Menu.Item>
                                     <Menu.Item className="icon" onClick={function responsiveMenu2() {
                                         let x = document.getElementById("myLeftnav");
 
