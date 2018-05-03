@@ -147,7 +147,7 @@ export default class NavigationBar extends  Component{
                                     :<div/> }
                                 </Menu.Item>
                                 <Menu.Item as={Link} to="/sensoroverview" name='sensoroverview' active={activeItem === 'sensoroverview'} onClick={this.handleItemClick}>
-                                    <p>Sensors</p>
+                                    <p>Sensoren</p>
                                 </Menu.Item>
                                 <Menu.Item as={Link} to="/user" name='user' active={activeItem === 'user'} onClick={this.handleItemClick}>
                                     <p>Nutzer</p>
