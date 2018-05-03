@@ -6,8 +6,8 @@ import { Auth } from "aws-amplify";
 import NavigationBar from "./components/NavigationBar";
 import {API} from "aws-amplify/lib/index";
 import {Loader} from "semantic-ui-react";
-
-
+import CircularProgressbar from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 class App extends Component{
     constructor(props) {
         super(props);
@@ -15,6 +15,7 @@ class App extends Component{
         this.state = {
             isAuthenticated: false,
             isAuthenticating: true,
+            loaded:false
         };
 
     }
@@ -34,6 +35,7 @@ class App extends Component{
             /*if (e !== 'No current user') {
                 alert(e);
             }*/
+            this.setState({loaded:true});
             if(this.props.location.pathname !== "/register") {
                 this.props.history.push("/login");
             }
@@ -108,8 +110,10 @@ class App extends Component{
             }
             this.setState({
                 plants:outputArray,
-                sensors:sensorArray
+                sensors:sensorArray,
+                loaded:true
             });
+            console.log(this.state.loaded);
             //[[reply[0].plantData.sortreply[0].plantData.plantationTime,reply[0].plantData.initialTimePlant,reply[0].plantData.local_position_ID,reply[0].plantData.location_ID],reply[1],reply[2]]});
             //this.setState({answer: reply});
             // Plant(strawberry,reply[0].plantData.sort,0,reply[0].plantData.plantationTime,reply[0].plantData.initialTimePlant,reply[0].plantData.local_position_ID,reply[0].plantData.location_ID)
@@ -135,11 +139,12 @@ class App extends Component{
 
         return (
             <div>
-                {(!this.state.isAuthenticating && this.state.sensors && this.state.plants)?
+                {(!this.state.isAuthenticating && this.state.loaded)?
                 <div>
                     <div style={{height:"100%"}}><NavigationBar childProps={childProps} /></div>
+                    <div style={{float:"right",marginBottom:"70%",height:"5%",width:"5%"}}><CircularProgressbar percentage={60} /></div>
                     <Routes childProps={childProps}/>
-                </div>:<Loader inverted>Loading</Loader>
+                </div>:<div><Loader inverted>Loading</Loader></div>
                 }
             </div>
         );

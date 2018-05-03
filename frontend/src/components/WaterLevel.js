@@ -26,6 +26,7 @@ export default class WaterLevel extends Component{
 
 
     render(){
+
         return (
             <div style={{backgroundColor:(this.state.water <this.state.yellowBorderDown || this.state.water >this.state.yellowBorderUp)?this.props.barColor:(this.state.water >=this.state.greenBorderDown && this.state.water <= this.state.greenBorderUp)?"green":"#EEC900",width:"100%",height:"100%",position:"relative"}}>
                 <div style={{zIndex:"1",backgroundColor:"gray",width: "100%", height: this.state.current+"%" ,position:"absolute"}}/>

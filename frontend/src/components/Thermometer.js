@@ -26,11 +26,7 @@ constructor(props){
 
 
     render(){
-    console.log(this.state.temp);
-    console.log(this.state.greenBorderDown);
-    console.log(this.state.greenBorderUp);
-    console.log(this.state.yellowBorderDown);
-    console.log(this.state.yellowBorderUp);
+
         return (
             <div style={{backgroundColor:(this.state.temp <this.state.yellowBorderDown || this.state.temp >this.state.yellowBorderUp)?this.props.barColor:(this.state.temp >=this.state.greenBorderDown && this.state.temp <= this.state.greenBorderUp)?"green":"#EEC900",width:"100%",height:"100%",position:"relative"}}>
                 <div style={{zIndex:"1",backgroundColor:"gray",width: "100%", height: this.state.current+"%" ,position:"absolute"}}/>

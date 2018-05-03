@@ -32,13 +32,9 @@ export default class PlantDetail extends Component{
         for(let i=0; i<nextProps.sensors.length;i++){
             if(nextProps.sensors[i][3]===sensorID){
                 this.setState({sensor:nextProps.sensors[i],plants:nextProps.plants});
-
             }
-
         }
-
         this.setState({date:new Date(nextProps.plants[this.getParameterByName(("name"))][1]),plants:nextProps.plants});
-
     }
      getParameterByName(name) {
         let url = window.location.href;

@@ -15,13 +15,23 @@ export default class NavigationBar extends  Component{
         }, true);
         this.state={activeItem:""};
     }
+    getParameterByName(name) {
+        let url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        let regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
     componentWillReceiveProps(nextProps){
 
             switch(nextProps.childProps.pathname){
 
                 case "/plantDetail":
-                    if(nextProps.childProps.plants!="")this.setState({ activeItem: nextProps.childProps.plants[0][0] });
-                    else this.setState({ activeItem: "uebersicht" });
+
+                    this.setState({ activeItem: "uebersicht" });
+
                     break;
                 case "/":
                     this.setState({activeItem: "uebersicht"});
