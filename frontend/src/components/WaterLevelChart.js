@@ -65,19 +65,19 @@ export default class WaterLevelChart extends Component {
                     <WaterLevel current={parseInt(this.state.liveWater)} greenBorderUp={parseInt(this.state.water)+parseInt(this.state.scopeGreen)} greenBorderDown={parseInt(this.state.water)-this.state.scopeGreen}
                                 yellowBorderUp={parseInt(this.state.water)+parseInt(this.state.scopeGreen) + parseInt(this.state.scopeYellow)} yellowBorderDown={parseInt(this.state.water)-this.state.scopeGreen - this.state.scopeYellow} barColor={this.props.barColor}/>
                 </div>
-                <div>
-                    <ul style={{padding:"0px,0px,0px,0px",margin:"0px,0px,0px,0px",listStyle:"none"}}>
-                        <li style={{color:this.styleType[10], fontSize:"15px", marginBottom:"2.3%"}}>100%</li>
-                        <li style={{color:this.styleType[9], fontSize:"15px",  marginBottom:"2.3%",fontWeight:"bold"}}>⋅</li>
-                        <li style={{color:this.styleType[8], fontSize:"15px",  marginBottom:"2.3%"}}>80%</li>
-                        <li style={{color:this.styleType[7], fontSize:"15px",  marginBottom:"2.3%",fontWeight:"bold"}}>⋅</li>
-                        <li style={{color:this.styleType[6], fontSize:"15px",  marginBottom:"2.3%"}}>60%</li>
-                        <li style={{color:this.styleType[5], fontSize:"15px",  marginBottom:"2.3%",fontWeight:"bold"}}>⋅</li>
-                        <li style={{color:this.styleType[4], fontSize:"15px",  marginBottom:"2.3%"}}>40%</li>
-                        <li style={{color:this.styleType[3], fontSize:"15px",  marginBottom:"2.3%",fontWeight:"bold"}}>⋅</li>
-                        <li style={{color:this.styleType[2], fontSize:"15px",  marginBottom:"2.3%"}}>20%</li>
-                        <li style={{color:this.styleType[1], fontSize:"15px",  marginBottom:"2.3%",fontWeight:"bold"}}>⋅</li>
-                        <li style={{color:this.styleType[0], fontSize:"15px",  marginBottom:"2.3%"}}>0%</li>
+                <div style={{height:"305px"}}>
+                    <ul style={{padding:"0px,0px,0px,0px",margin:"0px,0px,0px,0px",listStyle:"none",height:"100%",display: "table"}}>
+                        <li style={{color:this.styleType[10],height:"9.5%", fontSize:"15px"}}>100%</li>
+                        <li style={{color:this.styleType[9], height:"9.5%",fontSize:"15px",fontWeight:"bold"}}>⋅</li>
+                        <li style={{color:this.styleType[8], height:"9.5%",fontSize:"15px"}}>80%</li>
+                        <li style={{color:this.styleType[7], height:"9.5%",fontSize:"15px",fontWeight:"bold"}}>⋅</li>
+                        <li style={{color:this.styleType[6], height:"9.5%",fontSize:"15px"}}>60%</li>
+                        <li style={{color:this.styleType[5], height:"9.5%",fontSize:"15px",fontWeight:"bold"}}>⋅</li>
+                        <li style={{color:this.styleType[4], height:"9.5%",fontSize:"15px"}}>40%</li>
+                        <li style={{color:this.styleType[3], height:"9.5%",fontSize:"15px",fontWeight:"bold"}}>⋅</li>
+                        <li style={{color:this.styleType[2], height:"9.5%",fontSize:"15px"}}>20%</li>
+                        <li style={{color:this.styleType[1], height:"9.5%",fontSize:"15px",fontWeight:"bold"}}>⋅</li>
+                        <li style={{color:this.styleType[0], height:"9.5%",fontSize:"15px"}}>0%</li>
                     </ul>
                 </div>
             </div>
