@@ -242,7 +242,7 @@ export default class Login extends Component {
                 <Container >
                     <Grid>
                     <Grid.Column width={10} stretched>
-                        {this.props.edit === null ? <h1>Neue Pflanze</h1> : <h1>Pflanze Bearbeiten</h1>}
+                        {this.state.edit === null ? <h1>Neue Pflanze</h1> : <h1>Pflanze Bearbeiten</h1>}
                     <Form onSubmit={this.handleSubmit}>
                         <Form.Field >
                             <label>Name</label>
