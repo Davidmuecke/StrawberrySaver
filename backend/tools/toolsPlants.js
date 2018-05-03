@@ -193,7 +193,7 @@ function savePlantData(plantsData, plantIDs, measurementsList) {
 function findLastMeasurement(plantsData) {
     plantsData.forEach(function (item, index, array) {
         var lastMeasurementTimestamp = -1;
-        var lastMeasurement;
+        var lastMeasurement = -99;
 
         (item.measurements).forEach(function (item, index, array) {
             if(item.timestamp > lastMeasurementTimestamp) {
@@ -203,6 +203,14 @@ function findLastMeasurement(plantsData) {
         });
         item.measurement = lastMeasurement;
         delete item.measurements;
+        if (lastMeasurement === -99) {
+            item.measurement = {
+                wifiSSID:"noWifi",
+                humiditySensor:0,
+                temperatureSensor:0,
+                timestamp:0
+            }
+        }
     });
     return plantsData;
 }
@@ -317,6 +325,117 @@ function createPlant (userID, plantData){
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*/
+/*                            Löscht eine Pflanze und alle Referenzierungen.                                          */
+/*--------------------------------------------------------------------------------------------------------------------*/
+function deletePlant (userID, plantID) {
+    /*
+    Schritt 1: Pflanze aus der Pflanzen-Tabelle löschen.
+     */
+    var paramsPlant = {
+        TableName: "plants",
+        Key: {
+            "plant_ID": plantID
+        },
+        ReturnValues: "ALL_OLD"
+    };
+    return dynamoDb.delete(paramsPlant).promise().then(function (value) {
+    /*
+    Schritt 2: Daten des verknüpften Sensors abfragen.
+     */
+        var plant = value.Attributes;
+        var plantData = JSON.parse(plant.plantData);
+        var sensorID = plantData.sensor_ID;
+
+        var paramsGetSensor = {
+            TableName: 'sensors',
+            ExpressionAttributeNames: {
+                "#id": "sensor_ID"
+            },
+            KeyConditionExpression: "#id = :id",
+            ExpressionAttributeValues: {
+                ":id": sensorID
+            }
+        };
+        return dynamoDb.query(paramsGetSensor).promise().then(function (value) {
+        /*
+        Schritt 3: Daten des verknüpften Sensors aktualisieren.
+         */
+            var sensorData = value.Items[0];
+            var configData = JSON.parse(sensorData.configData);
+            delete configData.plant_ID;
+
+            var paramsUpdateSensor = {
+                TableName: "sensors",
+                Key: {
+                    "sensor_ID": sensorID
+                },
+                UpdateExpression: "set configData = :configData",
+                ExpressionAttributeValues: {
+                    ":configData": JSON.stringify(configData)
+                },
+                ReturnValues: "UPDATED_NEW"
+            };
+            return dynamoDb.update(paramsUpdateSensor).promise().then(function (value) {
+            /*
+            Schritt 4: UserAccess-Daten abfragen.
+            */
+                var userAccessParams = {
+                    TableName: "userAccess",
+                    ExpressionAttributeNames: {
+                        "#id": "user_ID",
+                        "#attribute": "plants"
+                    },
+                    ProjectionExpression: "#attribute",
+                    KeyConditionExpression: "#id = :id",
+                    ExpressionAttributeValues: {
+                        ":id": userID
+                    }
+                };
+                return dynamoDb.query(userAccessParams).promise().then(function (value) {
+                    /*
+                    Schritt 5: UserAccess-Daten aktualisieren.
+                    */
+                    var plantsIDList = "";
+                    if (typeof value.Items[0].plants !== 'undefined' && value.Items[0].plants !== null) {
+                        plantsIDList = value.Items[0].plants;
+                    }
+                    var plantIDs = plantsIDList.split(",");
+                    var newPlantIDs = "";
+
+                    plantIDs.forEach(function (item, index) {
+                        if (item !== plantID) {
+                            switch (newPlantIDs) {
+                                case "":
+                                    newPlantIDs += item;
+                                    break;
+                                default:
+                                    newPlantIDs += "," + item;
+                                    break;
+                            }
+                        }
+                    });
+                    var updatePlantListParams = {
+                        TableName: "userAccess",
+                        Key: {
+                            "user_ID": userID
+                        },
+                        UpdateExpression: "set plants = :plants",
+                        ExpressionAttributeValues: {
+                            ":plants": newPlantIDs
+                        },
+                        ReturnValues: "UPDATED_NEW"
+                    };
+                    return dynamoDb.update(updatePlantListParams).promise().then(function (value) {
+                        return "Löschen erfolgreich: Pflanze: " + plantID + " verknüpfter Sensor: " + sensorID;
+                    });
+                });
+
+            });
+        });
+    });
+}
+
+/*--------------------------------------------------------------------------------------------------------------------*/
 /*                            Daten einer Pflanze aktualisieren.                                                      */
 /*--------------------------------------------------------------------------------------------------------------------*/
 //Item-Attribute müssen noch angepasst werden.
@@ -348,5 +467,6 @@ module.exports = {
     getPlantsForUser: getPlantsForUser,
     getPlantData: getPlantData,
     createPlant: createPlant,
-    updatePlant: updatePlant
+    updatePlant: updatePlant,
+    deletePlant: deletePlant
 };

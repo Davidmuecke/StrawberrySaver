@@ -203,6 +203,97 @@ function createSensor(userID, sensorData) {
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*/
+/*                            Löscht einen Sensor und alle Referenzierungen.                                          */
+/*--------------------------------------------------------------------------------------------------------------------*/
+function deleteSensor (userID, sensorID) {
+        /*
+        Schritt 1: Sensor-Daten aus der Datenbank laden.
+         */
+    var paramsGetSensor = {
+        TableName: 'sensors',
+        ExpressionAttributeNames: {
+            "#id": "sensor_ID"
+        },
+        KeyConditionExpression: "#id = :id",
+        ExpressionAttributeValues: {
+            ":id": sensorID
+        }
+    };
+    return dynamoDb.query(paramsGetSensor).promise().then(function (value) {
+        /*
+        Schritt 2: Sensor aus der Datenbank löschen, wenn er mit keiner Pflanze verknüpft ist.
+         */
+        var sensorData = value.Items[0];
+        var configData = JSON.parse(sensorData.configData);
+        if(!configData.hasOwnProperty("plant_ID")) {
+            var paramsSensor = {
+                TableName: "sensors",
+                Key: {
+                    "sensor_ID": sensorID
+                }
+            };
+            return dynamoDb.delete(paramsSensor).promise().then(function (value) {
+                /*
+                    Schritt 3: UserAccess-Daten abfragen.
+                    */
+                var userAccessParams = {
+                    TableName: "userAccess",
+                    ExpressionAttributeNames: {
+                        "#id": "user_ID",
+                        "#attribute": "sensors"
+                    },
+                    ProjectionExpression: "#attribute",
+                    KeyConditionExpression: "#id = :id",
+                    ExpressionAttributeValues: {
+                        ":id": userID
+                    }
+                };
+                return dynamoDb.query(userAccessParams).promise().then(function (value) {
+                    /*
+                    Schritt 4: UserAccess-Daten aktualisieren.
+                    */
+                    var sensorIDList = "";
+                    if (typeof value.Items[0].sensors !== 'undefined' && value.Items[0].sensors !== null) {
+                        sensorIDList = value.Items[0].sensors;
+                    }
+                    var sensorIDs = sensorIDList.split(",");
+                    var newSensorIDs = "";
+
+                    sensorIDs.forEach(function (item, index) {
+                        if (item !== sensorID) {
+                            switch (newSensorIDs) {
+                                case "":
+                                    newSensorIDs += item;
+                                    break;
+                                default:
+                                    newSensorIDs += "," + item;
+                                    break;
+                            }
+                        }
+                    });
+                    var updatePlantListParams = {
+                        TableName: "userAccess",
+                        Key: {
+                            "user_ID": userID
+                        },
+                        UpdateExpression: "set sensors = :sensors",
+                        ExpressionAttributeValues: {
+                            ":sensors": newSensorIDs
+                        },
+                        ReturnValues: "UPDATED_NEW"
+                    };
+                    return dynamoDb.update(updatePlantListParams).promise().then(function (value) {
+                        return "Löschen erfolgreich: Sensor: " + sensorID;
+                    });
+                });
+            });
+        }else {
+            return "Der Sensor konnte nicht gelöscht werden, da er mit einer Pflanze verknüpft ist."
+        }
+    });
+}
+
+/*--------------------------------------------------------------------------------------------------------------------*/
 /*                            Footer: zu exportierende Funktionen                                                     */
 /*--------------------------------------------------------------------------------------------------------------------*/
 module.exports = {
@@ -210,5 +301,6 @@ module.exports = {
     getFreeSensorsForUser: getFreeSensorsForUser,
     getSensorData: getSensorData,
     updateSensorConfig:updateSensorConfig,
-    createSensor: createSensor
+    createSensor: createSensor,
+    deleteSensor: deleteSensor
 };

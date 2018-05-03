@@ -47,6 +47,11 @@ api.post('/updatePlantData', function (request) {
     return toolsPlants.updatePlant(request.body.plant_ID, request.body.plantData);
 }, {authorizationType: 'AWS_IAM'});
 
+//löscht eine Pflanze und alle Referenzierungen aus der Datenbank.
+api.post('/deletePlant', function (request) {
+    return toolsPlants.deletePlant(request.context.cognitoIdentityId,request.body.plant_ID);
+}, {authorizationType: 'AWS_IAM'});
+
 /*--------------------------------------------------------------------------------------------------------------------*/
 /*  Diese Operationen behandeln dem Arduino                                                                           */
 /*--------------------------------------------------------------------------------------------------------------------*/
@@ -88,6 +93,10 @@ api.post('/updateSensorConfig', function (request) {
     return toolsSensors.updateSensorConfig(request.body.sensor_ID,request.body.configData);
 }, {authorizationType: 'AWS_IAM'});
 
+//löscht einen Sensor und alle Referenzierungen aus der Datenbank.
+api.post('/deleteSensor', function (request) {
+    return toolsSensors.deleteSensor(request.context.cognitoIdentityId,request.body.sensor_ID);
+}, {authorizationType: 'AWS_IAM'});
 /*--------------------------------------------------------------------------------------------------------------------*/
 /*  footer: die hier zu exportierenden module.                                                                        */
 /*--------------------------------------------------------------------------------------------------------------------*/
