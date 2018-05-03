@@ -66,7 +66,7 @@ export default class User extends Component {
         return (
             <div id={seite}>
                 <div>
-                    <h1>Sensor Übersicht</h1>
+                    <h1>Sensoren</h1>
                     <Table celled>
                         <Table.Header>
                             <Table.Row>

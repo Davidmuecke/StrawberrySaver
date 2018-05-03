@@ -90,7 +90,7 @@ export default class SensorAdd extends Component {
             event.preventDefault();
 
             try {
-                if(this.state.editor){
+                if(!this.state.editor){
                     API.post("strawberry", "/createSensor", {
                         headers: {},
                         body:
