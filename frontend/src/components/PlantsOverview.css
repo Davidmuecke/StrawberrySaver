@@ -6,12 +6,6 @@
 /*  CSS STYLE SHEET STRAWBEERY SAVER PlantsOverview */
 /****************************************************/
 
-/*Überschrift "Übersicht" - soll nicht "an der Decke kleben"*/
-#headerUebersicht{
-    margin-top: 20px;
-}
-/*ENDE - Überschrift "Übersicht"*/
-
 
 /*Bild zu der jeweiligen Planze wird hier in der Pflanzenbox nach rechts gesetzt*/
 #plantImage{
