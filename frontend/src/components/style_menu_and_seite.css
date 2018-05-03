@@ -37,9 +37,6 @@
 @media screen and (max-width: 600px) {
     #myLeftnav{
         width: 100%;
-        display: none;
-        position: absolute;
-        z-index: 1;
     }
 
     #seite1 {
@@ -58,7 +55,7 @@
     .topnav {
         display: none;
     }
-    .leftnav{
+    #myLeftnav{
         display: block;
         float: left;
     }

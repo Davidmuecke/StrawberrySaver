@@ -143,6 +143,8 @@ export default class NavigationBar extends  Component{
                                         <p>Logout</p>
                                 </Menu.Item>
                             </Menu.Item>
+                            <Menu.Item>
+                            </Menu.Item>
                         </Menu>
                     </div>
                     </div>
