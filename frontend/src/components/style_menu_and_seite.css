@@ -36,7 +36,7 @@
 /*Responsive Design für Handy*/
 @media screen and (max-width: 600px) {
 
-    .div.ui.vertical.menu{
+    .leftnav .ui.vertical.menu {
         width: 100%;
     }
 
