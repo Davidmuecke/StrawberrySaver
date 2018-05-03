@@ -12,8 +12,14 @@ export default class NavigationBar extends  Component{
         super(props);
         window.addEventListener('resize', function () {
             let x = document.getElementById("myLeftnav");
+            let y = document.getElementById("myLeftnav2");
             if(window.innerWidth >899) {
-                x.style.display = "block";
+                if(x) {
+                    x.style.display = "block";
+                }
+                else{
+                y.style.display = "block";
+                }
             }
         }, true);
         this.state={activeItem:"",timeToRefresh:20, timePassed:0};
@@ -179,13 +185,13 @@ export default class NavigationBar extends  Component{
                     </div>
                 :   <div>
                         <div className="topnav" id="myTopnav">
-                            <Menu horizontal>
+                            <Menu inverted>
                                 <Menu.Item>
                                     <Menu.Header as={Menu.Item} id="menuheader_top" className="menuheader_top">
                                         <p>StrawBerrySaver</p>
                                     </Menu.Header>
                                     <Menu.Item className="icon" onClick={function responsiveMenu2() {
-                                        let x = document.getElementById("myLeftnav");
+                                        let x = document.getElementById("myLeftnav2");
 
                                         if (x.style.display === "block") {
                                             x.style.display = "none";
@@ -207,8 +213,8 @@ export default class NavigationBar extends  Component{
                             </Menu>
                         </div>
 
-                        <div  className="leftnav" id="myLeftnav">
-                            <Menu horizontal>
+                        <div  className="leftnav" id="myLeftnav2">
+                            <Menu inverted>
                                 <Menu.Item as={Link} to="/login" name='login' active={activeItem === 'login'} onClick={this.handleItemClick}>
                                     <p>Login</p>
                                 </Menu.Item>

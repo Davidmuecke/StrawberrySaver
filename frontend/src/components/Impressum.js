@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import "./Impressum.css";
+import "./style_menu_and_seite.css";
 
 export default class Impressum extends Component{
     constructor(props) {
@@ -32,7 +32,7 @@ export default class Impressum extends Component{
                 <div style={{textAlign:impressumStyle}}>
                     <div>
                         <h1> Impressum </h1>
-                        <h3 id="impressum_name">Strawberry Saver</h3>
+                        <h3 style={{paddingTop: "20px"}}>Strawberry Saver</h3>
                         <text>Web Engineering Projekt<br/></text>
                         <text>TINF16B Enrico Keil 4.Semester<br/></text>
                         <text>Copyright by David, Niklas, Jonathan und Rahel<br/></text>
