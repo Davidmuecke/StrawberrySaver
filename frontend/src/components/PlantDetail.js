@@ -46,13 +46,29 @@ export default class PlantDetail extends Component{
         console.log(this.state.localposition);
     }
     componentWillReceiveProps(nextProps){
+        let pos= nextProps.plants[this.getParameterByName(("name"))][11];
+        let posString;
+        switch(pos){
+            case "0":
+                posString="draussen";
+                break;
+            case "1":
+                posString="überdacht";
+                break;
+            case "2":
+                posString= "drinnen";
+                break;
+            default:
+                posString ="nicht definiert";
+                break;
+        }
         let sensorID = nextProps.plants[this.getParameterByName(("name"))][9];
         for(let i=0; i<nextProps.sensors.length;i++){
             if(nextProps.sensors[i][3]===sensorID){
                 this.setState({sensor:nextProps.sensors[i],plants:nextProps.plants});
             }
         }
-        this.setState({date:new Date(nextProps.plants[this.getParameterByName("name")][1]),plants:nextProps.plants});
+        this.setState({date:new Date(nextProps.plants[this.getParameterByName("name")][1]),plants:nextProps.plants,localposition:posString});
     }
      getParameterByName(name) {
         let url = window.location.href;

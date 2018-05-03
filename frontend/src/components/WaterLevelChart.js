@@ -67,17 +67,17 @@ export default class WaterLevelChart extends Component {
                 </div>
                 <div>
                     <ul style={{padding:"0px,0px,0px,0px",margin:"0px,0px,0px,0px",listStyle:"none"}}>
-                        <li style={{color:this.styleType[10], fontSize:"15px", marginBottom:"3.5%"}}>100%</li>
-                        <li style={{color:this.styleType[9], fontSize:"15px",  marginBottom:"3.5%",fontWeight:"bold"}}>⋅</li>
-                        <li style={{color:this.styleType[8], fontSize:"15px",  marginBottom:"3.5%"}}>80%</li>
-                        <li style={{color:this.styleType[7], fontSize:"15px",  marginBottom:"3.5%",fontWeight:"bold"}}>⋅</li>
-                        <li style={{color:this.styleType[6], fontSize:"15px",  marginBottom:"3.5%"}}>60%</li>
-                        <li style={{color:this.styleType[5], fontSize:"15px",  marginBottom:"3.5%",fontWeight:"bold"}}>⋅</li>
-                        <li style={{color:this.styleType[4], fontSize:"15px",  marginBottom:"3.5%"}}>40%</li>
-                        <li style={{color:this.styleType[3], fontSize:"15px",  marginBottom:"3.5%",fontWeight:"bold"}}>⋅</li>
-                        <li style={{color:this.styleType[2], fontSize:"15px",  marginBottom:"3.5%"}}>20%</li>
-                        <li style={{color:this.styleType[1], fontSize:"15px",  marginBottom:"3.5%",fontWeight:"bold"}}>⋅</li>
-                        <li style={{color:this.styleType[0], fontSize:"15px",  marginBottom:"3.5%"}}>0%</li>
+                        <li style={{color:this.styleType[10], fontSize:"15px", marginBottom:"2.3%"}}>100%</li>
+                        <li style={{color:this.styleType[9], fontSize:"15px",  marginBottom:"2.3%",fontWeight:"bold"}}>⋅</li>
+                        <li style={{color:this.styleType[8], fontSize:"15px",  marginBottom:"2.3%"}}>80%</li>
+                        <li style={{color:this.styleType[7], fontSize:"15px",  marginBottom:"2.3%",fontWeight:"bold"}}>⋅</li>
+                        <li style={{color:this.styleType[6], fontSize:"15px",  marginBottom:"2.3%"}}>60%</li>
+                        <li style={{color:this.styleType[5], fontSize:"15px",  marginBottom:"2.3%",fontWeight:"bold"}}>⋅</li>
+                        <li style={{color:this.styleType[4], fontSize:"15px",  marginBottom:"2.3%"}}>40%</li>
+                        <li style={{color:this.styleType[3], fontSize:"15px",  marginBottom:"2.3%",fontWeight:"bold"}}>⋅</li>
+                        <li style={{color:this.styleType[2], fontSize:"15px",  marginBottom:"2.3%"}}>20%</li>
+                        <li style={{color:this.styleType[1], fontSize:"15px",  marginBottom:"2.3%",fontWeight:"bold"}}>⋅</li>
+                        <li style={{color:this.styleType[0], fontSize:"15px",  marginBottom:"2.3%"}}>0%</li>
                     </ul>
                 </div>
             </div>
