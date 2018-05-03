@@ -9,6 +9,7 @@
 /*Responsive Design*/
 /* When the screen is less than 900 pixels wide, hide all links, except for the first one ("Home"). Show the link that contains should open and close the leftnav (.icon) */
 /* The "responsive" class is added to the leftnav with JavaScript when the user clicks on the icon. This class makes the leftnav look good on small screens (display the links vertically instead of horizontally) */
+/*Responsive Design für Tablet*/
 @media screen and (max-width: 900px) {
     .topnav{
         display: block;
@@ -32,13 +33,11 @@
     }
 }
 
+/*Responsive Design für Handy*/
 @media screen and (max-width: 600px) {
     #myLeftnav{
-        display: none;
-
-    }
-    .leftnav .ui.vertical.menu {
         width: 100%;
+        display: none;
         position: absolute;
         z-index: 1;
     }
@@ -61,6 +60,7 @@
     }
     .leftnav{
         display: block;
+        float: left;
     }
 }
 /*ENDE - "ganz normales Menü"*/
