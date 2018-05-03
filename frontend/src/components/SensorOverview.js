@@ -54,8 +54,8 @@ export default class User extends Component {
                     <Table.Cell>{this.state.sensors[i][5]}</Table.Cell>
                     <Table.Cell>{this.state.sensors[i][6]}</Table.Cell>
                     <Table.Cell>{this.state.sensors[i][10]}</Table.Cell>
-                    <Table.Cell>{this.state.sensors[i][2] === null? "JA" : "NEIN"}</Table.Cell>
-                    <Table.Cell><Button as={Link} to={"/sensorEdit?id="+this.state.sensors[i][5]} color="blue" onClick={this.handleClick} >Bearbeiten</Button></Table.Cell>
+                    <Table.Cell>{this.state.sensors[i][2] === undefined? "JA" : "NEIN"}</Table.Cell>
+                    <Table.Cell><Button as={Link} to={"/sensorEdit?id="+i} color="blue" onClick={this.handleClick} >Bearbeiten</Button></Table.Cell>
                 </Table.Row>);
         }
         let seite;
@@ -67,7 +67,6 @@ export default class User extends Component {
             <div id={seite}>
                 <div>
                     <h1>Sensor Übersicht</h1>
-                    <p>{this.state.sensors}</p>
                     <Table celled>
                         <Table.Header>
                             <Table.Row>
