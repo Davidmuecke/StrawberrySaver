@@ -39,6 +39,7 @@
         position: absolute;
         z-index: 1;
     }
+
     #seite1 {
         margin-left: 0; /*Muss der gleiche Wert sein wie bei ul {width} - gibt das Verhältnis von Menu und Seite an*/
         height: 100%;
@@ -50,18 +51,24 @@
 }
 /*Ende Responsive Design*/
 
+/*Linkes Menü bei einer ganz normalen Fenstergröße: "ganz normales Menü"*/
 @media screen and (min-width: 900px) {
     .topnav {
         display: none;
     }
     .leftnav{
         display: block;
+        position: absolute;
+        z-index: 1;
     }
 }
+/*ENDE - "ganz normales Menü"*/
 
 .active {
     display:block;
 }
+
+
 /*Eigentliche Seite (Rest ohne Menu)*/
 #seite1 {
     margin-left: 250px; /*Muss der gleiche Wert sein wie bei ul {width} - gibt das Verhältnis von Menu und Seite an*/

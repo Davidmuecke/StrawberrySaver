@@ -41,10 +41,24 @@ export default class NavigationBar extends  Component{
                 case "/login":
                     this.setState({ activeItem:"login"});
                     break;
+                case "/user":
+                    this.setState({ activeItem:"user"});
+                    break;
                 default:
                     this.setState({ activeItem:"impressum"});
             }
 
+    }
+
+    //Funktion, damit das Menu bei Klick wieder einrückt, wenn ich unter 900 px bin
+    clearMenu(){
+        let allreadyOpen = document.getElementById("myLeftnav");
+        if (allreadyOpen.style.display === "block") {
+            allreadyOpen.style.display = "none";
+        }
+        else{
+            allreadyOpen.style.display="block";
+        }
     }
 
     handleItemClick = (e, { name }) =>{
@@ -53,6 +67,10 @@ export default class NavigationBar extends  Component{
             console.log(this.props.childProps.isAuthenticated);
             this.props.childProps.handleLogout();
         }
+        if (window.innerWidth<="900"){
+            this.clearMenu();
+        }
+
     };
 
     render(){
@@ -72,7 +90,7 @@ export default class NavigationBar extends  Component{
                                         <p>StrawBerrySaver</p>
                                     </Menu.Header>
                                     <Menu.Item>
-                                    <Menu.Item className="icon" onClick={function responsiveMenu2() {
+                                    <Menu.Item className="icon" onClick={function responsiveMenu() {
                                         let x = document.getElementById("myLeftnav");
                                         if (x.style.display === "block") {
                                             x.style.display = "none";
