@@ -3,6 +3,9 @@ import { Menu } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import "./style_menu_and_seite.css";
 import CircularProgressbar from 'react-circular-progressbar';
+import logo from "../img/Strawberry_Saver.svg";
+
+
 
 export default class NavigationBar extends  Component{
     constructor(props) {
@@ -59,6 +62,12 @@ export default class NavigationBar extends  Component{
                 case "/login":
                     this.setState({ activeItem:"login"});
                     break;
+                case "/user":
+                    this.setState({ activeItem:"user"});
+                    break;
+                case "sensoroverview":
+                    this.setState({activeItem:"sensoroverview"});
+                    break;
 
                 case "/register":
                     this.setState({ activeItem:"register"});
@@ -69,12 +78,27 @@ export default class NavigationBar extends  Component{
 
     }
 
+    //Funktion, damit das Menu bei Klick wieder einrückt, wenn ich unter 900 px bin
+    clearMenu(){
+        let allreadyOpen = document.getElementById("myLeftnav");
+        if (allreadyOpen.style.display === "block") {
+            allreadyOpen.style.display = "none";
+        }
+        else{
+            allreadyOpen.style.display="block";
+        }
+    }
+
     handleItemClick = (e, { name }) =>{
         this.setState({ activeItem: name});
         if(name === "logout"){
             console.log(this.props.childProps.isAuthenticated);
             this.props.childProps.handleLogout();
         }
+        if (window.innerWidth<="900"){
+            this.clearMenu();
+        }
+
     };
 
     render(){
@@ -91,10 +115,10 @@ export default class NavigationBar extends  Component{
                         <div className="topnav" id="myTopnav">
                             <Menu horizontal>
                                     <Menu.Header as={Menu.Item} id="menuheader_top" className="menuheader_top">
-                                        <p>StrawBerrySaver</p>
+                                        <p>StrawberrySaver</p>
                                     </Menu.Header>
                                     <Menu.Item>
-                                    <Menu.Item className="icon" onClick={function responsiveMenu2() {
+                                    <Menu.Item className="icon" onClick={function responsiveMenu() {
                                         let x = document.getElementById("myLeftnav");
                                         if (x.style.display === "block") {
                                             x.style.display = "none";
@@ -110,11 +134,11 @@ export default class NavigationBar extends  Component{
                         </div>
 
                     <div  className="leftnav" id="myLeftnav">
-                        <Menu vertical style={{float:"left"}}>
+                        <Menu vertical>
                             <Menu.Item>
-                                <Menu.Header as={Menu.Item} className="menuheader">
-                                    <p>StrawBerrySaver</p>
-                                </Menu.Header>
+                                <Menu.Item>
+                                    <img src={logo} className="logo"/>
+                                </Menu.Item>
                                 <Menu.Item as={Link} to="/" name='uebersicht' active={activeItem === 'uebersicht'} onClick={this.handleItemClick}>
                                     <strong>Pflanzen</strong>
                                     {activeItem==="uebersicht"?
@@ -123,8 +147,8 @@ export default class NavigationBar extends  Component{
                                             </Menu.Menu>
                                     :<div/> }
                                 </Menu.Item>
-                                <Menu.Item as={Link} to="/test" name='test' active={activeItem === 'test'} onClick={this.handleItemClick}>
-                                    <p>Test</p>
+                                <Menu.Item as={Link} to="/sensoroverview" name='sensoroverview' active={activeItem === 'sensoroverview'} onClick={this.handleItemClick}>
+                                    <p>Sensors</p>
                                 </Menu.Item>
                                 <Menu.Item as={Link} to="/user" name='user' active={activeItem === 'user'} onClick={this.handleItemClick}>
                                     <p>Nutzer</p>
@@ -146,6 +170,8 @@ export default class NavigationBar extends  Component{
                                     <Menu.Item name='logout' active={activeItem ==='logout'} onClick={this.handleItemClick}>
                                         <p>Logout</p>
                                 </Menu.Item>
+                            </Menu.Item>
+                            <Menu.Item>
                             </Menu.Item>
                         </Menu>
                     </div>
@@ -194,11 +220,8 @@ export default class NavigationBar extends  Component{
                                 </Menu.Item>
                             </Menu>
                         </div>
-
                     </div>
-
                 }
-
 
             </div>
         )

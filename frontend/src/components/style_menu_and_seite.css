@@ -6,14 +6,25 @@
 /*  CSS STYLE SHEET STRAWBEERY SAVER  */
 /**************************************/
 
+:root {
+    --header-farbe: green;
+}
+
+
 /*Responsive Design*/
 /* When the screen is less than 900 pixels wide, hide all links, except for the first one ("Home"). Show the link that contains should open and close the leftnav (.icon) */
 /* The "responsive" class is added to the leftnav with JavaScript when the user clicks on the icon. This class makes the leftnav look good on small screens (display the links vertically instead of horizontally) */
+/*Responsive Design für Tablet*/
 @media screen and (max-width: 900px) {
     .topnav{
         display: block;
         width: 100%;
     }
+
+    #menuHeader{
+        background-color: var(--header-farbe);
+    }
+
     .topnav .item {
         margin-left:auto;
     }
@@ -26,19 +37,34 @@
 
     #myLeftnav{
         display: none;
-    }
-}
-
-@media screen and (max-width: 600px) {
-    #myLeftnav{
-        display: none;
-
-    }
-    .leftnav .ui.vertical.menu {
-        width: 100%;
+        float: left;
         position: absolute;
         z-index: 1;
     }
+}
+
+/*Responsive Design für Handy*/
+@media screen and (max-width: 600px) {
+
+    .logo{
+        height: 200px;
+        width: 200px;
+        /*müsste man noch zentrieren*/
+    }
+
+    #menuHeader{
+        background-color: var(--header-farbe);
+    }
+
+    #myLeftnav{
+        display: none;
+        width: 100%;
+    }
+
+    .leftnav .ui.vertical.menu {
+        width: 100%;
+    }
+
     #seite1 {
         margin-left: 0; /*Muss der gleiche Wert sein wie bei ul {width} - gibt das Verhältnis von Menu und Seite an*/
         height: 100%;
@@ -50,18 +76,34 @@
 }
 /*Ende Responsive Design*/
 
+/*Linkes Menü bei einer ganz normalen Fenstergröße: "ganz normales Menü"*/
 @media screen and (min-width: 900px) {
     .topnav {
         display: none;
     }
-    .leftnav{
+
+    #menuHeader{
+        background-color: var(--header-farbe);
+    }
+
+
+    #myLeftnav{
         display: block;
+        float: left;
+        height: 100%;
+    }
+
+    .leftnav .ui.vertical.menu {
+        height: 100%;
     }
 }
+/*ENDE - "ganz normales Menü"*/
 
 .active {
     display:block;
 }
+
+
 /*Eigentliche Seite (Rest ohne Menu)*/
 #seite1 {
     margin-left: 250px; /*Muss der gleiche Wert sein wie bei ul {width} - gibt das Verhältnis von Menu und Seite an*/
@@ -79,6 +121,8 @@
     padding-right: 30px;
     padding-top: 30px; /*Setzt den Abstand zum Menüband fest*/
 }
+
+
 /*ENDE - Eigentliche Seite (Rest ohne Menu)*/
 
 
