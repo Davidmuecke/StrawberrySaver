@@ -20,7 +20,7 @@ export default class PlantsOverview extends Component{
         var rows=[];
         for(let i=0;i<this.props.plants.length;i++)
         {
-            rows.push(Plant(this.state.plants[i][8],this.state.plants[i][0], i,Math.round(this.state.plants[i][16]/10.24*100)/100,this.state.plants[i][2],this.state.plants[i][3],this.state.plants[i][3],1,this.state.plants[i][4]+"°"));
+            rows.push(Plant(this.state.plants[i][8],this.state.plants[i][0], i,Math.round(this.state.plants[i][16]/10.24*100)/100,this.state.plants[i][2],this.state.plants[i][3],this.state.plants[i][3],1,this.state.plants[i][4]+"°",this.state.plants[i][10]));
         }
 
         var seite;
@@ -46,13 +46,14 @@ export default class PlantsOverview extends Component{
 }
 //lokale position(draussen,drinnen
 //fehlen noch ,temperaturabweichunggrün,temperaturabweichunggelb,wasserabweichunggrün,wasserabweichunggelb
-const Plant = (image,sorte, id, wasserstand,erstellungszeitpunkt,geographischerOrt,lokaleposition,sensorid,temperaturwert) =>
+const Plant = (image,sorte, id, wasserstand,erstellungszeitpunkt,geographischerOrt,lokaleposition,sensorid,temperaturwert,nickname) =>
 {
     Component.handleClick = (e) => {};
     return (
             <Grid.Column width={8} stretched >
                 <Segment>
-                    <h2> Art: {sorte}</h2>
+                    <h2> Name: {nickname}</h2>
+                    <h4> Art: {sorte}</h4>
                     <h4>Ort: {geographischerOrt}</h4>
                     <img src={image} style={{float:"right",width:"30%",height:"100%"}}/>
                     <h4> Wasserstand: {wasserstand +" %"}</h4>
