@@ -3,14 +3,29 @@ import "./Impressum.css";
 
 export default class Impressum extends Component{
     render(){
-        var seite;
+        let seite;
         if (window.innerWidth>="900"){
             seite= "seite1"}
         else{
             seite="seite2"}
+
+        let impressumStyle;
+        /*this.props.childProps.isAuthenticated*/ /*tut damit leider nicht*/
+        if (true){
+            if(window.innerWidth<="900"){
+                impressumStyle = "center";
+            }
+            else {
+                impressumStyle = "none";
+            }
+        }
+        else{
+            impressumStyle="center";
+        }
+
         return (
             <div id={seite}>
-                <div className="align_impressum">
+                <div style={{textAlign:impressumStyle}}>
                     <div className="impressum">
                         <h1> Impressum </h1>
                         <h3 id="impressum_name">Strawberry Saver</h3>
