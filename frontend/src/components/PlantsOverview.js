@@ -33,7 +33,7 @@ export default class PlantsOverview extends Component{
                 <Container fluid={true}>
                 <Grid>
                     <Grid.Column width={16} stretched>
-                        <Header><h1 id="headerUebersicht">Pflanzen</h1></Header>
+                        <h1>Pflanzen</h1>
                         <p>Hier können sie alle registrierten Pflanzen einsehen, klicken Sie auf Details um die Detailseite der jeweiligen Pflanze aufzurufen</p>
                     </Grid.Column>
                     {rows}

@@ -30,7 +30,7 @@ export default class Impressum extends Component{
         return (
             <div id={seite}>
                 <div style={{textAlign:impressumStyle}}>
-                    <div className="impressum">
+                    <div>
                         <h1> Impressum </h1>
                         <h3 id="impressum_name">Strawberry Saver</h3>
                         <text>Web Engineering Projekt<br/></text>
