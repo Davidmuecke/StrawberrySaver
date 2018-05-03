@@ -100,10 +100,11 @@ class App extends Component{
             }
             for(let j=0; j< sensors.length;j++){
                 sensorArray.push([
-                                sensors[j].configData.measuringInterval, sensors[j].configData.sendInterval,
-                                sensors[j].configData.plant_ID,sensors[j].sensor_ID,sensors[j].configData.batteryLevel,
-                                sensors[j].sensor_ID,  sensors[j].systemData.modelDesignation, sensors[j].systemData.firmwareVersion,
-                                sensors[j].systemData.initialCommisioning, sensors[j].systemData.make, sensors[j].systemData.serialNumber
+                 /*0*/          sensors[j].configData.measuringInterval, sensors[j].configData.sendInterval,
+                 /*2*/          sensors[j].configData.plant_ID,sensors[j].sensor_ID,sensors[j].configData.batteryLevel,
+                 /*5*/          sensors[j].sensor_ID,  sensors[j].systemData.modelDesignation, sensors[j].systemData.firmwareVersion,
+                 /*8*/          sensors[j].systemData.initialCommisioning, sensors[j].systemData.make, sensors[j].systemData.serialNumber,
+                                sensors[j].configData.sendOnChange
                                 ]);
             }
             this.setState({

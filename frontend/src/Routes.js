@@ -23,6 +23,7 @@ export default ({ childProps}) =>
         <AppliedRoute path="/plantAdd" exact component={PlantAdd} props={childProps}/>
         <AppliedRoute path="/plantEdit" exact component={PlantAdd} props={childProps}/>
         <AppliedRoute path="/sensorAdd" exact component={SensorAdd} props={childProps}/>
+        <AppliedRoute path="/sensorEdit" exact component={SensorAdd} props={childProps}/>
         <AppliedRoute path="/sensorOverview" exact component={SensorOverview} props={childProps}/>
         <AppliedRoute path="/user" exact component={User} props={childProps} />
 

@@ -6,21 +6,49 @@ import {API} from "aws-amplify/lib/index";
 export default class SensorAdd extends Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            sensor_ID: "",
-            make: "DK",
-            modelDesignation: "HumidityV1",
-            firmwareVersion: "1.0",
-            initialCommisioning: "27.04.2018",
-            serialNumber: "",
-            measuringInterval: 30,
-            sendInterval: 300,
-            sendOnChange: "true",
-            batteryLevel: 100
-
-
+        if(this.getURLParameterByName(("id"))=== null) {
+            this.state = {
+                editor: false,
+                plant: " ",
+                sensor_ID: "",
+                make: "DK",
+                modelDesignation: "HumidityV1",
+                firmwareVersion: "1.0",
+                initialCommisioning: "27.04.2018",
+                serialNumber: "",
+                measuringInterval: 30,
+                sendInterval: 300,
+                sendOnChange: "true",
+                batteryLevel: 100
+            }
+        } else{
+            let i = this.getURLParameterByName(("id"));
+            this.state = {
+                editor: true,
+                internalID: i,
+                sensor_ID: this.props.sensors[i][3],
+                make: this.props.sensors[i][9],
+                modelDesignation: this.props.sensors[i][6],
+                firmwareVersion: this.props.sensors[i][7],
+                initialCommisioning: this.props.sensors[i][8],
+                serialNumber: this.props.sensors[i][10],
+                measuringInterval: this.props.sensors[i][0],
+                sendInterval: this.props.sensors[i][1],
+                sendOnChange: this.props.sensors[i][11],
+                batteryLevel: this.props.sensors[i][4],
+                plant:  this.props.sensors[i][2]
+            }
         }
+    }
+
+    getURLParameterByName(name) {
+        let url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        let regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
 
         componentDidMount()
@@ -62,37 +90,77 @@ export default class SensorAdd extends Component {
             event.preventDefault();
 
             try {
-                API.post("strawberry", "/createSensor", {
-                    headers: {},
-                    body:
-                        {
-                            sensor_ID: this.state.sensor_ID,
-                            systemData: {
-                                make: this.state.make,
-                                modelDesignation: this.state.modelDesignation,
-                                firmwareVersion: this.state.firmwareVersion,
-                                initialCommisioning: this.state.initialCommisioning,
-                                serialNumber: this.state.serialNumber
-                            },
-                            configData:{
-                                measuringInterval: this.state.measuringInterval,
-                                sendInterval: this.state.sendInterval,
-                                sendOnChange: this.state.sendOnChange,
-                                batteryLevel: this.state.batteryLevel
+                if(this.state.editor){
+                    API.post("strawberry", "/createSensor", {
+                        headers: {},
+                        body:
+                            {
+                                sensor_ID: this.state.sensor_ID,
+                                systemData: {
+                                    make: this.state.make,
+                                    modelDesignation: this.state.modelDesignation,
+                                    firmwareVersion: this.state.firmwareVersion,
+                                    initialCommisioning: this.state.initialCommisioning,
+                                    serialNumber: this.state.serialNumber
+                                },
+                                configData:{
+                                    measuringInterval: this.state.measuringInterval,
+                                    sendInterval: this.state.sendInterval,
+                                    sendOnChange: this.state.sendOnChange,
+                                    batteryLevel: this.state.batteryLevel
+                                }
                             }
-                        }
-                }).then(response => {
-                    //console.log("success: "+ response);
-                    this.props.renewGlobalPlantData();
+                    }).then(response => {
+                        //console.log("success: "+ response);
+                        this.props.renewGlobalPlantData();
 
-                    this.props.history.push("/sensorOverview");
-                }).catch(error => {
-                    console.log(error.response);
-                });
+                        this.props.history.push("/sensorOverview");
+                    }).catch(error => {
+                        console.log(error.response);
+                    });
+                }else {
+                    API.post("strawberry", "/updateSensorConfig", {
+                        headers: {},
+                        body:
+                            {
+                                sensor_ID: this.state.sensor_ID,
+                                configData:{
+                                    measuringInterval: this.state.measuringInterval,
+                                    sendInterval: this.state.sendInterval,
+                                    sendOnChange: this.state.sendOnChange,
+                                    batteryLevel: this.state.batteryLevel
+                                }
+                            }
+                    }).then(response => {
+                        //console.log("success: "+ response);
+                        this.props.renewGlobalPlantData();
+
+                        this.props.history.push("/sensorOverview");
+                    }).catch(error => {
+                        console.log(error.response);
+                    });
+                }
+
 
             } catch (e) {
                 alert(e.message);
             }
+        };
+
+        handleDeleteSensor = async event => {
+            API.post("strawberry", "/deleteSensor", {
+                headers: {},
+                body:
+                    {
+                        sensor_ID: this.state.sensor_ID
+                    }
+            }).then(response => {
+                //console.log("success: "+ response);
+                this.props.renewGlobalPlantData();
+                this.props.history.push("/sensorOverview");
+            }).catch(error => {
+                console.log(error.response);
+            });
         };
 
         render()
@@ -107,7 +175,7 @@ export default class SensorAdd extends Component {
                     <Container>
                         <Grid>
                             <Grid.Column width={10} stretched>
-                                <h1>Neuer Sensor</h1>
+                                <h1>{this.state.editor?"Sensor Bearbeiten":"Neuer Sensor"}</h1>
                                 <Form onSubmit={this.handleSubmit}>
                                     <Form.Field>
                                         <label>SensorID</label>
@@ -116,6 +184,7 @@ export default class SensorAdd extends Component {
                                             autoFocus
                                             type={"text"}
                                             value={this.state.sensor_ID}
+                                            disabled={this.state.editor}
                                             onChange={this.handleChange}
                                         />
                                     </Form.Field>
@@ -125,6 +194,7 @@ export default class SensorAdd extends Component {
                                             id={"serialNumber"}
                                             value={this.state.serialNumber}
                                             onChange={this.handleChange}
+                                            disabled={this.state.editor}
                                             type={"number"}
                                         />
                                     </Form.Field>
@@ -172,9 +242,15 @@ export default class SensorAdd extends Component {
                                     <Button
                                         disabled={!this.validateForm()}
                                         type="submit"
-                                    >
-                                        Erstellen
+                                    >{this.state.editor?"Ändern":"Erstellen"}
                                     </Button>
+                                    {this.state.editor?<Button
+                                        disabled={!(this.state.plant === undefined)}
+                                        onClick={this.handleDeleteSensor}
+                                        color={"red"}
+                                    >Löschen
+                                    </Button>:""}
+
                                 </Form>
                             </Grid.Column>
                         </Grid>
