@@ -6,19 +6,17 @@ import { Auth } from "aws-amplify";
 import NavigationBar from "./components/NavigationBar";
 import {API} from "aws-amplify/lib/index";
 import {Loader} from "semantic-ui-react";
-
-
+import 'react-circular-progressbar/dist/styles.css';
 class App extends Component{
     constructor(props) {
         super(props);
-
         this.state = {
             isAuthenticated: false,
             isAuthenticating: true,
+            loaded:false,
         };
 
     }
-
     async componentDidMount() {
         try {
             if (await Auth.currentSession()) {
@@ -34,10 +32,12 @@ class App extends Component{
             /*if (e !== 'No current user') {
                 alert(e);
             }*/
+            this.setState({loaded:true});
             if(this.props.location.pathname !== "/register") {
                 this.props.history.push("/login");
             }
         }
+
         this.setState({ isAuthenticating: false,
                         plants:[],
                         sensors: []
@@ -100,16 +100,19 @@ class App extends Component{
             }
             for(let j=0; j< sensors.length;j++){
                 sensorArray.push([
-                                sensors[j].configData.measuringInterval, sensors[j].configData.sendInterval,
-                                sensors[j].configData.plant_ID,sensors[j].sensor_ID,sensors[j].configData.batteryLevel,
-                                sensors[j].sensor_ID,  sensors[j].systemData.modelDesignation, sensors[j].systemData.firmwareVersion,
-                                sensors[j].systemData.initialCommisioning, sensors[j].systemData.make, sensors[j].systemData.serialNumber
+                 /*0*/          sensors[j].configData.measuringInterval, sensors[j].configData.sendInterval,
+                 /*2*/          sensors[j].configData.plant_ID,sensors[j].sensor_ID,sensors[j].configData.batteryLevel,
+                 /*5*/          sensors[j].sensor_ID,  sensors[j].systemData.modelDesignation, sensors[j].systemData.firmwareVersion,
+                 /*8*/          sensors[j].systemData.initialCommisioning, sensors[j].systemData.make, sensors[j].systemData.serialNumber,
+                                sensors[j].configData.sendOnChange
                                 ]);
             }
             this.setState({
                 plants:outputArray,
-                sensors:sensorArray
+                sensors:sensorArray,
+                loaded:true
             });
+            console.log(this.state.loaded);
             //[[reply[0].plantData.sortreply[0].plantData.plantationTime,reply[0].plantData.initialTimePlant,reply[0].plantData.local_position_ID,reply[0].plantData.location_ID],reply[1],reply[2]]});
             //this.setState({answer: reply});
             // Plant(strawberry,reply[0].plantData.sort,0,reply[0].plantData.plantationTime,reply[0].plantData.initialTimePlant,reply[0].plantData.local_position_ID,reply[0].plantData.location_ID)
@@ -117,7 +120,6 @@ class App extends Component{
             alert(e);
         }
     };
-
 
     render() {
 
@@ -135,11 +137,12 @@ class App extends Component{
 
         return (
             <div>
-                {(!this.state.isAuthenticating && this.state.sensors && this.state.plants)?
+                {(!this.state.isAuthenticating && this.state.loaded)?
                 <div>
                     <div style={{height:"100%"}}><NavigationBar childProps={childProps} /></div>
                     <Routes childProps={childProps}/>
-                </div>:<Loader inverted>Loading</Loader>
+                </div>:
+                    <div><Loader inverted>Loading</Loader></div>
                 }
             </div>
         );

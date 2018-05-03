@@ -25,7 +25,7 @@ export default class Login extends Component {
                 perfectWater: 500,
                 waterScopeGreen: 200,
                 waterScopeYellow: 150,
-                sensorOptions: "",
+                sensorOptions: [],
                 locationOptions: [{
                     text: 'Stuttgart',
                     value: '2637829',
@@ -51,7 +51,7 @@ export default class Login extends Component {
                 perfectWater: this.props.plants[id][12],
                 waterScopeGreen: this.props.plants[id][13],
                 waterScopeYellow: this.props.plants[id][14],
-                sensorOptions: "",
+                sensorOptions: [],
                 locationOptions: [{
                     text: 'Stuttgart',
                     value: '2637829'
@@ -210,12 +210,33 @@ export default class Login extends Component {
         }
     };
 
+    handleDeletePlant = async event => {
+        API.post("strawberry", "/deletePlant", {
+            headers: {},
+            body:
+                {
+                    plant_ID: this.state.dbID
+                }
+        }).then(response => {
+            //console.log("success: "+ response);
+            this.props.renewGlobalPlantData();
+            this.props.history.push("/");
+        }).catch(error => {
+            console.log(error.response);
+        });
+    };
+
     render() {
         var seite;
         if (window.innerWidth>="900"){
             seite= "seite1"}
         else{
-            seite="seite2"}
+            seite="seite2"
+        }
+        let defaultOptionSensor="";
+        if(this.state.sensorOptions[0] !== undefined){
+            defaultOptionSensor = this.state.sensorOptions[this.state.sensorOptions.length -1].value;
+        }
         return (
             <div id={seite}>
                 <Container >
@@ -261,12 +282,13 @@ export default class Login extends Component {
                             />
                         </Form.Field>
                         <Form.Field>
-                            <label>Senor</label>
-                            <Dropdown placeholder='Select Sensor' fluid selection options={this.state.sensorOptions} onChange={this.handleChange}/>
+                            <label>Sensor</label>
+                                <Dropdown placeholder='Select Sensor' fluid selection options={this.state.sensorOptions}
+                                          defaultValue={this.state.sensorID}   onChange={this.handleChange}/>
                         </Form.Field>
                         <Form.Field>
                             <label>Standort</label>
-                            <Dropdown placeholder='Standort auswählen' fluid selection options={this.state.locationOptions} onChange={this.handleChange}/>
+                            <Dropdown placeholder='Standort auswählen' fluid selection options={this.state.locationOptions} defaultValue={this.state.locationOptions[0].value} onChange={this.handleChange}/>
                         </Form.Field>
                         <Form.Field>
                             <label>lokaler Standort</label>
@@ -362,6 +384,11 @@ export default class Login extends Component {
                         >
                             {this.state.edit === null ? "Erstellen" : "Änderung speichern" }
                         </Button>
+                        {this.state.edit !== null?<Button
+                            onClick={this.handleDeletePlant}
+                            color={"red"}
+                        >Löschen
+                        </Button>:""}
                     </Form>
                     </Grid.Column>
                     </Grid>

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Menu } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import "./style_menu_and_seite.css";
+import CircularProgressbar from 'react-circular-progressbar';
 import logo from "../img/Strawberry_Saver.svg";
 
 
@@ -15,15 +16,33 @@ export default class NavigationBar extends  Component{
                 x.style.display = "block";
             }
         }, true);
-        this.state={activeItem:""};
+        this.state={activeItem:"",timeToRefresh:20, timePassed:0};
+        this.interval = setInterval(this.tick, 1000);
+    }
+    tick=()=> {
+        if(this.state.timePassed===this.state.timeToRefresh-1){
+            this.setState({timePassed:0});
+            this.props.childProps.renewGlobalPlantData();
+        }
+        else this.setState({timePassed: this.state.timePassed + 1});
+    };
+    getParameterByName(name) {
+        let url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        let regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
     componentWillReceiveProps(nextProps){
 
             switch(nextProps.childProps.pathname){
 
                 case "/plantDetail":
-                    if(nextProps.childProps.plants!="")this.setState({ activeItem: nextProps.childProps.plants[0][0] });
-                    else this.setState({ activeItem: "uebersicht" });
+
+                    this.setState({ activeItem: "uebersicht" });
+
                     break;
                 case "/":
                     this.setState({activeItem: "uebersicht"});
@@ -48,6 +67,9 @@ export default class NavigationBar extends  Component{
                     break;
                 case "sensoroverview":
                     this.setState({activeItem:"sensoroverview"});
+                    break;
+                case "/register":
+                    this.setState({ activeItem:"register"});
                     break;
                 default:
                     this.setState({ activeItem:"impressum"});
@@ -152,6 +174,9 @@ export default class NavigationBar extends  Component{
                             </Menu.Item>
                         </Menu>
                     </div>
+
+                    <div style={{position:"fixed",zIndex:"2",right:"2%",bottom:"8%",height:"5%",width:"5%"}}><CircularProgressbar percentage={this.state.timePassed*5} textForPercentage={(pct) => `${pct/5}`} /></div>
+
                     </div>
                 :   <div>
                         <div className="topnav" id="myTopnav">

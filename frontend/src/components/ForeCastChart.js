@@ -18,7 +18,7 @@ class LineChart extends Component{
         if(this.props.type==="humidity"){
             this.state={
                 chartData:{
-                    labels:[(time.getUTCHours()%24)+":00",(time.getUTCHours()+3)%24+":00",(time.getUTCHours()+6)%24+":00",(time.getUTCHours()+9)%24+":00",(time.getUTCHours()+12)%24+":00"],
+                    labels:[(time.getHours()%24)+":00",(time.getHours()+3)%24+":00",(time.getHours()+6)%24+":00",(time.getHours()+9)%24+":00",(time.getHours()+12)%24+":00"],
                     datasets:[
                         {
                             data: [
@@ -60,7 +60,7 @@ class LineChart extends Component{
         else if(this.props.type==="temp"){
             this.state={
                 chartData:{
-                    labels:[(time.getUTCHours())%24+":00",(time.getUTCHours()+3)%24+":00",(time.getUTCHours()+6)%24+":00",(time.getUTCHours()+9)%24+":00",(time.getUTCHours()+12)%24+":00"],
+                    labels:[(time.getHours())%24+":00",(time.getHours()+3)%24+":00",(time.getHours()+6)%24+":00",(time.getHours()+9)%24+":00",(time.getHours()+12)%24+":00"],
                     datasets:[
                         {
                             data: [
@@ -101,7 +101,7 @@ class LineChart extends Component{
         else if(this.props.type==="rain"){
             this.state={
                 chartData:{
-                    labels:[(time.getUTCHours()-1)+":00",(time.getUTCHours()+2)+":00",(time.getUTCHours()+5)+":00",(time.getUTCHours()+8)+":00",(time.getUTCHours()+11)+":00"],
+                    labels:[(time.getHours())%24+":00",(time.getHours()+3)%24+":00",(time.getHours()+6)%24+":00",(time.getHours()+9)%24+":00",(time.getHours()+12)%24+":00"],
                     datasets:[
                         {
                             data: [
