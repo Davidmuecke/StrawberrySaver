@@ -65,7 +65,7 @@ export default class NavigationBar extends  Component{
                 case "/user":
                     this.setState({ activeItem:"user"});
                     break;
-                case "sensoroverview":
+                case "/sensoroverview":
                     this.setState({activeItem:"sensoroverview"});
                     break;
 
