@@ -179,6 +179,7 @@ export default class Login extends Component {
                     body:
                         {
                             plant_ID: this.state.dbID,
+                            lastSensor: this.props.plants[this.state.edit][9],
                             plantData: {
                                 nickname: this.state.name,
                                 pictureURL: this.state.pictureURL,
@@ -227,7 +228,7 @@ export default class Login extends Component {
     };
 
     render() {
-        var seite;
+        let seite;
         if (window.innerWidth>="900"){
             seite= "seite1"}
         else{
@@ -284,7 +285,7 @@ export default class Login extends Component {
                         <Form.Field>
                             <label>Sensor</label>
                                 <Dropdown placeholder='Select Sensor' fluid selection options={this.state.sensorOptions}
-                                          defaultValue={this.state.sensorID}   onChange={this.handleChange}/>
+                                          defaultValue={this.state.sensorID}onChange={this.handleChange}/>
                         </Form.Field>
                         <Form.Field>
                             <label>Standort</label>
