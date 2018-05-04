@@ -35,7 +35,7 @@ export default class Impressum extends Component{
                         <h3 style={{paddingTop: "20px"}}>Strawberry Saver</h3>
                         <text>Web Engineering Projekt<br/></text>
                         <text>TINF16B Enrico Keil 4.Semester<br/></text>
-                        <text>Copyright by David, Niklas, Jonathan und Rahel<br/></text>
+                        <text>Copyright by David Koch, Niklas Jäger, Jonathan Weyl und Rahel Illi<br/></text>
                     </div>
                 </div>
             </div>
