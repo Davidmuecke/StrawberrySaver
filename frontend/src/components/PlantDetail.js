@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import ThermometerChart from "./ThermometerChart";
 import WaterLevelChart from "./WaterLevelChart";
 import ForecastMenu from "./ForecastMenu";
-import { Button,Divider,Container,Grid,Segment,Header } from "semantic-ui-react";
+import { Button,Container,Grid,Segment} from "semantic-ui-react";
 import {Link} from "react-router-dom";
 
 
@@ -43,7 +43,7 @@ export default class PlantDetail extends Component{
             }
         }
 
-        console.log(this.state.localposition);
+        //console.log(this.state.localposition);
     }
     componentWillReceiveProps(nextProps){
         let pos= nextProps.plants[this.getParameterByName(("name"))][11];
@@ -72,7 +72,7 @@ export default class PlantDetail extends Component{
     }
      getParameterByName(name) {
         let url = window.location.href;
-        name = name.replace(/[\[\]]/g, "\\$&");
+        name = name.replace(/[[\]]/g, "\\$&");
         let regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
             results = regex.exec(url);
         if (!results) return null;
@@ -97,7 +97,9 @@ export default class PlantDetail extends Component{
                                 <Grid.Column >
                                     <h2>{this.state.plants[this.getParameterByName(("name"))][10]}</h2>
                                     <h4> Art: {this.state.plants[this.getParameterByName(("name"))][0]}</h4>
-                                    <img src={this.state.plants[this.getParameterByName(("name"))][8]} style={{float:"right",width:"30%",height:"100%"}}/>
+                                    <img src={this.state.plants[this.getParameterByName(("name"))][8]}
+                                         alt={"Bild von "+this.state.plants[this.getParameterByName(("name"))][10] }
+                                         style={{float:"right",width:"30%",height:"100%"}}/>
                                     <h4> Einpflanzungszeitpunkt: {this.state.date.toDateString() }</h4>
                                     <h4>Ort: {this.state.plants[this.getParameterByName(("name"))][3]}</h4>
                                     <h4>Lokale Position: {this.state.localposition}</h4>

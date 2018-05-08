@@ -34,7 +34,7 @@ export default class NavigationBar extends  Component{
     };
     getParameterByName(name) {
         let url = window.location.href;
-        name = name.replace(/[\[\]]/g, "\\$&");
+        name = name.replace(/[[\]]/g, "\\$&");
         let regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
             results = regex.exec(url);
         if (!results) return null;
@@ -111,18 +111,18 @@ export default class NavigationBar extends  Component{
     };
 
     render(){
+        const { activeItem } = this.state;
         let rows=[];
         for(let i=0;i<this.props.childProps.plants.length;i++)
         {
-            rows.push(<Menu.Item as={Link} to={"/plantDetail?name="+i} name={this.props.childProps.plants[i][10]} active={activeItem === this.props.childProps.plants[i][0]} onClick={this.handleItemClick}/>);
+            rows.push(<Menu.Item as={Link} to={"/plantDetail?name="+i} key={this.props.childProps.plants[i][15]} name={this.props.childProps.plants[i][10]} active={activeItem === this.props.childProps.plants[i][0]} onClick={this.handleItemClick}/>);
         }
-        const { activeItem } = this.state;
         return (
             <div>
                 {this.props.childProps.isAuthenticated ?
                     <div>
                         <div className="topnav" id="myTopnav">
-                            <Menu horizontal>
+                            <Menu>
                                     <Menu.Header as={Menu.Item} id="menuheader_top" className="menuheader_top">
                                         <p>StrawberrySaver</p>
                                     </Menu.Header>
@@ -146,7 +146,7 @@ export default class NavigationBar extends  Component{
                         <Menu vertical>
                             <Menu.Item>
                                 <Menu.Item>
-                                    <img src={logo} className="logo"/>
+                                    <img src={logo} alt={"StrawberrySaver Logo"} className="logo"/>
                                 </Menu.Item>
                                 <Menu.Item as={Link} to="/" name='uebersicht' active={activeItem === 'uebersicht'} onClick={this.handleItemClick}>
                                     <strong>Pflanzen</strong>

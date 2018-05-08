@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Line} from 'react-chartjs-2';
-import { Tab } from "semantic-ui-react";
+
 
 function getURL(url){
     let httpreq = new XMLHttpRequest();
@@ -13,8 +13,8 @@ class LineChart extends Component{
 
     constructor(props){
         super(props);
-       var unixtime =getURL("http://api.openweathermap.org/data/2.5/forecast?id="+this.props.cityID+"&appid="+this.props.appid)['list'][0]['dt'];
-       var time =new Date(unixtime*1000);
+       let unixtime =getURL("http://api.openweathermap.org/data/2.5/forecast?id="+this.props.cityID+"&appid="+this.props.appid)['list'][0]['dt'];
+       let time =new Date(unixtime*1000);
         if(this.props.type==="humidity"){
             this.state={
                 chartData:{

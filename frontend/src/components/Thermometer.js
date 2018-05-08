@@ -33,7 +33,7 @@ constructor(props){
                 <div style={{zIndex:"3",display:"table",width:"100%",height:"30%",bottom: "0px", position:"absolute"}}>
                     <p style={{display: "table-cell",color:"white",fontSize:"20px",textAlign:"center",fontWeight:"bold",verticalAlign:"middle",paddingLeft:"25%",paddingTop:"50%"}}>{this.state.temp+"°C"}</p>
                 </div>
-            <img src={thermometermaske} style={{zIndex:"2",width:"100%",height:"100%",position:"absolute"}}/>
+            <img src={thermometermaske} alt={"Thermometer"} style={{zIndex:"2",width:"100%",height:"100%",position:"absolute"}}/>
 
             </div>
 

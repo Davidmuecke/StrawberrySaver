@@ -62,7 +62,7 @@ export default class Login extends Component {
 
     getURLParameterByName(name) {
         let url = window.location.href;
-        name = name.replace(/[\[\]]/g, "\\$&");
+        name = name.replace(/[[\]]/g, "\\$&");
         let regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
             results = regex.exec(url);
         if (!results) return null;
@@ -131,7 +131,7 @@ export default class Login extends Component {
             });
         }
 
-    }
+    };
     /**
      * Submit event
      */
@@ -218,8 +218,7 @@ export default class Login extends Component {
                 {
                     plant_ID: this.state.dbID
                 }
-        }).then(response => {
-            //console.log("success: "+ response);
+        }).then( () => {
             this.props.renewGlobalPlantData();
             this.props.history.push("/");
         }).catch(error => {
@@ -228,18 +227,15 @@ export default class Login extends Component {
     };
 
     render() {
-        let seite;
+        let page;
         if (window.innerWidth>="900"){
-            seite= "seite1"}
+            page= "seite1"}
         else{
-            seite="seite2"
+            page="seite2"
         }
-        let defaultOptionSensor="";
-        if(this.state.sensorOptions[0] !== undefined){
-            defaultOptionSensor = this.state.sensorOptions[this.state.sensorOptions.length -1].value;
-        }
+       
         return (
-            <div id={seite}>
+            <div id={page}>
                 <Container >
                     <Grid>
                     <Grid.Column width={10} stretched>
@@ -285,7 +281,7 @@ export default class Login extends Component {
                         <Form.Field>
                             <label>Sensor</label>
                                 <Dropdown placeholder='Select Sensor' fluid selection options={this.state.sensorOptions}
-                                          defaultValue={this.state.sensorID}onChange={this.handleChange}/>
+                                          defaultValue={this.state.sensorID} onChange={this.handleChange}/>
                         </Form.Field>
                         <Form.Field>
                             <label>Standort</label>

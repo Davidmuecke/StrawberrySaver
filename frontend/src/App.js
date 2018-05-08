@@ -21,9 +21,6 @@ class App extends Component{
         try {
             if (await Auth.currentSession()) {
                 this.handleSubmit();
-                console.log(Auth.currentSession());
-                let user = await Auth.currentAuthenticatedUser();
-                let attributes = await  Auth.userAttributes(user);
                 this.userHasAuthenticated(true);
             }
         }
@@ -59,7 +56,7 @@ class App extends Component{
         this.props.history.push("/login");
     };
 
-    getPlantsFromAPI(note) {
+    getPlantsFromAPI() {
         /* let myInit = { // OPTIONAL
              headers: {}, // OPTIONAL
              response: true // OPTIONAL (return entire response object instead of response.data)
@@ -71,7 +68,7 @@ class App extends Component{
         });
     };
 
-    getSensorsFromAPI(note) {
+    getSensorsFromAPI() {
 
         return API.post("strawberry", "/getSensorsForUser", {
             headers:{} ,
@@ -79,6 +76,9 @@ class App extends Component{
         });
     };
 
+    /**
+     * get global plant and sensor data from API
+     */
     handleSubmit = async () => {
 
         try {
@@ -112,10 +112,6 @@ class App extends Component{
                 sensors:sensorArray,
                 loaded:true
             });
-            console.log(this.state.loaded);
-            //[[reply[0].plantData.sortreply[0].plantData.plantationTime,reply[0].plantData.initialTimePlant,reply[0].plantData.local_position_ID,reply[0].plantData.location_ID],reply[1],reply[2]]});
-            //this.setState({answer: reply});
-            // Plant(strawberry,reply[0].plantData.sort,0,reply[0].plantData.plantationTime,reply[0].plantData.initialTimePlant,reply[0].plantData.local_position_ID,reply[0].plantData.location_ID)
         } catch (e) {
             alert(e);
         }

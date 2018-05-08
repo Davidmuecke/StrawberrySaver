@@ -1,13 +1,6 @@
 import React, {Component} from 'react';
 import Thermometer from "./Thermometer";
 
-function getURL(url) {
-    let httpreq = new XMLHttpRequest();
-    httpreq.open("GET", url, false);
-    httpreq.send(null);
-    return JSON.parse(httpreq.responseText);
-}
-
 export default class ThermometerChart extends Component {
     constructor(props){
         super(props);
@@ -61,8 +54,8 @@ export default class ThermometerChart extends Component {
                 <h2>Temperatur Pflanze</h2>
 
                 <div style={{float:"left",width:"100px",height:"305px"}}>
-                <Thermometer current= {parseInt(this.state.liveTemp)} greenBorderUp={parseInt(this.state.temp)+parseInt(this.state.scopeGreen)} greenBorderDown={parseInt(this.state.temp)-this.state.scopeGreen}
-                            yellowBorderUp={parseInt(this.state.temp)+parseInt(this.state.scopeGreen) + parseInt(this.state.scopeYellow)} yellowBorderDown={parseInt(this.state.temp)-this.state.scopeGreen - this.state.scopeYellow} barColor={this.props.barColor}/>
+                <Thermometer current= {parseInt(this.state.liveTemp,10)} greenBorderUp={parseInt(this.state.temp,10)+parseInt(this.state.scopeGreen,10)} greenBorderDown={parseInt(this.state.temp,10)-this.state.scopeGreen}
+                            yellowBorderUp={parseInt(this.state.temp,10)+parseInt(this.state.scopeGreen,10) + parseInt(this.state.scopeYellow,10)} yellowBorderDown={parseInt(this.state.temp,10)-this.state.scopeGreen - this.state.scopeYellow} barColor={this.props.barColor}/>
                 </div>
                 <div>
                     <ul style={{padding:"0px,0px,0px,0px",margin:"0px,0px,0px,0px",listStyle:"none"}}>

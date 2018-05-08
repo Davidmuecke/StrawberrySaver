@@ -1,12 +1,6 @@
 import React, {Component} from 'react';
 import WaterLevel from "./WaterLevel";
 
-function getURL(url) {
-    let httpreq = new XMLHttpRequest();
-    httpreq.open("GET", url, false);
-    httpreq.send(null);
-    return JSON.parse(httpreq.responseText);
-}
 
 export default class WaterLevelChart extends Component {
     constructor(props){
@@ -62,8 +56,8 @@ export default class WaterLevelChart extends Component {
                 <h2>Wasserstand Pflanze</h2>
 
                 <div style={{float:"left",width:"100px",height:"305px"}}>
-                    <WaterLevel current={parseInt(this.state.liveWater)} greenBorderUp={parseInt(this.state.water)+parseInt(this.state.scopeGreen)} greenBorderDown={parseInt(this.state.water)-this.state.scopeGreen}
-                                yellowBorderUp={parseInt(this.state.water)+parseInt(this.state.scopeGreen) + parseInt(this.state.scopeYellow)} yellowBorderDown={parseInt(this.state.water)-this.state.scopeGreen - this.state.scopeYellow} barColor={this.props.barColor}/>
+                    <WaterLevel current={parseInt(this.state.liveWater,10)} greenBorderUp={parseInt(this.state.water,10)+parseInt(this.state.scopeGreen,10)} greenBorderDown={parseInt(this.state.water,10)-this.state.scopeGreen}
+                                yellowBorderUp={parseInt(this.state.water,10)+parseInt(this.state.scopeGreen,10) + parseInt(this.state.scopeYellow,10)} yellowBorderDown={parseInt(this.state.water,10)-this.state.scopeGreen - this.state.scopeYellow} barColor={this.props.barColor}/>
                 </div>
                 <div style={{height:"305px"}}>
                     <ul style={{padding:"0px,0px,0px,0px",margin:"0px,0px,0px,0px",listStyle:"none",height:"100%"}}>

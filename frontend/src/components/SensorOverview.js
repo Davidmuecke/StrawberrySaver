@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Table, Button} from 'semantic-ui-react';
 import {Link} from "react-router-dom";
-import {API} from "aws-amplify/lib/index";
+
 
 export default class User extends Component {
     constructor(props) {
@@ -18,39 +18,13 @@ export default class User extends Component {
             sensors: nextProps.sensors,
         });
     }
-
-
-  /*componentDidMount() {
-        //this.accessSensors();
-    }
-
-    async accessSensors() {
-        let sensors = await this.getSensors();
-        console.log(sensors);
-        this.setState({
-            sensors: JSON.stringify(sensors)
-        });
-    }
-
-    getSensors() {
-        /* let myInit = { // OPTIONAL
-             headers: {}, // OPTIONAL
-             response: true // OPTIONAL (return entire response object instead of response.data)
-         }
-         return API.get("strawberry","/hello-world",myInit )*/
-        /* return API.post("strawberry", "/getSensorsForUser", {
-            headers:{} ,
-            body: {}
-        });
-    }
-*/
-
+    
 
     render() {
         let rows =[];
         for(let i=0; i< this.state.sensors.length; i++){
             rows.push(
-                <Table.Row>
+                <Table.Row key={this.state.sensors[i][5]}>
                     <Table.Cell>{this.state.sensors[i][5]}</Table.Cell>
                     <Table.Cell>{this.state.sensors[i][6]}</Table.Cell>
                     <Table.Cell>{this.state.sensors[i][10]}</Table.Cell>
@@ -58,13 +32,13 @@ export default class User extends Component {
                     <Table.Cell><Button as={Link} to={"/sensorEdit?id="+i} color="blue" onClick={this.handleClick} >Bearbeiten</Button></Table.Cell>
                 </Table.Row>);
         }
-        let seite;
+        let page;
         if (window.innerWidth>="900"){
-            seite= "seite1"}
+            page= "seite1"}
         else{
-            seite="seite2"}
+            page="seite2"}
         return (
-            <div id={seite}>
+            <div id={page}>
                 <div>
                     <h1>Sensoren</h1>
                     <Table celled>

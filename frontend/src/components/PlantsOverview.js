@@ -3,7 +3,6 @@ import "./PlantsOverview.css";
 import {Grid,
         Segment,
         Button,
-        Header,
         Container
         } from "semantic-ui-react";
 import { Link } from "react-router-dom";
@@ -17,19 +16,19 @@ export default class PlantsOverview extends Component{
     }
     render(){
 
-        var rows=[];
+        let rows=[];
         for(let i=0;i<this.props.plants.length;i++)
         {
             rows.push(Plant(this.state.plants[i][8],this.state.plants[i][0], i,Math.round(this.state.plants[i][16]/10.24*100)/100,this.state.plants[i][2],this.state.plants[i][3],this.state.plants[i][3],1,this.state.plants[i][4]+"°",this.state.plants[i][10]));
         }
 
-        var seite;
+        let page;
         if (window.innerWidth>="900"){
-            seite= "seite1"}
+            page= "seite1"}
         else{
-            seite="seite2"}
+            page="seite2"}
         return (
-            <div id={seite}>
+            <div id={page}>
                 <Container fluid={true}>
                 <Grid>
                     <Grid.Column width={16} stretched>
@@ -50,12 +49,12 @@ const Plant = (image,sorte, id, wasserstand,erstellungszeitpunkt,geographischerO
 {
     Component.handleClick = (e) => {};
     return (
-            <Grid.Column width={8} stretched >
+            <Grid.Column width={8} key={id} stretched >
                 <Segment>
                     <h2> Name: {nickname}</h2>
                     <h4> Art: {sorte}</h4>
                     <h4>Ort: {geographischerOrt}</h4>
-                    <img src={image} style={{float:"right",width:"30%",height:"100%"}}/>
+                    <img src={image} alt={"Bild von "+nickname} style={{float:"right",width:"30%",height:"100%"}}/>
                     <h4> Wasserstand: {wasserstand +" %"}</h4>
                     <h4>Temperatur: {temperaturwert}</h4>
                     <br />

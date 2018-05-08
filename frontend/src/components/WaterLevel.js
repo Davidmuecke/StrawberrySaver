@@ -33,7 +33,7 @@ export default class WaterLevel extends Component{
                 <div style={{zIndex:"3",display:"table",width:"100%",height:"30%",bottom: "0px", position:"absolute"}}>
                     <p style={{display: "table-cell",color:"white",fontSize:"10px",textAlign:"center",fontWeight:"bold",verticalAlign:"middle",paddingLeft:"25%",paddingTop:"50%"}}>{Math.round((100-this.state.current)*100)/100+"%"}</p>
                 </div>
-                <img src={thermometermaske} style={{zIndex:"2",width:"100%",height:"100%",position:"absolute"}}/>
+                <img src={thermometermaske} alt={"Hintergrund der Wasserstandsanzeige"} style={{zIndex:"2",width:"100%",height:"100%",position:"absolute"}}/>
 
             </div>
 

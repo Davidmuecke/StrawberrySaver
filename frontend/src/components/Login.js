@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./Login.css";
-import { Button, Form,Container,Grid } from 'semantic-ui-react'
+import { Button, Form,Grid } from 'semantic-ui-react'
 import { Auth } from "aws-amplify";
 import {API} from "aws-amplify/lib/index";
 
@@ -37,7 +37,7 @@ export default class Login extends Component {
         this.setState({
             [event.target.id]: event.target.value
         });
-    }
+    };
 
     handleSubmit = async event => {
         event.preventDefault();
@@ -46,22 +46,22 @@ export default class Login extends Component {
             await Auth.signIn(this.state.email, this.state.password).then(x => console.log(x));
             console.log(Auth.currentSession());
             this.props.userHasAuthenticated(true);
-            let x = await this.integrateUser();
+            await this.integrateUser();
             this.props.renewGlobalPlantData();
             this.props.history.push("/");
         } catch (e) {
             alert(e.message);
         }
-    }
+    };
 
     render() {
-        var seite;
+        let page;
         if (window.innerWidth>="900"){
-            seite= "seite2"}
+            page= "seite2"}
         else{
-            seite="seite2"}
+            page="seite2"}
         return (
-            <div id={seite}>
+            <div id={page}>
                 <div className="login">
                         <Grid>
                             <Grid.Column centered>
