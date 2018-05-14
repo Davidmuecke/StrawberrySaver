@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import "./Login.css";
-import { Button, Form,Grid } from 'semantic-ui-react'
-import { Auth } from "aws-amplify";
+import {Button, Form, Grid} from 'semantic-ui-react'
+import {Auth} from "aws-amplify";
 import {API} from "aws-amplify/lib/index";
 
 export default class Login extends Component {
@@ -12,7 +12,7 @@ export default class Login extends Component {
             email: "",
             password: ""
         };
-        if(this.props.isAuthenticated === true){
+        if (this.props.isAuthenticated === true) {
             this.props.history.push("/");
         }
     }
@@ -24,7 +24,7 @@ export default class Login extends Component {
          }
          return API.get("strawberry","/hello-world",myInit ) */
         return API.post("strawberry", "/checkUserData", {
-            headers:{} ,
+            headers: {},
             body: {}
         });
     }
@@ -43,8 +43,8 @@ export default class Login extends Component {
         event.preventDefault();
 
         try {
-            await Auth.signIn(this.state.email, this.state.password).then(x => console.log(x));
-            console.log(Auth.currentSession());
+            await Auth.signIn(this.state.email, this.state.password).then(() => console.log());
+            //console.log(Auth.currentSession());
             this.props.userHasAuthenticated(true);
             await this.integrateUser();
             this.props.renewGlobalPlantData();
@@ -56,51 +56,55 @@ export default class Login extends Component {
 
     render() {
         let page;
-        if (window.innerWidth>="900"){
-            page= "seite2"}
-        else{
-            page="seite2"}
+        if (window.innerWidth >= "900") {
+            page = "seite2"
+        }
+        else {
+            page = "seite2"
+        }
         return (
             <div id={page}>
                 <div className="login">
-                        <Grid>
-                            <Grid.Column centered>
+                    <Grid>
+                        <Grid.Column>
                             <Grid.Row>
-                    <h1>Anmeldung</h1>
+                                <h1>Anmeldung</h1>
                             </Grid.Row>
                             <Grid.Row>
-                    <Form onSubmit={this.handleSubmit}>
-                        <Form.Field >
-                            <label>Email</label>
-                            <input
-                                id={"email"}
-                                autoFocus
-                                type={"email"}
-                                value={this.state.email}
-                                onChange={this.handleChange}
-                                className="login_box"
-                            />
-                        </Form.Field>
-                        <Form.Field>
-                            <label>Password</label>
-                            <input
-                                id={"password"}
-                                value={this.state.password}
-                                onChange={this.handleChange}
-                                type={"password"}
-                                className="login_box"
-                            />
-                        </Form.Field>
-                        <Button
-                            disabled={!this.validateForm()}
-                            type="submit"
-                        >
-                            Login
-                        </Button>
-                    </Form>
+                                <Form onSubmit={this.handleSubmit}>
+                                    <Form.Field>
+                                        <label>Email</label>
+                                        <input
+                                            id={"email"}
+                                            autoFocus
+                                            type={"email"}
+                                            value={this.state.email}
+                                            onChange={this.handleChange}
+                                            autoComplete={"email"}
+                                            className="login_box"
+                                        />
+                                    </Form.Field>
+                                    <Form.Field>
+                                        <label>Password</label>
+                                        <input
+                                            id={"password"}
+                                            value={this.state.password}
+                                            onChange={this.handleChange}
+                                            autoComplete={"password"}
+                                            type={"password"}
+                                            className="login_box"
+                                        />
+                                    </Form.Field>
+                                    <Button
+                                        disabled={!this.validateForm()}
+                                        type="submit"
+                                    >
+                                        Login
+                                    </Button>
+                                </Form>
                             </Grid.Row>
-                            </Grid.Column>
-                        </Grid>
+                        </Grid.Column>
+                    </Grid>
                 </div>
             </div>
         );

@@ -86,13 +86,13 @@ export default class Register extends Component {
     }
 
     renderConfirmationForm() {
-        var seite;
+        let page;
         if (window.innerWidth>="900"){
-            seite= "seite2"}
+            page= "seite2"}
         else{
-            seite="seite2"}
+            page="seite2"}
         return (
-            <div id={seite}>
+            <div id={page}>
                 <div className="registration">
                     <h1>Registrierung bestätigen</h1>
                     <Form onSubmit={this.handleConfirmationSubmit}>
@@ -118,13 +118,13 @@ export default class Register extends Component {
     }
 
     renderForm() {
-        var seite;
+        let page;
         if (window.innerWidth>="900"){
-            seite= "seite2"}
+            page= "seite2"}
         else{
-            seite="seite2"}
+            page="seite2"}
         return (
-            <div id={seite}>
+            <div id={page}>
                 <div className="registration">
                     <h1>Registrierung</h1>
                     <Form onSubmit={this.handleSubmit}>
@@ -134,6 +134,7 @@ export default class Register extends Component {
                                 autoFocus
                                 id="email"
                                 type="email"
+                                autoComplete={"email"}
                                 value={this.state.email}
                                 onChange={this.handleChange}
                                 className="registration_box"
@@ -144,6 +145,7 @@ export default class Register extends Component {
                             <input
                                 id="given_name"
                                 type="text"
+                                autoComplete={"given-name"}
                                 value={this.state.given_name}
                                 onChange={this.handleChange}
                                 className="registration_box"
@@ -153,6 +155,7 @@ export default class Register extends Component {
                             <label>Nachname</label>
                             <input
                                 id="family_name"
+                                autoComplete={"family-name"}
                                 type="text"
                                 value={this.state.family_name}
                                 onChange={this.handleChange}
@@ -165,6 +168,7 @@ export default class Register extends Component {
                                 id="password"
                                 value={this.state.password}
                                 onChange={this.handleChange}
+                                autoComplete={"new-password"}
                                 type="password"
                                 className="registration_box"
                             />
@@ -173,6 +177,7 @@ export default class Register extends Component {
                             <label>Confirm Password</label>
                             <input
                                 id="confirmPassword"
+                                autoComplete={"new-password"}
                                 value={this.state.confirmPassword}
                                 onChange={this.handleChange}
                                 type="password"
