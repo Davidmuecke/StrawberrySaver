@@ -1,26 +1,41 @@
+/*
+ * v2 including temperature measurement 
+ */
+
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
 #include <ESP8266WiFiMulti.h>
-
 #include <ESP8266HTTPClient.h>
+#include <DallasTemperature.h> //from https://github.com/milesburton/Arduino-Temperature-Control-Library
+#include <Base64.h>
+#include <OneWire.h> //from https://github.com/PaulStoffregen/OneWire
 
 // These constants won't change. They're used to give names to the pins used:
-const int analogInPin = A0;  // Analog input pin that the potentiometer is attached to
-int sensorValue = 0;        // value read from the pot
+const int analogInPin = A0;  // Analog input pin that the potentiometer (humidity) is attached to
+#define ONE_WIRE_BUS D1 // DS18B20 sensor data port (temperature)
+#define LED D0 //onboard Led
+
+float getTemperature();
+
 ESP8266WiFiMulti WiFiMulti; 
+OneWire oneWire(ONE_WIRE_BUS);
+DallasTemperature DS18B20(&oneWire);
 
 //Config
-int measureIntervall = 30;
-int latestSendIntervall = 120;
-int sendCountdown = latestSendIntervall;
+int     measureIntervall = 20;
+int     latestSendIntervall = 120;
+int     sendCountdown = latestSendIntervall;
 boolean sendOnChange = true;
 int     lastWaterSend = -100;
-double  lastTempretureSend = -100;
+double  lastTemperatureSend = -100;
+char    temperaturStr[6];
 
-String wifiSSID = "ENTER_SSID";
-String pwd = "ENTER_PWD";
+//wifi config
+String  wifiSSID = "SSID";
+String  pwd = "Password";
 
 void setup() {
+  pinMode(LED, OUTPUT);
   // initialize serial communications at 115200 bps:
   Serial.begin(115200);  
   Serial.println("[Starting UP]...");
@@ -28,46 +43,63 @@ void setup() {
   WiFi.mode(WIFI_STA);
   WiFiMulti.addAP(wifiSSID.c_str() , pwd.c_str());
   Serial.println("[Trying to connect] ...");
+  DS18B20.begin();
   delay(2000); 
 }
 
 void loop() {
   // read the analog water sensor
   int waterSensorValue = analogRead(analogInPin); 
+  //read digital temperature sensor
+  double temperatureSensorValue = getTemperature();
   // print the results to the Serial Monitor:
-  int tempretureSensorValue = 22.3;
-  Serial.print("Feuchtigkeitssensor = ");
-  Serial.println(waterSensorValue);  
+  Serial.print("Humdity Sensor = ");
+  Serial.println(waterSensorValue); 
+  Serial.print("Temperature Sensor = ");
+  Serial.println(temperatureSensorValue); 
+  
+  //check send countdown
   if(sendCountdown < 0){
     Serial.println("Countdown Timed OUT!");
     bool wasSend =false;
     int tryMax = 20;
     while(!wasSend && tryMax > 0){
-        wasSend = sendRequest(waterSensorValue,22.3);
-        delay(20000);
+        wasSend = sendRequest(waterSensorValue,temperatureSensorValue);
+        delay(60000);
         tryMax--;
       }
       sendCountdown = latestSendIntervall;
     }
+    
   if(sendOnChange){    
     Serial.println("On Change!");    
     int waterDiff= abs(lastWaterSend - waterSensorValue);
-    double tempDiff = abs(lastTempretureSend - tempretureSensorValue);
+    double tempDiff = abs(lastTemperatureSend - temperatureSensorValue);
     Serial.print("Diff Wasser: ");
     Serial.println(waterDiff); 
     Serial.print("Diff Temp: ");
     Serial.println(tempDiff); 
     if(waterDiff > 19 || tempDiff > 1){
-          if(sendRequest(waterSensorValue,22.3)){
-              lastWaterSend = waterSensorValue;
-              lastTempretureSend = 22.3;
-              sendCountdown = latestSendIntervall;
+          if(sendRequest(waterSensorValue,temperatureSensorValue)){
+              lastWaterSend       = waterSensorValue;
+              lastTemperatureSend = temperatureSensorValue;
+              sendCountdown       = latestSendIntervall;
             }
       }
     }
   
   delay(measureIntervall *1000);
   sendCountdown -= measureIntervall;
+}
+
+float getTemperature() {
+ float temp;
+ do {
+ DS18B20.requestTemperatures(); 
+ temp = DS18B20.getTempCByIndex(0);
+ delay(100);
+ } while (temp == 85.0 || temp == (-127.0));
+ return temp;
 }
 
 boolean sendRequest(int water, double tempreture){
@@ -77,17 +109,19 @@ boolean sendRequest(int water, double tempreture){
         Serial.print("[HTTP] begin...\n");
         // configure traged server and url
         //URL + Fingerprint
-        //http.begin("https://5zdey468pk.execute-api.us-east-1.amazonaws.com/latest/arduinoTest","30 13 cd 0e d9 0c 2f 94 2f 13 e8 5b 9d c4 1d 56 30 e2 00 e0");
-        http.begin("https://fu8pk1jle1.execute-api.us-east-1.amazonaws.com/dev/database-access-service-dev-hello","30 13 cd 0e d9 0c 2f 94 2f 13 e8 5b 9d c4 1d 56 30 e2 00 e0");
+        http.begin("https://5zdey468pk.execute-api.us-east-1.amazonaws.com/latest/sensorMeasurement","30 13 cd 0e d9 0c 2f 94 2f 13 e8 5b 9d c4 1d 56 30 e2 00 e0");
+        //http.begin("https://fu8pk1jle1.execute-api.us-east-1.amazonaws.com/dev/database-access-service-dev-hello","30 13 cd 0e d9 0c 2f 94 2f 13 e8 5b 9d c4 1d 56 30 e2 00 e0");
         //Line 739: void HTTPClient::addHeader(const String& name, const String& value, bool first, bool replace)        
-        http.addHeader("content-type","application/json",false,false);
+        http.addHeader("content-type","application/json; charset=UTF-8",false,false);
         http.setUserAgent("StrawberrySaver");
         // start connection and send HTTP header
-        String payload ="{\"SensorID\":\"12345\",\"WifiSSID\":\""+wifiSSID +"\",\"water\":"+water+",\"tempreture\":"+tempreture+
-                        "\"measureIntervall\":"+measureIntervall+"\"sendIntervall\":"+latestSendIntervall+"\"sendOnChange\":"+ sendOnChange+"}";
+        String wifiTest = "007007";
+        String payload ="{\"sensor_ID\": \"dk001\", \"wifi_SSID\": \""+wifiTest +"\", \"humiditySensor\": "+water+",\"temperatureSensor\": "+tempreture+
+                        ", \"measureIntervall\": "+measureIntervall+", \"sendIntervall\": "+latestSendIntervall+", \"sendOnChange\": "+ sendOnChange+"}";
+        
         //POST 
-        int httpCode = http.POST("PAYLOAD");
-
+        int httpCode = http.POST(payload);
+        Serial.println(payload);
         // httpCode will be negative on error
         if(httpCode > 0) {
             // HTTP header has been send and Server response header has been handled
@@ -101,6 +135,7 @@ boolean sendRequest(int water, double tempreture){
             }
         } else {
             Serial.printf("[HTTP] POST... failed, error: %s\n", http.errorToString(httpCode).c_str());
+             
         }
         //Close Connection
         http.end();
