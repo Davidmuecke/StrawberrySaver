@@ -1,4 +1,4 @@
-const ApiBuilder = require('claudia-api-builder'),
+var ApiBuilder = require('claudia-api-builder'),
     AWS = require('aws-sdk');
 //Setzt die Region
 AWS.config.update({region: 'us-east-1'});
@@ -9,108 +9,95 @@ var api = new ApiBuilder(),
     // Erstellt dsa Dynamo-DB service Objekt für das erstellen neuer Tabellen.
     dataBase = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 
+/*--------------------------------------------------------------------------------------------------------------------*/
+/*  Hier werden die Requirements aufgelistet.                                                                         */
+/*--------------------------------------------------------------------------------------------------------------------*/
+var toolsPlants = require("./tools/toolsPlants.js");
+var toolsSensors = require("./tools/toolsSensors.js");
+var toolsArduino = require("./tools/toolsArduino.js");
+var toolsUserManagement = require("./tools/toolsUserManagement");
 
+/*--------------------------------------------------------------------------------------------------------------------*/
+/*  Operationen für die Benutzerverwaltung.                                                                           */
+/*--------------------------------------------------------------------------------------------------------------------*/
+api.post('/checkUserData', function (request) {
+    return toolsUserManagement.checkUserData(request.context.cognitoIdentityId);
+}, {authorizationType: 'AWS_IAM'});
 
-//Beispiel zum Laden von Daten in die Datenbank
-api.post('/postData', function (request) { // SAVE your icecream
-    var params = {
-        //Tabellenname
-        TableName: 'icecreams',
-        //Elemente die gespeichert werden sollen
-        Item: {
-            //Attribut, wird aus dem Request-Header entnommen.
-            icecreamid: request.body.icecreamId,
-            //Attribut, wird aus dem Request-Header entnommen.
-            name: request.body.name // your icecream name
-        }
-    }
-    //Es wird in die Datenbank geschrieben, das Ergebnis der Operation wird zurück gegeben.
-    return dynamoDb.put(params).promise(); // returns dynamo result
-}, { success: 201 }); // returns HTTP status 201 - Created if successful
+/*--------------------------------------------------------------------------------------------------------------------*/
+/*  Diese Operationen behandeln die Pflanzen.                                                                         */
+/*--------------------------------------------------------------------------------------------------------------------*/
+//liefert alle Pflanzen für einen bestimmten Benutzer zurück.
+api.post('/getPlantsForUser', function (request) {
+   return toolsPlants.getPlantsForUser(request.context.cognitoIdentityId);
+}, {authorizationType: 'AWS_IAM'});
 
-//Beispiel für eine Scan-Anfrage.
-//Bei einer Scan-Anfrage wird (im Gegensatz zur Query) die komplette Datenbank gelesen.
-//Soll das Ergebnis dann doch noch gefiltert werden, kann das durch bearbeitung des Ergebniss-Arrays geschechen.
-api.get('/getDataScan', function (request) { // GET all users
-    return dynamoDb.scan({ TableName: 'icecreams' }).promise()
-        .then(response => response.Items)
+//liefert alle Daten einer bestimmten Pflanze zurück.
+api.post('/getPlantData', function (request) {
+    return toolsPlants.getPlantData(request.body.plantID);
+}, {authorizationType: 'AWS_IAM'});
+
+//speichert eine neue Pflanze in der Datenbank.
+api.post('/createPlant', function (request) {
+    return toolsPlants.createPlant(request.context.cognitoIdentityId,request.body.plantData);
+}, {authorizationType: 'AWS_IAM'});
+
+//aktualisiert die Daten einer Pflanze in der Datenbank.
+api.post('/updatePlantData', function (request) {
+    return toolsPlants.updatePlant(request.body.plant_ID, request.body.plantData);
+}, {authorizationType: 'AWS_IAM'});
+
+//löscht eine Pflanze und alle Referenzierungen aus der Datenbank.
+api.post('/deletePlant', function (request) {
+    return toolsPlants.deletePlant(request.context.cognitoIdentityId,request.body.plant_ID);
+}, {authorizationType: 'AWS_IAM'});
+
+/*--------------------------------------------------------------------------------------------------------------------*/
+/*  Diese Operationen behandeln dem Arduino                                                                           */
+/*--------------------------------------------------------------------------------------------------------------------*/
+//Speichert die Messung eines Sensors in die Datenbank
+api.post('/sensorMeasurement', function (request) {
+    return toolsArduino.sensorMeasurement(request.body);
 });
 
-api.post('/postDataScan', function (request) {
-    return dynamoDb.scan({ TableName: request.body.tableName }).promise()
-        .then(response => response.Items)
-});
-
-//Klassische konfigurierbare (POST-)Query-Anfrage.
-//Variablen können über den Anfrage Body mitgegeben werden (als JSON-Objekt).
-api.post('/data', function (request) {
-    var params = {
-        //Name der Tabelle
-        TableName : "icecreams",
-        //Abkuerzungen fuer die Attribut-Namen
-        ExpressionAttributeNames:{
-            "#id": "icecreamid",
-            "#name": "name"
-        },
-        //Werte die aus der Tabelle abgefragt werden sollen.
-        ProjectionExpression:"#id, #name",
-        //Zuordnung der Filter zu den Abkuerzungen
-        KeyConditionExpression: "#id = :id",
-        //"Filter" fuer die Attribut-Werte.
-        ExpressionAttributeValues: {
-            ":id":request.body.icecreamId
-        }
-    };
-
-    return dynamoDb.query(params, function(err, data) {
-        if (err) {
-            console.log("Unable to query. Error:", JSON.stringify(err, null, 2));
-        } else {
-            console.log("Query succeeded.");
-            data.Items.forEach(function(item) {
-                console.log(" -", item.name + ": " + item.icecreamid);
-            });
-        }
-    }).promise()
-        .then(response => response.Items)
-});
-//Post-Request ohne Header um Arduino-Connection zu testen.
+//TEST: post-Request ohne Header um Arduino-Connection zu testen.
 api.post('/arduinoTest', function (request) {
-    return "arduinoTest: succesfull";
+    return toolsArduino.arduinoTest();
 });
 
-//Get-Request mit Zugriff auf die Variablen in der URL
-api.get('/helloWorld', function (request) {
-   return 'Hello ' + request.queryString.name;
-});
+/*--------------------------------------------------------------------------------------------------------------------*/
+/*                          Funktionen für Sensor-Abfragen                                                            */
+/*  Diese Operationen behandeln die Daten die für die Sensoren ausgegeben werden sollen                               */
+/*--------------------------------------------------------------------------------------------------------------------*/
+//liefert alle Sensoren für einen bestimmten Benutzer zurück.
+api.post('/getSensorsForUser', function (request) {
+    return toolsSensors.getSensorsForUser(request.context.cognitoIdentityId);
+}, {authorizationType: 'AWS_IAM'});
 
-//Post-Request zum erstellen einer Tabelle
-api.post('/createTableTest', function (request) {
-    var params = {
-        TableName : "sensor_12345",
-        KeySchema: [
-            { AttributeName: "test1", KeyType: "HASH"},  //Partition key
-            { AttributeName: "test2", KeyType: "RANGE" }  //Sort key
-        ],
-        AttributeDefinitions: [
-            { AttributeName: "test1", AttributeType: "N" },
-            { AttributeName: "test2", AttributeType: "S" }
-        ],
-        ProvisionedThroughput: {
-            ReadCapacityUnits: 5,
-            WriteCapacityUnits: 5
-        }
-    };
-    return dataBase.createTable(params, function(err, data) {
-        if (err) {
-            console.error("Unable to create table. Error JSON:", JSON.stringify(err, null, 2));
-        } else {
-            console.log("Created table. Table description JSON:", JSON.stringify(data, null, 2));
-        }
-    }).promise().then(
-        //Hier muss nun gewartet werden, bis der Tabellenstatus von "CREATING" auf "ACTIVE" wechselt.
-    )
+api.post('/getFreeSensorsForUser', function (request) {
+    return toolsSensors.getFreeSensorsForUser(request.context.cognitoIdentityId)
+}, {authorizationType: 'AWS_IAM'});
 
-});
+//liefert alle Sensoren für einen bestimmten Benutzer zurück.
+api.post('/getSensorData', function (request) {
+    return toolsSensors.getSensorData(request.body.sensor_ID);
+}, {authorizationType: 'AWS_IAM'});
 
+//Erstellt einen neuen Sensor für den aktuellen Benutzer.
+api.post('/createSensor', function (request) {
+    return toolsSensors.createSensor(request.context.cognitoIdentityId,request.body);
+}, {authorizationType: 'AWS_IAM'});
+
+//Aktualisiert die Konfiguration eines Sensors.
+api.post('/updateSensorConfig', function (request) {
+    return toolsSensors.updateSensorConfig(request.body.sensor_ID,request.body.configData);
+}, {authorizationType: 'AWS_IAM'});
+
+//löscht einen Sensor und alle Referenzierungen aus der Datenbank.
+api.post('/deleteSensor', function (request) {
+    return toolsSensors.deleteSensor(request.context.cognitoIdentityId,request.body.sensor_ID);
+}, {authorizationType: 'AWS_IAM'});
+/*--------------------------------------------------------------------------------------------------------------------*/
+/*  footer: die hier zu exportierenden module.                                                                        */
+/*--------------------------------------------------------------------------------------------------------------------*/
 module.exports = api;
