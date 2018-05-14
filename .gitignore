@@ -10,6 +10,7 @@
 
 # production
 /frontend/build
+/frontend/src/config.js
 
 #lock.json Dateien
 /frontend/package-lock.json

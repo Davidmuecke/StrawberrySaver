@@ -1,0 +1,26 @@
+/*CSS File um das Aussehen des Impressums zu gestalten*/
+/*Autor: Rahel Illi*/
+/*Date: 25.04.2018*/
+
+/***************************************************/
+/*  CSS STYLE SHEET STRAWBEERY SAVER NavigationBar */
+/**************************************************/
+
+/**/
+.menu_vertical{
+    float: left;
+}
+/*ENDE - */
+
+/**/
+.font_menu{
+    font-size: large;
+}
+/*ENDE - */
+
+/**/
+#menu_header{
+    background-color: #4CAF50;
+}
+/*ENDE - */
+
